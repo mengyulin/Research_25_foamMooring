@@ -1,0 +1,15 @@
+#!/bin/sh
+cd "${0%/*}" || exit                                # Run from this directory
+. ${WM_PROJECT_DIR:?}/bin/tools/RunFunctions        # Tutorial run functions
+#------------------------------------------------------------------------------
+
+# Mesh floating body
+(cd floatingBody && ./Allrun.pre)
+
+# Add background mesh (Parallel computing)
+(cd background  && ./Allrun.pre 1)
+
+# Add background mesh (Single-Core computing)
+(cd background  && ./Allrun.pre)
+
+#------------------------------------------------------------------------------
