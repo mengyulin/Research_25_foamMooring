@@ -9,7 +9,7 @@ cd "${0%/*}" || exit                                # Run from this directory
 # Add background mesh (Parallel computing)
 (cd background  && ./Allrun.pre 1)
 
-# Add background mesh (Single-Core computing)
-(cd background  && ./Allrun.pre)
+## Add background mesh (Single-Core computing)
+#(cd background  && ./Allrun.pre)
 
 #------------------------------------------------------------------------------
