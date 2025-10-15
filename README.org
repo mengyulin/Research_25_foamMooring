@@ -247,4 +247,4 @@ cd "${0%/*}" || exit                                # Run from this directory
 
 ** 波高、位移量與纜繩張力繪圖
 
-見 [[./tutorials/overset_parallel/background/Plots/postProcessing.ipynb]] 的說明與程式碼。
+繪圖可於資料夾 ~Plots~ 中進行。見 [[./tutorials/overset_parallel/background/Plots/postProcessing.ipynb]] 的說明與程式碼。
