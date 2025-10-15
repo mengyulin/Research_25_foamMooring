@@ -217,7 +217,13 @@ cd "${0%/*}" || exit                                # Run from this directory
 
 * Overset 網格計算與後處理
 ** ParaView 繪圖
+*** 直接開啟 ~state~ 檔
+
+在 ~background~ 資料夾中的 ~FV.pvsm~ 檔，為 ParaView 之 State 檔案，可以在 OpenFOAM 中使用 ~load state~ 選項開啟，即可得到已經設定好的繪圖頁面。
+
 *** 波浪流場與物體繪製流程
+
+如想重新繪製，可依下列步驟。
 
 1. 開啟 ~aa.foam~ 檔案：
    #+begin_src bash
@@ -244,7 +250,6 @@ cd "${0%/*}" || exit                                # Run from this directory
    #+end_src
 
 2. 在 ~Pipeline Browser~ 中點選 ~mdv2_pt.vtk.pvd~, 使用 ~Transforming~ 將纜線平移到與浮體一樣的位置。
-
 ** 波高、位移量與纜繩張力繪圖
 
 繪圖可於資料夾 ~Plots~ 中進行。見 [[./tutorials/overset_parallel/background/Plots/postProcessing.ipynb]] 的說明與程式碼。
