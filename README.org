@@ -269,7 +269,8 @@ ffmpeg -version
 
 若顯示版本號 (例如 ~ffmpeg version 6.x~)，即表示安裝成功。
 
-*** 輸出動畫影格
+*** OpenFOAM 輸出動畫影格
+在 OpenFOAM 中開啟計算成果圖，執行以下步驟：
 1. 點選 File → Save Animation。
 2. 在 *File type* 中選擇 **PNG files** (或 JPEG)。
 3. 設定輸出路徑，例如輸出至新增目錄 ~animation~ 中:

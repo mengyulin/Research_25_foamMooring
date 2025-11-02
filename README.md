@@ -1,43 +1,43 @@
 
 # Table of Contents
 
-1.  [研究目的](#org4f37520)
-2.  [模擬條件概述](#orgd2d5779)
-    1.  [浮體條件](#orgc8a998f)
-    2.  [繫泊條件](#org3c728db)
-    3.  [Chen and Hall (2022) 之波浪條件](#org5c2e421)
-3.  [計算條件設定](#org0bbb110)
-    1.  [第一組](#org9f7dff2)
-4.  [參數意義與物理說明](#org2a85afd)
-    1.  [波浪週期 T](#orgddaf521)
-    2.  [波高 H](#org31e1b9a)
-    3.  [波長 L](#org40c8cd0)
-    4.  [波陡度 H/L](#orge04804d)
-    5.  [水深 h](#orgc0323ab)
-5.  [實驗步驟建議](#orge359e60)
-6.  [分析與討論方向](#orge38e6e2)
-7.  [學習重點](#org06ae34b)
-8.  [延伸方向](#orgbf942f1)
-9.  [Overset 計算執行](#org12e7944)
-    1.  [計算指令](#orge52edfa)
-    2.  [平行計算設定](#orgf8ccbd1)
-    3.  [計算分割數](#org2ee801f)
-10. [ParaView 繪圖與前後處理](#org1fe86f4)
-    1.  [ParaView 繪圖](#org84c72fc)
-        1.  [直接開啟 `state` 檔](#org60fb878)
-        2.  [波浪流場與物體繪製流程](#org3457f45)
-        3.  [繪製繫纜線](#org0798c5c)
-    2.  [ParaView 動畫輸出](#orgbe5613c)
-        1.  [安裝 ffmpeg](#org8088222)
-        2.  [輸出動畫影格](#orgde0f9d6)
-        3.  [使用 ffmpeg 合成影片](#org0432572)
-        4.  [可選：影片壓縮與縮放](#orgec49ac6)
-        5.  [提示](#org5f56a32)
-    3.  [前、後處理之 Python 程式碼](#org70608ea)
+1.  [研究目的](#org7aaccfe)
+2.  [模擬條件概述](#orgf70c0bc)
+    1.  [浮體條件](#orgdef813f)
+    2.  [繫泊條件](#orgdadc622)
+    3.  [Chen and Hall (2022) 之波浪條件](#orga652f3e)
+3.  [計算條件設定](#org5f16c4e)
+    1.  [第一組](#orged44350)
+4.  [參數意義與物理說明](#orgf524648)
+    1.  [波浪週期 T](#orgb42cf9c)
+    2.  [波高 H](#org549bee3)
+    3.  [波長 L](#org08ec6e3)
+    4.  [波陡度 H/L](#org12abfad)
+    5.  [水深 h](#org6e70739)
+5.  [實驗步驟建議](#orga7904d2)
+6.  [分析與討論方向](#orga0d86a7)
+7.  [學習重點](#orgb00b87a)
+8.  [延伸方向](#orgf0f48e8)
+9.  [Overset 計算執行](#org36aaaa7)
+    1.  [計算指令](#orgee5875a)
+    2.  [平行計算設定](#orgfe9513b)
+    3.  [計算分割數](#org2f28d05)
+10. [ParaView 繪圖與前後處理](#org6192999)
+    1.  [ParaView 繪圖](#orgd808278)
+        1.  [直接開啟 `state` 檔](#org5af5e5e)
+        2.  [波浪流場與物體繪製流程](#orgb02d21f)
+        3.  [繪製繫纜線](#org214516d)
+    2.  [ParaView 動畫輸出](#org89ccf3c)
+        1.  [安裝 ffmpeg](#orgc506717)
+        2.  [OpenFOAM 輸出動畫影格](#org1cd6b3f)
+        3.  [使用 ffmpeg 合成影片](#orgfe045d5)
+        4.  [可選：影片壓縮與縮放](#org0a3804d)
+        5.  [提示](#org06fd911)
+    3.  [前、後處理之 Python 程式碼](#org040c3dd)
 
 
 
-<a id="org4f37520"></a>
+<a id="org7aaccfe"></a>
 
 # 研究目的
 
@@ -52,14 +52,14 @@
 3.  後續延伸研究（例如多浮體干涉、風浪耦合等）的基礎資料。
 
 
-<a id="orgd2d5779"></a>
+<a id="orgf70c0bc"></a>
 
 # 模擬條件概述
 
 根據 Chen and Hall (2022) 的單一浮體案例，本研究採用相同的幾何、繫泊與水槽條件，改變波浪週期與波高兩個主要參數。
 
 
-<a id="orgc8a998f"></a>
+<a id="orgdef813f"></a>
 
 ## 浮體條件
 
@@ -73,7 +73,7 @@
 -   靜止水深 $h = 0.5~\mathrm{m}$
 
 
-<a id="org3c728db"></a>
+<a id="orgdadc622"></a>
 
 ## 繫泊條件
 
@@ -85,7 +85,7 @@
 -   繫纜錨定處 (ahcnor, 與底床連接處) $(x, y, z) = (\pm 1.385, \pm 0.423, -0.5)~\mathrm{m}$
 
 
-<a id="org5c2e421"></a>
+<a id="orga652f3e"></a>
 
 ## Chen and Hall (2022) 之波浪條件
 
@@ -155,12 +155,12 @@
 -   淺水波: $h/L < 1/20$
 
 
-<a id="org0bbb110"></a>
+<a id="org5f16c4e"></a>
 
 # 計算條件設定
 
 
-<a id="org9f7dff2"></a>
+<a id="orged44350"></a>
 
 ## 第一組
 
@@ -400,12 +400,12 @@
 </table>
 
 
-<a id="org2a85afd"></a>
+<a id="orgf524648"></a>
 
 # 參數意義與物理說明
 
 
-<a id="orgddaf521"></a>
+<a id="orgb42cf9c"></a>
 
 ## 波浪週期 T
 
@@ -415,7 +415,7 @@
 -   長週期波 ($T > 1.6~\mathrm{s}$): 波浪能量集中，容易引發浮體共振。
 
 
-<a id="org31e1b9a"></a>
+<a id="org549bee3"></a>
 
 ## 波高 H
 
@@ -425,7 +425,7 @@
 -   大波高：可能產生非線性效應，例如阻尼增加或漂移運動。
 
 
-<a id="org40c8cd0"></a>
+<a id="org08ec6e3"></a>
 
 ## 波長 L
 
@@ -439,7 +439,7 @@ $$
 波長越長，波浪越「平緩」，對浮體的影響主要為低頻大振幅運動。
 
 
-<a id="orge04804d"></a>
+<a id="org12abfad"></a>
 
 ## 波陡度 H/L
 
@@ -451,7 +451,7 @@ $$
 -   $H/L > 0.05$ 則為「陡波」區域，數值模擬需特別注意穩定性。
 
 
-<a id="orgc0323ab"></a>
+<a id="org6e70739"></a>
 
 ## 水深 h
 
@@ -459,7 +459,7 @@ $$
 本研究之 $h = 0.6~\mathrm{m}$，屬於中等深度（intermediate depth），適合觀察深水與淺水效應交替之情況。
 
 
-<a id="orge359e60"></a>
+<a id="orga7904d2"></a>
 
 # 實驗步驟建議
 
@@ -471,7 +471,7 @@ $$
 6.  彙整結果，分析波浪頻率與振幅對浮體動態特性的影響。
 
 
-<a id="orge38e6e2"></a>
+<a id="orga0d86a7"></a>
 
 # 分析與討論方向
 
@@ -481,7 +481,7 @@ $$
 -   CFD 模擬與理論模型的比較（例如 Morison 方程或線性勢流理論）。
 
 
-<a id="org06ae34b"></a>
+<a id="orgb00b87a"></a>
 
 # 學習重點
 
@@ -492,7 +492,7 @@ $$
 -   建立對海洋結構物動力行為的直觀理解。
 
 
-<a id="orgbf942f1"></a>
+<a id="orgf0f48e8"></a>
 
 # 延伸方向
 
@@ -504,12 +504,12 @@ $$
 4.  嘗試使用不同繫泊模型（MoorDyn vs MAP++）比較。
 
 
-<a id="org12e7944"></a>
+<a id="org36aaaa7"></a>
 
 # Overset 計算執行
 
 
-<a id="orge52edfa"></a>
+<a id="orgee5875a"></a>
 
 ## 計算指令
 
@@ -532,38 +532,38 @@ $$
     #------------------------------------------------------------------------------
 
 
-<a id="orgf8ccbd1"></a>
+<a id="orgfe9513b"></a>
 
 ## 平行計算設定
 
 以 `tutorials/overset_parallel/` 為例：
 
 
-<a id="org2ee801f"></a>
+<a id="org2f28d05"></a>
 
 ## 計算分割數
 
 設定為 4 區，可於 `background/system/decomposeParDict` 中設定。
 
 
-<a id="org1fe86f4"></a>
+<a id="org6192999"></a>
 
 # ParaView 繪圖與前後處理
 
 
-<a id="org84c72fc"></a>
+<a id="orgd808278"></a>
 
 ## ParaView 繪圖
 
 
-<a id="org60fb878"></a>
+<a id="org5af5e5e"></a>
 
 ### 直接開啟 `state` 檔
 
 在 `background` 資料夾中的 `FV.pvsm` 檔，為 ParaView 之 State 檔案，可以在 OpenFOAM 中使用 `load state` 選項開啟，即可得到已經設定好的繪圖頁面。
 
 
-<a id="org3457f45"></a>
+<a id="orgb02d21f"></a>
 
 ### 波浪流場與物體繪製流程
 
@@ -585,7 +585,7 @@ $$
     4.  僅開啟 `Threshold2` 與 `Threshold3`, 並在 `Orientation Axes` 中點選 `Camera Paralle Projection`, 可出現浮體被挖空之波浪流場。
 
 
-<a id="org0798c5c"></a>
+<a id="org214516d"></a>
 
 ### 繪製繫纜線
 
@@ -596,12 +596,12 @@ $$
 2.  在 `Pipeline Browser` 中點選 `mdv2_pt.vtk.pvd`, 使用 `Transforming` 將纜線平移到與浮體一樣的位置。
 
 
-<a id="orgbe5613c"></a>
+<a id="org89ccf3c"></a>
 
 ## ParaView 動畫輸出
 
 
-<a id="org8088222"></a>
+<a id="orgc506717"></a>
 
 ### 安裝 ffmpeg
 
@@ -617,9 +617,11 @@ $$
 若顯示版本號 (例如 `ffmpeg version 6.x`)，即表示安裝成功。
 
 
-<a id="orgde0f9d6"></a>
+<a id="org1cd6b3f"></a>
 
-### 輸出動畫影格
+### OpenFOAM 輸出動畫影格
+
+在 OpenFOAM 中開啟計算成果圖，執行以下步驟：
 
 1.  點選 File → Save Animation。
 2.  在 **File type** 中選擇 ****PNG files**** (或 JPEG)。
@@ -635,7 +637,7 @@ $$
 5.  按下 ****OK**** 開始輸出。
 
 
-<a id="org0432572"></a>
+<a id="orgfe045d5"></a>
 
 ### 使用 ffmpeg 合成影片
 
@@ -655,7 +657,7 @@ $$
 -   `-pix_fmt yuv420p`: 確保通用播放器皆可播放。
 
 
-<a id="orgec49ac6"></a>
+<a id="org0a3804d"></a>
 
 ### 可選：影片壓縮與縮放
 
@@ -664,7 +666,7 @@ $$
     ffmpeg -framerate 15 -i frame_%04d.png -vf "scale=1280:-1" -c:v libx264 -crf 23 animation_compressed.mp4
 
 
-<a id="org5f56a32"></a>
+<a id="org06fd911"></a>
 
 ### 提示
 
@@ -675,7 +677,7 @@ $$
         ffmpeg -stream_loop -1 -i animation.mp4 output_loop.mp4
 
 
-<a id="org70608ea"></a>
+<a id="org040c3dd"></a>
 
 ## 前、後處理之 Python 程式碼
 
