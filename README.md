@@ -1,37 +1,37 @@
 
 # Table of Contents
 
-1.  [研究目的](#orgddb85dd)
-2.  [模擬條件概述](#orgf9e4b26)
-    1.  [浮體條件](#org42360df)
-    2.  [繫泊條件](#org77477fa)
-    3.  [Chen and Hall (2022) 之波浪條件](#org70c3c8a)
-3.  [計算條件設定](#org66a960d)
-    1.  [第一組](#orgff55d8d)
-4.  [參數意義與物理說明](#org0f7c225)
-    1.  [波浪週期 T](#orgd7ec20f)
-    2.  [波高 H](#org62c0e56)
-    3.  [波長 L](#org20eb9e8)
-    4.  [波陡度 H/L](#org8daca0a)
-    5.  [水深 h](#orgd665c87)
-5.  [實驗步驟建議](#org262ba2a)
-6.  [分析與討論方向](#org5254c66)
-7.  [學習重點](#orgaf472a6)
-8.  [延伸方向](#orgadfd33a)
-9.  [Overset 計算執行](#orgd8775fd)
-    1.  [計算指令](#org5484d85)
-    2.  [平行計算設定](#org357b85a)
-    3.  [計算分割數](#org397d643)
-10. [Overset 網格計算與前後處理](#orgbe71c8b)
-    1.  [ParaView 繪圖](#orgf9769ea)
-        1.  [直接開啟 `state` 檔](#orgf30b56e)
-        2.  [波浪流場與物體繪製流程](#orgfffb719)
-        3.  [繪製繫纜線](#org021ee02)
-    2.  [前、後處理之 Python 程式碼](#orgf42b859)
+1.  [研究目的](#org301bfae)
+2.  [模擬條件概述](#orgeb42c3e)
+    1.  [浮體條件](#org4a50e09)
+    2.  [繫泊條件](#org9a62a5b)
+    3.  [Chen and Hall (2022) 之波浪條件](#org5137137)
+3.  [計算條件設定](#org2c66b3f)
+    1.  [第一組](#org89365e9)
+4.  [參數意義與物理說明](#org276dc33)
+    1.  [波浪週期 T](#org421edaa)
+    2.  [波高 H](#org88c5470)
+    3.  [波長 L](#orgaa83c55)
+    4.  [波陡度 H/L](#org5859b13)
+    5.  [水深 h](#org748fdd3)
+5.  [實驗步驟建議](#org15f4c67)
+6.  [分析與討論方向](#orgf972ea9)
+7.  [學習重點](#org379f079)
+8.  [延伸方向](#org06689d3)
+9.  [Overset 計算執行](#orgde59bd1)
+    1.  [計算指令](#org89cc3d9)
+    2.  [平行計算設定](#org9d6a0f2)
+    3.  [計算分割數](#orgd0b43de)
+10. [Overset 網格計算與前後處理](#org10ac3fd)
+    1.  [ParaView 繪圖](#orgfadf935)
+        1.  [直接開啟 `state` 檔](#org1ee63f4)
+        2.  [波浪流場與物體繪製流程](#org8d2619e)
+        3.  [繪製繫纜線](#orgbaeeece)
+    2.  [前、後處理之 Python 程式碼](#org116baed)
 
 
 
-<a id="orgddb85dd"></a>
+<a id="org301bfae"></a>
 
 # 研究目的
 
@@ -46,14 +46,14 @@
 3.  後續延伸研究（例如多浮體干涉、風浪耦合等）的基礎資料。
 
 
-<a id="orgf9e4b26"></a>
+<a id="orgeb42c3e"></a>
 
 # 模擬條件概述
 
 根據 Chen and Hall (2022) 的單一浮體案例，本研究採用相同的幾何、繫泊與水槽條件，改變波浪週期與波高兩個主要參數。
 
 
-<a id="org42360df"></a>
+<a id="org4a50e09"></a>
 
 ## 浮體條件
 
@@ -67,7 +67,7 @@
 -   靜止水深 $h = 0.5~\mathrm{m}$
 
 
-<a id="org77477fa"></a>
+<a id="org9a62a5b"></a>
 
 ## 繫泊條件
 
@@ -79,7 +79,7 @@
 -   繫纜錨定處 (ahcnor, 與底床連接處) $(x, y, z) = (\pm 1.385, \pm 0.423, -0.5)~\mathrm{m}$
 
 
-<a id="org70c3c8a"></a>
+<a id="org5137137"></a>
 
 ## Chen and Hall (2022) 之波浪條件
 
@@ -102,11 +102,11 @@
 <thead>
 <tr>
 <th scope="col" class="org-left">編號</th>
-<th scope="col" class="org-right">週期 \(T\) (s)</th>
-<th scope="col" class="org-right">波高 \(H\) (m)</th>
-<th scope="col" class="org-right">波長 \(L\) (m)</th>
-<th scope="col" class="org-right">波尖銳度 \(H/L\)</th>
-<th scope="col" class="org-right">相對水深 \(h/L\)</th>
+<th scope="col" class="org-right">週期 T (s)</th>
+<th scope="col" class="org-right">波高 H (m)</th>
+<th scope="col" class="org-right">波長 L (m)</th>
+<th scope="col" class="org-right">波尖銳度 H/L</th>
+<th scope="col" class="org-right">相對水深 h/L</th>
 </tr>
 </thead>
 
@@ -149,12 +149,12 @@
 -   淺水波: $h/L < 1/20$
 
 
-<a id="org66a960d"></a>
+<a id="org2c66b3f"></a>
 
 # 計算條件設定
 
 
-<a id="orgff55d8d"></a>
+<a id="org89365e9"></a>
 
 ## 第一組
 
@@ -394,12 +394,12 @@
 </table>
 
 
-<a id="org0f7c225"></a>
+<a id="org276dc33"></a>
 
 # 參數意義與物理說明
 
 
-<a id="orgd7ec20f"></a>
+<a id="org421edaa"></a>
 
 ## 波浪週期 T
 
@@ -409,7 +409,7 @@
 -   長週期波 ($T > 1.6~\mathrm{s}$): 波浪能量集中，容易引發浮體共振。
 
 
-<a id="org62c0e56"></a>
+<a id="org88c5470"></a>
 
 ## 波高 H
 
@@ -419,7 +419,7 @@
 -   大波高：可能產生非線性效應，例如阻尼增加或漂移運動。
 
 
-<a id="org20eb9e8"></a>
+<a id="orgaa83c55"></a>
 
 ## 波長 L
 
@@ -433,7 +433,7 @@ $$
 波長越長，波浪越「平緩」，對浮體的影響主要為低頻大振幅運動。
 
 
-<a id="org8daca0a"></a>
+<a id="org5859b13"></a>
 
 ## 波陡度 H/L
 
@@ -445,7 +445,7 @@ $$
 -   $H/L > 0.05$ 則為「陡波」區域，數值模擬需特別注意穩定性。
 
 
-<a id="orgd665c87"></a>
+<a id="org748fdd3"></a>
 
 ## 水深 h
 
@@ -453,7 +453,7 @@ $$
 本研究之 $h = 0.6~\mathrm{m}$，屬於中等深度（intermediate depth），適合觀察深水與淺水效應交替之情況。
 
 
-<a id="org262ba2a"></a>
+<a id="org15f4c67"></a>
 
 # 實驗步驟建議
 
@@ -465,7 +465,7 @@ $$
 6.  彙整結果，分析波浪頻率與振幅對浮體動態特性的影響。
 
 
-<a id="org5254c66"></a>
+<a id="orgf972ea9"></a>
 
 # 分析與討論方向
 
@@ -475,7 +475,7 @@ $$
 -   CFD 模擬與理論模型的比較（例如 Morison 方程或線性勢流理論）。
 
 
-<a id="orgaf472a6"></a>
+<a id="org379f079"></a>
 
 # 學習重點
 
@@ -486,7 +486,7 @@ $$
 -   建立對海洋結構物動力行為的直觀理解。
 
 
-<a id="orgadfd33a"></a>
+<a id="org06689d3"></a>
 
 # 延伸方向
 
@@ -498,12 +498,12 @@ $$
 4.  嘗試使用不同繫泊模型（MoorDyn vs MAP++）比較。
 
 
-<a id="orgd8775fd"></a>
+<a id="orgde59bd1"></a>
 
 # Overset 計算執行
 
 
-<a id="org5484d85"></a>
+<a id="org89cc3d9"></a>
 
 ## 計算指令
 
@@ -526,38 +526,38 @@ $$
     #------------------------------------------------------------------------------
 
 
-<a id="org357b85a"></a>
+<a id="org9d6a0f2"></a>
 
 ## 平行計算設定
 
 以 `tutorials/overset_parallel/` 為例：
 
 
-<a id="org397d643"></a>
+<a id="orgd0b43de"></a>
 
 ## 計算分割數
 
 設定為 4 區，可於 `background/system/decomposeParDict` 中設定。
 
 
-<a id="orgbe71c8b"></a>
+<a id="org10ac3fd"></a>
 
 # Overset 網格計算與前後處理
 
 
-<a id="orgf9769ea"></a>
+<a id="orgfadf935"></a>
 
 ## ParaView 繪圖
 
 
-<a id="orgf30b56e"></a>
+<a id="org1ee63f4"></a>
 
 ### 直接開啟 `state` 檔
 
 在 `background` 資料夾中的 `FV.pvsm` 檔，為 ParaView 之 State 檔案，可以在 OpenFOAM 中使用 `load state` 選項開啟，即可得到已經設定好的繪圖頁面。
 
 
-<a id="orgfffb719"></a>
+<a id="org8d2619e"></a>
 
 ### 波浪流場與物體繪製流程
 
@@ -579,7 +579,7 @@ $$
     4.  僅開啟 `Threshold2` 與 `Threshold3`, 並在 `Orientation Axes` 中點選 `Camera Paralle Projection`, 可出現浮體被挖空之波浪流場。
 
 
-<a id="org021ee02"></a>
+<a id="orgbaeeece"></a>
 
 ### 繪製繫纜線
 
@@ -590,7 +590,7 @@ $$
 2.  在 `Pipeline Browser` 中點選 `mdv2_pt.vtk.pvd`, 使用 `Transforming` 將纜線平移到與浮體一樣的位置。
 
 
-<a id="orgf42b859"></a>
+<a id="org116baed"></a>
 
 ## 前、後處理之 Python 程式碼
 
