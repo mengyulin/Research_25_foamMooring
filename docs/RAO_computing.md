@@ -10,11 +10,11 @@ OpenFOAM 的六自由度求解器 (如 `overInterDyMFoam`, `sixDoFRigidBodyMotio
 這 9 個數值組成 3×3 旋轉矩陣：
 
 $$
-R = \left[\begin{array}{ccc}
+R = \begin{bmatrix}
 R_{11} & R_{12} & R_{13} \\
 R_{21} & R_{22} & R_{23} \\
 R_{31} & R_{32} & R_{33}
-\end{array}\right]
+\end{bmatrix}
 $$
 
 在輸出中順序為 row-major：
@@ -26,13 +26,13 @@ $$(xx, xy, xz,  yx, yy, yz,  zx, zy, zz)$$
 
 對應矩陣：
 
-\begin{equation*}
+$$
 R = \begin{bmatrix}
 1 & 0 & -5.2\times10^{-13} \\
 0 & 1 & 0 \\
 5.2\times10^{-13} & 0 & 1
 \end{bmatrix}
-\end{equation*}
+$$
 
 Pitch angle (俯仰角) 可依 ZYX (yaw-pitch-roll) 旋轉順序求得：
 
@@ -75,6 +75,7 @@ y(t) \approx c + a\cos(2\pi f t) + b\sin(2\pi f t)
 $$
 
 求得：
+
 $$
 R = \sqrt{a^2 + b^2}, \quad \phi = \tan^{-1}\!\left(\frac{b}{a}\right)
 $$
@@ -87,9 +88,11 @@ Python 範例：
 # RAO（Response Amplitude Operator）的計算
 
 定義：
+
 $$
 \mathrm{RAO}(\omega) = \frac{X(\omega)}{a}
 $$
+
 其中：
 
 -   $ X(\omega) $：浮體運動的複數振幅 (由擬合得 $R$ 與 $\phi$)
