@@ -86,7 +86,7 @@ $$
 Pitch angle（俯仰角） 可依 ZYX (yaw-pitch-roll) 旋轉順序求得：
 
 $$
-\theta_{\rm pitch} = \operatorname{atan2}(-R_{31}, \sqrt{R_{11}^2 + R_{21}^2})
+\theta_{\rm pitch} = \mathrm{atan2}(-R_{31}, \sqrt{R_{11}^2 + R_{21}^2})
 $$
 
 這個式子比傳統的 ~arccos~ 方法更穩定，能保留正負號並避免角度跳變。
