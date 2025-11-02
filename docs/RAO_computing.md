@@ -10,13 +10,11 @@ OpenFOAM 的六自由度求解器 (如 `overInterDyMFoam`, `sixDoFRigidBodyMotio
 這 9 個數值組成 3×3 旋轉矩陣：
 
 $$
-R = \left[
-\begin{array}{ccc}
+R = \left[\begin{array}{ccc}
 R_{11} & R_{12} & R_{13} \\
 R_{21} & R_{22} & R_{23} \\
 R_{31} & R_{32} & R_{33}
-\end{array}
-\right]
+\end{array}\right]
 $$
 
 在輸出中順序為 row-major：
@@ -29,11 +27,10 @@ $$(xx, xy, xz,  yx, yy, yz,  zx, zy, zz)$$
 對應矩陣：
 
 $$
-R =
-\begin{bmatrix}
-1 & 0 & -5.2\!\times\!10^{-13} \\
+R = \begin{bmatrix}
+1 & 0 & -5.2\times10^{-13} \\
 0 & 1 & 0 \\
-5.2\!\times\!10^{-13} & 0 & 1
+5.2\times10^{-13} & 0 & 1
 \end{bmatrix}
 $$
 
