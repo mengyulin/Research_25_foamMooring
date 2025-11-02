@@ -77,7 +77,7 @@ $$
 求得：
 
 $$
-R = \sqrt{a^2 + b^2}, \quad \phi = \tan^{-1}\!\left(\frac{b}{a}\right)
+R = \sqrt{a^2 + b^2}, \quad \phi = \tan^{-1}\left(\frac{b}{a}\right)
 $$
 
 Python 範例：
@@ -161,7 +161,7 @@ $$
 -   比較擬合主頻與理論頻率：
     
     $$
-      \Delta f = f_{\rm meas} - \frac{1}{T}
+      \Delta f = f_{\mathrm{meas}} - \frac{1}{T}
       $$
     
     若 $|\Delta f| < 1/T_{win}$，則屬於解析度內的誤差。
@@ -232,7 +232,7 @@ $$
 由上式可得：
 
 $$
-\theta = \operatorname{atan2}(-R_{31}, \sqrt{R_{11}^2 + R_{21}^2})
+\theta = \mathrm{atan2}(-R_{31}, \sqrt{R_{11}^2 + R_{21}^2})
 $$
 
 此式的特點是：
@@ -293,7 +293,7 @@ $$
 則：
 
 $$
-\theta = \operatorname{atan2}(-5.2\times10^{-13}, 1) \approx -5.2\times10^{-13}\ \text{rad} \approx 0.0°,
+\theta = \mathrm{atan2}(-5.2\times10^{-13}, 1) \approx -5.2\times10^{-13}\ \text{rad} \approx 0.0°,
 $$
 
 表示浮體幾乎水平。
