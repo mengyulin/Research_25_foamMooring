@@ -95,8 +95,8 @@ $$
 
 其中：
 
--   $ X(\omega) $：浮體運動的複數振幅 (由擬合得 $R$ 與 $\phi$)
--   $ a = H/2 $：入射波第一階振幅
+-   $X(\omega)$: 浮體運動的複數振幅 (由擬合得 $R$ 與 $\phi$)
+-   $a = H/2$: 入射波第一階振幅
 -   單位：
     -   Surge, Heave：m/m
     -   Pitch：rad/m
@@ -159,9 +159,11 @@ $$
 # RAO 檢核與結果輸出
 
 -   比較擬合主頻與理論頻率：
+    
     $$
       \Delta f = f_{\rm meas} - \frac{1}{T}
       $$
+    
     若 $|\Delta f| < 1/T_{win}$，則屬於解析度內的誤差。
 
 -   匯出結果範例：
@@ -171,7 +173,7 @@ $$
           Heave : |RAO| = 0.94 m/m,  ∠RAO = 2.7 deg
           Pitch : |RAO| = 0.015 rad/m, ∠RAO = -1.2 deg
 
-結果可輸出至 CSV 以供繪製 RAO-$\omega$ 曲線。
+結果可輸出至 CSV 以供繪製 RAO - $\omega$ 曲線。
 
 
 # 附錄：Pitch angle 的計算法補充說明
@@ -179,17 +181,16 @@ $$
 
 ## 方向餘弦矩陣（Direction Cosine Matrix, DCM）
 
-OpenFOAM 在 6-DoF 模擬中使用三維旋轉矩陣 $ R $ 來描述剛體姿態，
+OpenFOAM 在 6-DoF 模擬中使用三維旋轉矩陣 $R$ 來描述剛體姿態，
 其輸出格式為：
 
-\begin{equation*}
-R =
-\begin{bmatrix}
+$$
+R = \begin{bmatrix}
 R_{11} & R_{12} & R_{13} \\
 R_{21} & R_{22} & R_{23} \\
 R_{31} & R_{32} & R_{33}
 \end{bmatrix}
-\end{equation*}
+$$
 
 輸出順序為 row-major，即 `(xx xy xz  yx yy yz  zx zy zz)` 。
 
@@ -209,16 +210,16 @@ $$
 
 展開後：
 
-\begin{equation*}
-R =
-\begin{bmatrix}
+$$
+R = \begin{bmatrix}
 c_\psi c_\theta & c_\psi s_\theta s_\phi - s_\psi c_\phi & c_\psi s_\theta c_\phi + s_\psi s_\phi \\
 s_\psi c_\theta & s_\psi s_\theta s_\phi + c_\psi c_\phi & s_\psi s_\theta c_\phi - c_\psi s_\phi \\
 -s_\theta       & c_\theta s_\phi                         & c_\theta c_\phi
 \end{bmatrix}
-\end{equation*}
+$$
 
 因此：
+
 $$
 R_{31} = -\sin\theta, \quad
 R_{11} = \cos\psi \cos\theta, \quad
@@ -229,6 +230,7 @@ $$
 ## 由旋轉矩陣反推 pitch angle
 
 由上式可得：
+
 $$
 \theta = \operatorname{atan2}(-R_{31}, \sqrt{R_{11}^2 + R_{21}^2})
 $$
@@ -243,13 +245,17 @@ $$
 ## 小角度驗證
 
 若 pitch 很小：
+
 $$
 R_{31} \approx -\sin\theta \approx -\theta
 $$
+
 因此可近似：
+
 $$
 \theta \approx -R_{31}
 $$
+
 這在波浪激勵的小幅振動情況下常用作簡化驗證。
 
 
@@ -279,12 +285,16 @@ $$
     Orientation: (1 0 -5.2e-13  0 1 0  5.2e-13 0 1)
 
 對應矩陣：
+
 $$
 R_{31} = 5.2\times10^{-13}, \quad R_{11}=1, \quad R_{21}=0
 $$
+
 則：
+
 $$
 \theta = \operatorname{atan2}(-5.2\times10^{-13}, 1) \approx -5.2\times10^{-13}\ \text{rad} \approx 0.0°,
 $$
+
 表示浮體幾乎水平。
 
