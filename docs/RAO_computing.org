@@ -34,7 +34,7 @@
 #+LaTeX_HEADER: \renewcommand{\refname}{\large 參考文獻}
 
 # Disable table of contents
-#+OPTIONS: toc:nil
+# OPTIONS: toc:nil
 
 # Disable section numbering
 # #+OPTIONS: num:nil
@@ -169,7 +169,7 @@ print(f"|RAO_heave| = {rao_heave_mag:.3f} m/m,  Phase = {rao_heave_phase:.2f} de
 * RAO 檢核與結果輸出
 
 - 比較擬合主頻與理論頻率: \(\Delta f = f_{\mathrm{meas}} - \frac{1}{T}\)
-
+  
   若 \(|\Delta f| < 1/T_{win}\)，則屬於解析度內的誤差。
 
 - 匯出結果範例：

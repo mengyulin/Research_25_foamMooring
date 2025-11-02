@@ -1,13 +1,6 @@
 
-# Table of Contents
 
-1.  [文件列表](#org8428fef)
+# 補充說明文件
 
-
-
-<a id="org8428fef"></a>
-
-# 文件列表
-
--   <./RAO_computing.md>: 由 OpenFOAM 輸出計算浮體運動 RAO 之方法說明。
+-   [RAO 計算方法說明](./RAO_computing.md)
 

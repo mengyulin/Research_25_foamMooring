@@ -1,5 +1,6 @@
 #+title: 補充說明文件
+#+OPTIONS: toc:nil
 
-* 文件列表
+* 補充說明文件
 
-- [[./RAO_computing.md]]: 由 OpenFOAM 輸出計算浮體運動 RAO 之方法說明。
+- [[./RAO_computing.org][RAO 計算方法說明]]

@@ -1,4 +1,22 @@
 
+# &#30446;&#37636;
+
+1.  [6-DoF Orientation 的輸出格式與 Pitch 角計算](#orgffcaee4)
+2.  [利用 FFT 與最小平方法擬合求取主頻與振幅](#orga638e7c)
+3.  [RAO（Response Amplitude Operator）的計算](#org76416bc)
+4.  [FFT 與擬合方法之比較](#orgd4bcdd0)
+5.  [RAO 檢核與結果輸出](#org25fb5b6)
+6.  [附錄：Pitch angle 的計算法補充說明](#orgd728e06)
+    1.  [方向餘弦矩陣（Direction Cosine Matrix, DCM）](#org77298b6)
+    2.  [ZYX 旋轉順序 (Yaw&#x2013;Pitch&#x2013;Roll)](#orgd321605)
+    3.  [由旋轉矩陣反推 pitch angle](#orgd211ce6)
+    4.  [小角度驗證](#org53b7829)
+    5.  [Python 實作範例](#orgb3b2038)
+    6.  [實際案例說明](#org2667781)
+
+
+
+<a id="orgffcaee4"></a>
 
 # 6-DoF Orientation 的輸出格式與 Pitch 角計算
 
@@ -50,6 +68,8 @@ $$
     pitch_deg = np.degrees(pitch_rad)
 
 
+<a id="orga638e7c"></a>
+
 # 利用 FFT 與最小平方法擬合求取主頻與振幅
 
 ****目的:**** 在規律波（Stokes II）作用下，計算浮體各自由度（Surge、Heave、Pitch）的週期性響應，並進而求出 RAO。
@@ -85,6 +105,8 @@ Python 範例：
     yhat, idx_ss, R, phi = fit_main_sinusoid(time, heave, f_theory, use_steady=True)
 
 
+<a id="org76416bc"></a>
+
 # RAO（Response Amplitude Operator）的計算
 
 定義：
@@ -113,6 +135,8 @@ $$
     rao_heave_phase = np.degrees(phi_heave)
     print(f"|RAO_heave| = {rao_heave_mag:.3f} m/m,  Phase = {rao_heave_phase:.2f} deg")
 
+
+<a id="orgd4bcdd0"></a>
 
 # FFT 與擬合方法之比較
 
@@ -156,6 +180,8 @@ $$
 </table>
 
 
+<a id="org25fb5b6"></a>
+
 # RAO 檢核與結果輸出
 
 -   比較擬合主頻與理論頻率: $\Delta f = f_{\mathrm{meas}} - \frac{1}{T}$
@@ -172,8 +198,12 @@ $$
 結果可輸出至 CSV 以供繪製 RAO - $\omega$ 曲線。
 
 
+<a id="orgd728e06"></a>
+
 # 附錄：Pitch angle 的計算法補充說明
 
+
+<a id="org77298b6"></a>
 
 ## 方向餘弦矩陣（Direction Cosine Matrix, DCM）
 
@@ -193,6 +223,8 @@ $$
 在物理意義上，矩陣的每一欄代表「物體座標軸在全域座標下的方向餘弦」，
 因此 $R_{31}$ 表示「全域 z 軸在物體 x 軸上的投影分量」。
 
+
+<a id="orgd321605"></a>
 
 ## ZYX 旋轉順序 (Yaw&#x2013;Pitch&#x2013;Roll)
 
@@ -223,6 +255,8 @@ R_{21} = \sin\psi \cos\theta
 $$
 
 
+<a id="orgd211ce6"></a>
+
 ## 由旋轉矩陣反推 pitch angle
 
 由上式可得：
@@ -237,6 +271,8 @@ $$
 -   可避免因 `acos` 限制在 $[0, \pi]$ 區間而造成跳變。
 -   在數值模擬中，即使 pitch 振幅僅數度，仍能保持連續性。
 
+
+<a id="org53b7829"></a>
 
 ## 小角度驗證
 
@@ -254,6 +290,8 @@ $$
 
 這在波浪激勵的小幅振動情況下常用作簡化驗證。
 
+
+<a id="orgb3b2038"></a>
 
 ## Python 實作範例
 
@@ -273,6 +311,8 @@ $$
     pitch_rad = np.arctan2(-R31, np.sqrt(R11**2 + R21**2))
     pitch_deg = np.degrees(pitch_rad)
 
+
+<a id="org2667781"></a>
 
 ## 實際案例說明
 
