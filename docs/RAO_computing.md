@@ -11,13 +11,11 @@ OpenFOAM 的六自由度求解器 (如 `overInterDyMFoam`, `sixDoFRigidBodyMotio
 
 $$
 R = \left[
-
 \begin{array}{ccc}
 R_{11} & R_{12} & R_{13} \\
 R_{21} & R_{22} & R_{23} \\
 R_{31} & R_{32} & R_{33}
 \end{array}
-
 \right]
 $$
 
@@ -32,13 +30,11 @@ $$(xx, xy, xz,  yx, yy, yz,  zx, zy, zz)$$
 
 $$
 R =
-
 \begin{bmatrix}
 1 & 0 & -5.2\!\times\!10^{-13} \\
 0 & 1 & 0 \\
 5.2\!\times\!10^{-13} & 0 & 1
 \end{bmatrix}
-
 $$
 
 Pitch angle (俯仰角) 可依 ZYX (yaw-pitch-roll) 旋轉順序求得：
