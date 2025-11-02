@@ -72,13 +72,13 @@ Orientation: (1 0 -5.2e-13  0 1 0  5.2e-13 0 1)
 #+end_example
 對應矩陣：
 
-$$
+\begin{equation*}
 R = \begin{bmatrix}
 1 & 0 & -5.2\times10^{-13} \\
 0 & 1 & 0 \\
 5.2\times10^{-13} & 0 & 1
 \end{bmatrix}
-$$
+\end{equation*}
 
 Pitch angle (俯仰角) 可依 ZYX (yaw-pitch-roll) 旋轉順序求得：
 
@@ -98,11 +98,11 @@ pitch_deg = np.degrees(pitch_rad)
 
 * 利用 FFT 與最小平方法擬合求取主頻與振幅
 
-**目的：** 在規律波（Stokes II）作用下，計算浮體各自由度（Surge、Heave、Pitch）的週期性響應，並進而求出 RAO。
+**目的:** 在規律波（Stokes II）作用下，計算浮體各自由度（Surge、Heave、Pitch）的週期性響應，並進而求出 RAO。
 
-**步驟概要：**
+**步驟概要:**
 1. 從模擬輸出讀取時間序列。
-2. 使用 FFT 檢查頻譜，確認主頻是否接近理論頻率 \( f = 1/T \)。
+2. 使用 FFT 檢查頻譜，確認主頻是否接近理論頻率 $f = 1/T$ 。
 3. 使用理論頻率進行單頻最小平方擬合，以求得穩態振幅與相位。
 
 **FFT 計算範例：**
@@ -115,9 +115,11 @@ plt.title("Heave Spectrum")
 #+end_src
 
 **最小平方擬合方法：**
+
 \[
 y(t) \approx c + a\cos(2\pi f t) + b\sin(2\pi f t)
 \]
+
 求得：
 \[
 R = \sqrt{a^2 + b^2}, \quad \phi = \tan^{-1}\!\left(\frac{b}{a}\right)
