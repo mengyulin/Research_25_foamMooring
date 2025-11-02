@@ -255,6 +255,19 @@ cd "${0%/*}" || exit                                # Run from this directory
 
 
 ** ParaView 動畫輸出
+*** 安裝 ffmpeg
+若系統尚未安裝 ffmpeg，可於終端機執行以下指令安裝：
+#+begin_src bash
+sudo apt update
+sudo apt install ffmpeg -y
+#+end_src
+
+安裝完成後可輸入以下命令檢查版本：
+#+begin_src bash
+ffmpeg -version
+#+end_src
+
+若顯示版本號 (例如 ~ffmpeg version 6.x~)，即表示安裝成功。
 
 *** 輸出動畫影格
 1. 點選 File → Save Animation。
