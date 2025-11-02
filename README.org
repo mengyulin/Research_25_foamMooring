@@ -92,6 +92,8 @@
 
 * 計算條件設定
 
+** 第一組
+
 靜水深 $h = 0.5~\mathrm{m}$, 浮體半寬 $b = 0.1~\mathrm{m}$。
 以波數 (wave number) $k = 2\pi/L$ 之倒數為長度之無因次尺度，其中 $L$ 為波長。改變波浪週期 $T$ 可得到不同之 $k$ 值。
 
@@ -182,6 +184,7 @@ $$
 2. 研究多浮體間的水動力干涉；
 3. 考慮風浪同時作用（加入定常風載）；
 4. 嘗試使用不同繫泊模型（MoorDyn vs MAP++）比較。
+
 * Overset 計算執行
 
 ** 計算指令
@@ -215,7 +218,7 @@ cd "${0%/*}" || exit                                # Run from this directory
 
 設定為 4 區，可於 ~background/system/decomposeParDict~ 中設定。
 
-* Overset 網格計算與後處理
+* Overset 網格計算與前後處理
 ** ParaView 繪圖
 *** 直接開啟 ~state~ 檔
 
@@ -250,6 +253,19 @@ cd "${0%/*}" || exit                                # Run from this directory
    #+end_src
 
 2. 在 ~Pipeline Browser~ 中點選 ~mdv2_pt.vtk.pvd~, 使用 ~Transforming~ 將纜線平移到與浮體一樣的位置。
-** 波高、位移量與纜繩張力繪圖
+
+** 前、後處理之 Python 程式碼
+
+前、後處理之 Python 程式碼 (Jupyter Notebook) [[./tools/prePostProcessing.ipynb][prePostProcessing.ipynb]] 可進行以下計算與繪圖：
+
+1. 輸入波浪與水槽參數，計算建議之 ~endTime~ 值。
+2. 繪出水面高程隨時間變化圖，其中無因次參數為入射波振幅及波浪週期。
+3. 繪出浮體之 3DoF 無因次振幅時間變化圖。
+4. 利用快速傅立葉轉換 (FFT) 與最小平方法擬合計算 RAO。
+5. 繪出繫纜錨定張力隨時間變化圖。
+
+使用時，將 [[./tools/prePostProcessing.ipynb][prePostProcessing.ipynb]] 複製到計算例之 ~background~ 資料夾，使用 Jupyter Notebook (或 VS Code) 開啟並逐步執行。此程式集可將 ~log.overInterDyMFoam~ 複製到 ~Plots~ 資料夾，以進行 3DoF 位移量之擷取。所繪圖形均存放於 ~Plots~ 資料夾。
+
+---
 
 繪圖可於資料夾 ~Plots~ 中進行。見 [[./tutorials/overset_parallel/background/Plots/postProcessing.ipynb]] 的說明與程式碼。
