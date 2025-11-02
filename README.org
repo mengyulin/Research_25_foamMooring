@@ -33,7 +33,7 @@
 #+LaTeX_HEADER: \renewcommand{\refname}{\large 參考文獻}
 
 # Disable table of contents
-#+OPTIONS: toc:nil
+# OPTIONS: toc:nil
 
 # Disable section numbering
 # #+OPTIONS: num:nil
