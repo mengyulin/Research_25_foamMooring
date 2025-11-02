@@ -73,18 +73,22 @@ $$(xx, xy, xz,  yx, yy, yz,  zx, zy, zz)$$
 Orientation: (1 0 -5.2e-13  0 1 0  5.2e-13 0 1)
 #+end_example
 對應矩陣：
-\begin{equation*}
+
+$$
 R =
 \begin{bmatrix}
 1 & 0 & -5.2\!\times\!10^{-13} \\
 0 & 1 & 0 \\
 5.2\!\times\!10^{-13} & 0 & 1
 \end{bmatrix}
-\end{equation*}
-**Pitch angle（俯仰角）** 可依 *ZYX (yaw-pitch-roll)* 旋轉順序求得：
-\[
+$$
+
+Pitch angle（俯仰角） 可依 ZYX (yaw-pitch-roll) 旋轉順序求得：
+
+$$
 \theta_{\rm pitch} = \operatorname{atan2}(-R_{31}, \sqrt{R_{11}^2 + R_{21}^2})
-\]
+$$
+
 這個式子比傳統的 ~arccos~ 方法更穩定，能保留正負號並避免角度跳變。
 
 程式碼為：
