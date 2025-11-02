@@ -158,11 +158,7 @@ $$
 
 # RAO 檢核與結果輸出
 
--   比較擬合主頻與理論頻率：
-    
-    $$
-      \Delta f = f_{\mathrm{meas}} - \frac{1}{T}
-      $$
+-   比較擬合主頻與理論頻率: $\Delta f = f_{\mathrm{meas}} - \frac{1}{T}$
     
     若 $|\Delta f| < 1/T_{win}$，則屬於解析度內的誤差。
 
