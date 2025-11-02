@@ -217,7 +217,7 @@ cd "${0%/*}" || exit                                # Run from this directory
 
 設定為 4 區，可於 ~background/system/decomposeParDict~ 中設定。
 
-* Overset 網格計算與前後處理
+* ParaView 繪圖與前後處理
 ** ParaView 繪圖
 *** 直接開啟 ~state~ 檔
 
@@ -253,6 +253,55 @@ cd "${0%/*}" || exit                                # Run from this directory
 
 2. 在 ~Pipeline Browser~ 中點選 ~mdv2_pt.vtk.pvd~, 使用 ~Transforming~ 將纜線平移到與浮體一樣的位置。
 
+
+** ParaView 動畫輸出
+
+*** 輸出動畫影格
+1. 點選 File → Save Animation。
+2. 在 *File type* 中選擇 **PNG files** (或 JPEG)。
+3. 設定輸出路徑，例如輸出至新增目錄 ~animation~ 中:
+   #+begin_example
+   /home/user/foam_case/animation/frame_####.png
+   #+end_example
+   ParaView 會自動輸出連續編號的影格，如 ~frame_0000.png~, ~frame_0001.png~, ...
+4. 可調整：
+   - Frame rate (FPS)：建議 10–30 fps
+   - Resolution：如 1920×1080
+   - Frame window：選擇輸出時間範圍
+5. 按下 **OK** 開始輸出。
+
+*** 使用 ffmpeg 合成影片
+在終端機中進入影格資料夾：
+#+begin_src bash
+cd /home/user/foam_case/animation
+#+end_src
+
+執行以下指令產生影片：
+#+begin_src bash
+ffmpeg -framerate 20 -i frame_%04d.png -c:v libx264 -pix_fmt yuv420p animation.mp4
+#+end_src
+
+參數說明：
+- ~-framerate 20~: 播放速率 20 幀/秒。
+- ~-i frame_%04d.png~: 輸入影格檔案格式。
+- ~-c:v libx264~: 使用 H.264 影片編碼。
+- ~-pix_fmt yuv420p~: 確保通用播放器皆可播放。
+
+*** 可選：影片壓縮與縮放
+若輸出影片過大，可加入壓縮參數：
+#+begin_src bash
+ffmpeg -framerate 15 -i frame_%04d.png -vf "scale=1280:-1" -c:v libx264 -crf 23 animation_compressed.mp4
+#+end_src
+
+*** 提示
+- 若影格輸出過慢，可降低解析度或只輸出關鍵時間步。
+- 可於 ParaView 的 View → Memory Inspector 檢查資源使用狀況。
+- 若需循環播放影片，可在 ffmpeg 加上：
+  #+begin_src bash
+  ffmpeg -stream_loop -1 -i animation.mp4 output_loop.mp4
+  #+end_src
+
+
 ** 前、後處理之 Python 程式碼
 
 前、後處理之 Python 程式碼 (Jupyter Notebook) [[./tools/prePostProcessing.ipynb][prePostProcessing.ipynb]] 可進行以下計算與繪圖：
@@ -264,4 +313,3 @@ cd "${0%/*}" || exit                                # Run from this directory
 5. 繪出繫纜錨定張力隨時間變化圖。
 
 使用時，將 [[./tools/prePostProcessing.ipynb][prePostProcessing.ipynb]] 複製到計算例之 ~background~ 資料夾，使用 Jupyter Notebook (或 VS Code) 開啟並逐步執行。此程式集可將 ~log.overInterDyMFoam~ 複製到 ~Plots~ 資料夾，以進行 3DoF 位移量之擷取。所繪圖形均存放於 ~Plots~ 資料夾。
-
