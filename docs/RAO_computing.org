@@ -83,7 +83,7 @@ R =
 \end{bmatrix}
 $$
 
-Pitch angle（俯仰角） 可依 ZYX (yaw-pitch-roll) 旋轉順序求得：
+Pitch angle (俯仰角) 可依 ZYX (yaw-pitch-roll) 旋轉順序求得：
 
 $$
 \theta_{\mathrm{pitch}} = \mathrm{atan2}(-R_{31}, \sqrt{R_{11}^2 + R_{21}^2})
