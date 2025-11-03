@@ -64,16 +64,13 @@
 #+NAME: fig:Chen_Hall_2022
 [[./docs/img/Chen_Hall_2022.png]]
 
-
-如圖
-
-
+模擬區域為上圖 (Chen and Hall, 2022) 之二維版本，亦即 y 方向設為均勻。
 
 ** 浮體條件
 
-- 浮體寬度 (x 方向) $2b = 0.2~\mathrm{m}$
-- 浮體跨度 (y 方向) $0.2~\mathrm{m}$
-- 浮體高度 (z 方向) $0.132~\mathrm{m}$
+- 浮體之 x 方向寬度 $2b = 0.2~\mathrm{m}$
+- 浮體之 y 方向跨度 $0.2~\mathrm{m}$
+- 浮體之 z 方向高度 $0.132~\mathrm{m}$
 - 初始吃水深度 $d = 0.0786~\mathrm{m}$
 - 浮體質量 $3.16~\mathrm{kg}$
 - 質量中心 $(x, y, z) = (0, 0, -0.0126)~\mathrm{m}$
