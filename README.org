@@ -155,7 +155,6 @@ $$
 水深影響波的傳播速度與波壓分佈。若 $kh > \pi$ 為深水波；若 $kh < \pi/10$ 為淺水波。
 本研究之 $h = 0.6~\mathrm{m}$，屬於中等深度（intermediate depth），適合觀察深水與淺水效應交替之情況。
 
-
 * RAO 的意義與計算
 ** RAO 的基本定義
 
@@ -184,7 +183,7 @@ RAO 定義為：
 常以其幅值與相位分別表示：
 
 \[
-|\mathrm{RAO}| = \frac{\hat{\xi}}{a}, \quad \angle\mathrm{RAO} = \phi
+\left|\mathrm{RAO}\right| = \frac{\hat{\xi}}{a}, \quad \angle\mathrm{RAO} = \phi
 \]
 
 ** 三個自由度的 RAO 定義
