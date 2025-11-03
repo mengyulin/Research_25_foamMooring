@@ -116,6 +116,16 @@
 - 浮體寬度水深比 $b/h = 0.2$
 - 浮體吃水深與靜水深比 $d/h = 0.1572$
 
+其他參數為：
+#+begin_src
+Computed solid density rho_s = 595.455 kg/m³
+Geometric center z_c = -0.01260 m (measured from still water surface)
+Mass m = 7.41984 kg
+Ixx = 0.03551 kg·m²
+Iyy = 0.14853 kg·m²
+Izz = 0.16248 kg·m²
+#+end_src
+
 以波數 (wave number) $k = 2\pi/L$ 之倒數為長度之無因次尺度，其中 $L$ 為波長。改變波浪週期 $T$ 可得到不同之 $k$ 值。
 規劃相對之浮體寬為 $kb = 0.3 \sim 1.2$, 波浪尖銳度 $ka = 0.05, 0.1$, 其中 $a = H/2$ 為入射波振幅。
 計算例設定如下表：
