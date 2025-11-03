@@ -102,9 +102,10 @@
 - 淺水波: $h/L < 1/20$
 
 * 計算條件設定
-** 浮體幾何條件計算程式
+** 浮體幾何與波浪參數計算程式
 
-見資料夾 ~tools/~ 中的 [[./tools/floating_body.ipynb][floating_body.ipynb]]。
+- 浮體幾何條件：見資料夾 ~tools/~ 中的 [[./tools/floating_body.ipynb][floating body.ipynb]]。
+- 波浪條件：見資料夾 ~tools/~ 中的 [[./tools/DispersionEq.ipynb][DispersionEq.ipynb]]。
 
 ** 第一組 (基準案例)
 
