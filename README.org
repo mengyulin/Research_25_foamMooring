@@ -62,7 +62,7 @@
 #+ATTR_LATEX: :placement [!tb] :width 0.8\textwidth
 #+CAPTION: Chen and Hall (2022) 之模擬區域示意圖 (3D)。
 #+NAME: fig:Chen_Hall_2022
-[[./docs/img/Chen_Hall_2022.png][Chen_Hall_2022png]]
+[[./docs/img/Chen_Hall_2022.png]]
 
 
 如圖
