@@ -188,16 +188,17 @@ RAO 定義為：
 
 ** 三個自由度的 RAO 定義
 
-| 自由度 | 符號 | 單位 | RAO 定義式 |
+| 自由度 | 符號 |  RAO 定義式 |
 |---------+--------+--------+--------------------------------|
-| Surge   | \(x\) | m/m    | \( |\mathrm{RAO}_x| = \hat{x}/a \) |
-| Heave   | \(z\) | m/m    | \( |\mathrm{RAO}_z| = \hat{z}/a \) |
-| Pitch   | \(\theta\) | rad/m 或 deg/m | \( |\mathrm{RAO}_\theta| = (\theta_{\text{amp}} \times B/2)/a \) |
+| Surge   | $x$       |   $\left|\mathrm{RAO}_x \right| = \hat{x}/a$   |
+| Heave   | $z$       | $\left|\mathrm{RAO}_z \right| = \hat{z}/a$ |
+| Pitch   | $\theta$              | $\left|\mathrm{RAO}_\theta\right| = (\hat{\theta} \times B/2)/a$   |
 
 其中：
-- \(a\): 入射波振幅（= 波高 H / 2）
-- \(B/2\): 浮體半寬（半長度或半寬度，依自由度定義而定）
-- \(\theta_{\text{amp}}\): Pitch 角度振幅（rad）
+- $a$: 入射波振幅（= 波高 H / 2）
+- $B/2$: 浮體半寬
+- $\hat{x}, \hat{z}$: Surge 與 heave 振幅 (m)
+- $\hat{\theta}$: Pitch 角度振幅 (rad)
 
 註：Pitch RAO 的物理意義：將角度振幅乘以半寬，可換算為浮體兩端的升降位移振幅，再與入射波振幅相比。
 
