@@ -164,10 +164,10 @@ RAO（Response Amplitude Operator）為浮體在規律波作用下之線性響�
 若入射波為
 
 \[
-\eta(t) = a \cos(\omega t)
+\eta(t) = A_I \cos(\omega t)
 \]
 
-其中 \(a = H/2\) 為波振幅, \(\omega = 2\pi/T\) 為角頻率，
+其中 \(A_I = H/2\) 為波振幅, \(\omega = 2\pi/T\) 為角頻率，
 則浮體運動可表示為：
 
 \[
@@ -177,26 +177,25 @@ RAO（Response Amplitude Operator）為浮體在規律波作用下之線性響�
 RAO 定義為：
 
 \[
-\mathrm{RAO}(\omega) = \frac{\hat{\xi}}{a} e^{-i\phi}
+\mathrm{RAO}(\omega) = \frac{\hat{\xi}}{A_I} e^{-i\phi}
 \]
 
 常以其幅值與相位分別表示：
 
 \[
-\left|\mathrm{RAO}\right| = \frac{\hat{\xi}}{a}, \quad \angle\mathrm{RAO} = \phi
+\left|\mathrm{RAO}\right| = \frac{\hat{\xi}}{A_I}, \quad \angle\mathrm{RAO} = \phi
 \]
 
 ** 三個自由度的 RAO 定義
 
-| 自由度 | 符號 |  RAO 定義式 |
-|---------+--------+--------+--------------------------------|
-| Surge   | $x$       |   $\left|\mathrm{RAO}_x \right| = \hat{x}/a$   |
-| Heave   | $z$       | $\left|\mathrm{RAO}_z \right| = \hat{z}/a$ |
-| Pitch   | $\theta$              | $\left|\mathrm{RAO}_\theta\right| = (\hat{\theta} \times B/2)/a$   |
+定義為：
+- Surge (沿 $x$ 方向之水平運動): $\left|\mathrm{RAO}_x \right| = \hat{x}/A_I$
+- Heave (沿 $z$ 方向之垂直運動): $\left|\mathrm{RAO}_z \right| = \hat{z}/a$
+- Pitch (沿 $y$ 方向之角度轉動，順時針為正): $\left|\mathrm{RAO}_\theta\right| = (\hat{\theta} \times b)/A_I$
 
 其中：
 - $a$: 入射波振幅（= 波高 H / 2）
-- $B/2$: 浮體半寬
+- $b$: 浮體半寬
 - $\hat{x}, \hat{z}$: Surge 與 heave 振幅 (m)
 - $\hat{\theta}$: Pitch 角度振幅 (rad)
 
@@ -204,35 +203,36 @@ RAO 定義為：
 
 ** 實際計算步驟
 
-1. **輸入波參數**
-   已知波高 \(H\), 週期 \(T\), 求波振幅 \(a = H/2\), 頻率 \(f = 1/T\)。
+*** 輸入波參數
 
-2. **FFT 分析**
-   對浮體各自由度時間序列（surge, heave, pitch）進行 FFT，
-   確認主頻是否與理論頻率一致。
+已知波高 \(H\), 週期 \(T\), 求波振幅 \(a = H/2\), 頻率 \(f = 1/T\)。
 
-3. **最小平方法擬合**
-   在穩態時間段，使用理論頻率 \(f=1/T\) 擬合：
+*** FFT 分析
 
-   \[
-   \xi(t) = c + A\cos(2\pi f t) + B\sin(2\pi f t)
-   \]
+對浮體各自由度時間序列（surge, heave, pitch）進行 FFT, 確認主頻是否與理論頻率一致。
 
-   得：
+*** 最小平方法擬合
 
-   \[
-   \hat{\xi} = \sqrt{A^2 + B^2}, \quad \phi = \tan^{-1}\!\left(\frac{B}{A}\right)
-   \]
+在穩態時間段，使用理論頻率 \(f=1/T\) 擬合：
 
-4. **計算 RAO**
+\[
+\xi(t) = c + A\cos(2\pi f t) + B\sin(2\pi f t)
+\]
 
-   - Surge/Heave: $|\mathrm{RAO}| = \frac{\hat{\xi}}{a}$
+得：
 
-   - Pitch: $|\mathrm{RAO}_\theta| = \frac{\theta_{\text{amp}}(B/2)}{a}$
+\[
+\hat{\xi} = \sqrt{A^2 + B^2}, \quad \phi = \tan^{-1}\!\left(\frac{B}{A}\right)
+\]
+
+*** 計算 RAO
+
+- Surge/Heave: $|\mathrm{RAO}| = \frac{\hat{\xi}}{a}$
+- Pitch: $\left|\mathrm{RAO}_\theta\right| = \frac{\hat{\theta}b}{a}$
 
 ** 結果解讀
-- $|\mathrm{RAO}| > 1$: 浮體運動振幅大於入射波，可能有共振效應。
-- $|\mathrm{RAO}| < 1$: 浮體運動受阻尼抑制。
+- $\left|\mathrm{RAO}\right| > 1$: 浮體運動振幅大於入射波，可能有共振效應。
+- $\left|\mathrm{RAO}\right| < 1$: 浮體運動受阻尼抑制。
 - 相位角 $\phi$ 表示運動相對於波面的相位差：
   - $\phi = 0°$: 運動與波面同相。
   - $\phi = 90°$: 運動落後波面四分之一週期。
