@@ -190,11 +190,11 @@ RAO 定義為：
 
 定義為：
 - Surge (沿 $x$ 方向之水平運動): $\left|\mathrm{RAO}_x \right| = \hat{x}/A_I$
-- Heave (沿 $z$ 方向之垂直運動): $\left|\mathrm{RAO}_z \right| = \hat{z}/a$
+- Heave (沿 $z$ 方向之垂直運動): $\left|\mathrm{RAO}_z \right| = \hat{z}/A_I$
 - Pitch (沿 $y$ 方向之角度轉動，順時針為正): $\left|\mathrm{RAO}_\theta\right| = (\hat{\theta} \times b)/A_I$
 
 其中：
-- $a$: 入射波振幅（= 波高 H / 2）
+- $A_I$: 入射波振幅 (即波高的一半, $H/2$)
 - $b$: 浮體半寬
 - $\hat{x}, \hat{z}$: Surge 與 heave 振幅 (m)
 - $\hat{\theta}$: Pitch 角度振幅 (rad)
@@ -205,7 +205,7 @@ RAO 定義為：
 
 *** 輸入波參數
 
-已知波高 \(H\), 週期 \(T\), 求波振幅 \(a = H/2\), 頻率 \(f = 1/T\)。
+已知波高 \(H\), 週期 \(T\), 求波振幅 \(A_I = H/2\), 頻率 \(f = 1/T\)。
 
 *** FFT 分析
 
@@ -222,13 +222,13 @@ RAO 定義為：
 得：
 
 \[
-\hat{\xi} = \sqrt{A^2 + B^2}, \quad \phi = \tan^{-1}\!\left(\frac{B}{A}\right)
+\hat{\xi} = \sqrt{A^2 + B^2}, \quad \phi = \tan^{-1}\left(\frac{B}{A}\right)
 \]
 
 *** 計算 RAO
 
-- Surge/Heave: $|\mathrm{RAO}| = \frac{\hat{\xi}}{a}$
-- Pitch: $\left|\mathrm{RAO}_\theta\right| = \frac{\hat{\theta}b}{a}$
+- Surge/Heave: $|\mathrm{RAO}| = \hat{\xi}/A_I$
+- Pitch: $\left|\mathrm{RAO}_\theta\right| = \hat{\theta}b/A_{I}$
 
 ** 結果解讀
 - $\left|\mathrm{RAO}\right| > 1$: 浮體運動振幅大於入射波，可能有共振效應。
