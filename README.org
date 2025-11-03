@@ -53,14 +53,27 @@
 2. 對照不同繫泊剛度或幾何設定的參考；
 3. 後續延伸研究（例如多浮體干涉、風浪耦合等）的基礎資料。
 
-* 模擬條件概述
+* 基準模擬條件概述
 根據 Chen and Hall (2022) 的單一浮體案例，本研究採用相同的幾何、繫泊與水槽條件，改變波浪週期與波高兩個主要參數。
+
+** 模擬區域設定
+
+#+ATTR_HTML: alt: Alternative text title: Image Title :width 600
+#+ATTR_LATEX: :placement [!tb] :width 0.8\textwidth
+#+CAPTION: Chen and Hall (2022) 之模擬區域示意圖 (3D)。
+#+NAME: fig:Chen_Hall_2022
+[[./docs/img/Chen_Hall_2022.png][Chen_Hall_2022png]]
+
+
+如圖
+
+
 
 ** 浮體條件
 
-- 浮體長度 $2b = 0.2~\mathrm{m}$
-- 浮體寬度 $0.2~\mathrm{m}$
-- 浮體高度 $0.132~\mathrm{m}$
+- 浮體寬度 (x 方向) $2b = 0.2~\mathrm{m}$
+- 浮體跨度 (y 方向) $0.2~\mathrm{m}$
+- 浮體高度 (z 方向) $0.132~\mathrm{m}$
 - 初始吃水深度 $d = 0.0786~\mathrm{m}$
 - 浮體質量 $3.16~\mathrm{kg}$
 - 質量中心 $(x, y, z) = (0, 0, -0.0126)~\mathrm{m}$
@@ -93,7 +106,7 @@
 * 計算條件設定
 ** 第一組
 
-靜水深 $h = 0.5~\mathrm{m}$, 浮體半寬 $b = 0.1~\mathrm{m}$。
+依據 Chen and Hall (2022) 基礎模擬條件，設置靜水深 $h = 0.5~\mathrm{m}$, 浮體半長 $b = 0.1~\mathrm{m}$。
 以波數 (wave number) $k = 2\pi/L$ 之倒數為長度之無因次尺度，其中 $L$ 為波長。改變波浪週期 $T$ 可得到不同之 $k$ 值。
 
 規劃相對之浮體寬為 $kb = 0.3 \sim 1.2$, 波浪尖銳度 $ka = 0.05, 0.1$, 其中 $a = H/2$ 為入射波振幅。
