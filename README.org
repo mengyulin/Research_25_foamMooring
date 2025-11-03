@@ -227,7 +227,7 @@ RAO 定義為：
 
 *** 計算 RAO
 
-- Surge/Heave: $|\mathrm{RAO}| = \hat{\xi}/A_I$
+- Surge/Heave: $\left|\mathrm{RAO}\right| = \hat{\xi}/A_I$
 - Pitch: $\left|\mathrm{RAO}_\theta\right| = \hat{\theta} b / A_I$
 
 ** 結果解讀
