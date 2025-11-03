@@ -1,43 +1,44 @@
 
 # Table of Contents
 
-1.  [研究目的](#org7aaccfe)
-2.  [模擬條件概述](#orgf70c0bc)
-    1.  [浮體條件](#orgdef813f)
-    2.  [繫泊條件](#orgdadc622)
-    3.  [Chen and Hall (2022) 之波浪條件](#orga652f3e)
-3.  [計算條件設定](#org5f16c4e)
-    1.  [第一組](#orged44350)
-4.  [參數意義與物理說明](#orgf524648)
-    1.  [波浪週期 T](#orgb42cf9c)
-    2.  [波高 H](#org549bee3)
-    3.  [波長 L](#org08ec6e3)
-    4.  [波陡度 H/L](#org12abfad)
-    5.  [水深 h](#org6e70739)
-5.  [實驗步驟建議](#orga7904d2)
-6.  [分析與討論方向](#orga0d86a7)
-7.  [學習重點](#orgb00b87a)
-8.  [延伸方向](#orgf0f48e8)
-9.  [Overset 計算執行](#org36aaaa7)
-    1.  [計算指令](#orgee5875a)
-    2.  [平行計算設定](#orgfe9513b)
-    3.  [計算分割數](#org2f28d05)
-10. [ParaView 繪圖與前後處理](#org6192999)
-    1.  [ParaView 繪圖](#orgd808278)
-        1.  [直接開啟 `state` 檔](#org5af5e5e)
-        2.  [波浪流場與物體繪製流程](#orgb02d21f)
-        3.  [繪製繫纜線](#org214516d)
-    2.  [ParaView 動畫輸出](#org89ccf3c)
-        1.  [安裝 ffmpeg](#orgc506717)
-        2.  [OpenFOAM 輸出動畫影格](#org1cd6b3f)
-        3.  [使用 ffmpeg 合成影片](#orgfe045d5)
-        4.  [可選：影片壓縮與縮放](#org0a3804d)
-        5.  [提示](#org06fd911)
-    3.  [前、後處理之 Python 程式碼](#org040c3dd)
+1.  [研究目的](#org00d979f)
+2.  [模擬條件概述](#orgaaab181)
+    1.  [浮體條件](#orgde3e195)
+    2.  [繫泊條件](#org6ed4c11)
+    3.  [Chen and Hall (2022) 之波浪條件](#org9d5c4c5)
+3.  [計算條件設定](#org99ad2f5)
+    1.  [第一組](#org9a13d29)
+4.  [參數意義與物理說明](#org9f7f12f)
+    1.  [波浪週期 T](#org2f15bfd)
+    2.  [波高 H](#org3dce4dc)
+    3.  [波長 L](#org47133e3)
+    4.  [波陡度 H/L](#org43cc1ca)
+    5.  [水深 h](#org71d3fe6)
+5.  [實驗步驟建議](#org0d99ad3)
+6.  [分析與討論方向](#org7e89774)
+7.  [學習重點](#orgb37bee6)
+8.  [延伸方向](#org9f57335)
+9.  [Overset 計算執行](#orgc99672c)
+    1.  [計算指令](#org57321b9)
+    2.  [平行計算設定](#org0f055ea)
+    3.  [計算分割數](#org134b5ed)
+10. [ParaView 繪圖與前後處理](#orgd630f4c)
+    1.  [ParaView 繪圖](#org2df281e)
+        1.  [直接開啟 `state` 檔](#orgb119c84)
+        2.  [波浪流場與物體繪製流程](#orgf5a4a92)
+        3.  [繪製繫纜線](#org684688f)
+    2.  [ParaView 動畫輸出](#org861f583)
+        1.  [安裝 ffmpeg](#org8f55687)
+        2.  [OpenFOAM 輸出動畫影格](#orga099a94)
+        3.  [使用 ffmpeg 合成影片](#orgacec19a)
+        4.  [可選：影片壓縮與縮放](#orge2d5798)
+        5.  [提示](#org5ace994)
+    3.  [前、後處理之 Python 程式碼](#org8aa6eec)
+    4.  [附註： Jupyter Notebook 安裝方法](#org03e7444)
 
 
 
-<a id="org7aaccfe"></a>
+<a id="org00d979f"></a>
 
 # 研究目的
 
@@ -52,14 +53,14 @@
 3.  後續延伸研究（例如多浮體干涉、風浪耦合等）的基礎資料。
 
 
-<a id="orgf70c0bc"></a>
+<a id="orgaaab181"></a>
 
 # 模擬條件概述
 
 根據 Chen and Hall (2022) 的單一浮體案例，本研究採用相同的幾何、繫泊與水槽條件，改變波浪週期與波高兩個主要參數。
 
 
-<a id="orgdef813f"></a>
+<a id="orgde3e195"></a>
 
 ## 浮體條件
 
@@ -73,7 +74,7 @@
 -   靜止水深 $h = 0.5~\mathrm{m}$
 
 
-<a id="orgdadc622"></a>
+<a id="org6ed4c11"></a>
 
 ## 繫泊條件
 
@@ -85,7 +86,7 @@
 -   繫纜錨定處 (ahcnor, 與底床連接處) $(x, y, z) = (\pm 1.385, \pm 0.423, -0.5)~\mathrm{m}$
 
 
-<a id="orga652f3e"></a>
+<a id="org9d5c4c5"></a>
 
 ## Chen and Hall (2022) 之波浪條件
 
@@ -155,12 +156,12 @@
 -   淺水波: $h/L < 1/20$
 
 
-<a id="org5f16c4e"></a>
+<a id="org99ad2f5"></a>
 
 # 計算條件設定
 
 
-<a id="orged44350"></a>
+<a id="org9a13d29"></a>
 
 ## 第一組
 
@@ -400,12 +401,12 @@
 </table>
 
 
-<a id="orgf524648"></a>
+<a id="org9f7f12f"></a>
 
 # 參數意義與物理說明
 
 
-<a id="orgb42cf9c"></a>
+<a id="org2f15bfd"></a>
 
 ## 波浪週期 T
 
@@ -415,7 +416,7 @@
 -   長週期波 ($T > 1.6~\mathrm{s}$): 波浪能量集中，容易引發浮體共振。
 
 
-<a id="org549bee3"></a>
+<a id="org3dce4dc"></a>
 
 ## 波高 H
 
@@ -425,7 +426,7 @@
 -   大波高：可能產生非線性效應，例如阻尼增加或漂移運動。
 
 
-<a id="org08ec6e3"></a>
+<a id="org47133e3"></a>
 
 ## 波長 L
 
@@ -439,7 +440,7 @@ $$
 波長越長，波浪越「平緩」，對浮體的影響主要為低頻大振幅運動。
 
 
-<a id="org12abfad"></a>
+<a id="org43cc1ca"></a>
 
 ## 波陡度 H/L
 
@@ -451,7 +452,7 @@ $$
 -   $H/L > 0.05$ 則為「陡波」區域，數值模擬需特別注意穩定性。
 
 
-<a id="org6e70739"></a>
+<a id="org71d3fe6"></a>
 
 ## 水深 h
 
@@ -459,7 +460,7 @@ $$
 本研究之 $h = 0.6~\mathrm{m}$，屬於中等深度（intermediate depth），適合觀察深水與淺水效應交替之情況。
 
 
-<a id="orga7904d2"></a>
+<a id="org0d99ad3"></a>
 
 # 實驗步驟建議
 
@@ -471,7 +472,7 @@ $$
 6.  彙整結果，分析波浪頻率與振幅對浮體動態特性的影響。
 
 
-<a id="orga0d86a7"></a>
+<a id="org7e89774"></a>
 
 # 分析與討論方向
 
@@ -481,7 +482,7 @@ $$
 -   CFD 模擬與理論模型的比較（例如 Morison 方程或線性勢流理論）。
 
 
-<a id="orgb00b87a"></a>
+<a id="orgb37bee6"></a>
 
 # 學習重點
 
@@ -492,7 +493,7 @@ $$
 -   建立對海洋結構物動力行為的直觀理解。
 
 
-<a id="orgf0f48e8"></a>
+<a id="org9f57335"></a>
 
 # 延伸方向
 
@@ -504,12 +505,12 @@ $$
 4.  嘗試使用不同繫泊模型（MoorDyn vs MAP++）比較。
 
 
-<a id="org36aaaa7"></a>
+<a id="orgc99672c"></a>
 
 # Overset 計算執行
 
 
-<a id="orgee5875a"></a>
+<a id="org57321b9"></a>
 
 ## 計算指令
 
@@ -532,38 +533,38 @@ $$
     #------------------------------------------------------------------------------
 
 
-<a id="orgfe9513b"></a>
+<a id="org0f055ea"></a>
 
 ## 平行計算設定
 
 以 `tutorials/overset_parallel/` 為例：
 
 
-<a id="org2f28d05"></a>
+<a id="org134b5ed"></a>
 
 ## 計算分割數
 
 設定為 4 區，可於 `background/system/decomposeParDict` 中設定。
 
 
-<a id="org6192999"></a>
+<a id="orgd630f4c"></a>
 
 # ParaView 繪圖與前後處理
 
 
-<a id="orgd808278"></a>
+<a id="org2df281e"></a>
 
 ## ParaView 繪圖
 
 
-<a id="org5af5e5e"></a>
+<a id="orgb119c84"></a>
 
 ### 直接開啟 `state` 檔
 
 在 `background` 資料夾中的 `FV.pvsm` 檔，為 ParaView 之 State 檔案，可以在 OpenFOAM 中使用 `load state` 選項開啟，即可得到已經設定好的繪圖頁面。
 
 
-<a id="orgb02d21f"></a>
+<a id="orgf5a4a92"></a>
 
 ### 波浪流場與物體繪製流程
 
@@ -585,7 +586,7 @@ $$
     4.  僅開啟 `Threshold2` 與 `Threshold3`, 並在 `Orientation Axes` 中點選 `Camera Paralle Projection`, 可出現浮體被挖空之波浪流場。
 
 
-<a id="org214516d"></a>
+<a id="org684688f"></a>
 
 ### 繪製繫纜線
 
@@ -596,12 +597,12 @@ $$
 2.  在 `Pipeline Browser` 中點選 `mdv2_pt.vtk.pvd`, 使用 `Transforming` 將纜線平移到與浮體一樣的位置。
 
 
-<a id="org89ccf3c"></a>
+<a id="org861f583"></a>
 
 ## ParaView 動畫輸出
 
 
-<a id="orgc506717"></a>
+<a id="org8f55687"></a>
 
 ### 安裝 ffmpeg
 
@@ -617,7 +618,7 @@ $$
 若顯示版本號 (例如 `ffmpeg version 6.x`)，即表示安裝成功。
 
 
-<a id="org1cd6b3f"></a>
+<a id="orga099a94"></a>
 
 ### OpenFOAM 輸出動畫影格
 
@@ -637,7 +638,7 @@ $$
 5.  按下 ****OK**** 開始輸出。
 
 
-<a id="orgfe045d5"></a>
+<a id="orgacec19a"></a>
 
 ### 使用 ffmpeg 合成影片
 
@@ -657,7 +658,7 @@ $$
 -   `-pix_fmt yuv420p`: 確保通用播放器皆可播放。
 
 
-<a id="org0a3804d"></a>
+<a id="orge2d5798"></a>
 
 ### 可選：影片壓縮與縮放
 
@@ -666,7 +667,7 @@ $$
     ffmpeg -framerate 15 -i frame_%04d.png -vf "scale=1280:-1" -c:v libx264 -crf 23 animation_compressed.mp4
 
 
-<a id="org06fd911"></a>
+<a id="org5ace994"></a>
 
 ### 提示
 
@@ -677,7 +678,7 @@ $$
         ffmpeg -stream_loop -1 -i animation.mp4 output_loop.mp4
 
 
-<a id="org040c3dd"></a>
+<a id="org8aa6eec"></a>
 
 ## 前、後處理之 Python 程式碼
 
@@ -689,5 +690,38 @@ $$
 4.  利用快速傅立葉轉換 (FFT) 與最小平方法擬合計算 RAO。
 5.  繪出繫纜錨定張力隨時間變化圖。
 
-使用時，將 [prePostProcessing.ipynb](./tools/prePostProcessing.ipynb) 複製到計算例之 `background` 資料夾，使用 Jupyter Notebook (或 VS Code) 開啟並逐步執行。此程式集可將 `log.overInterDyMFoam` 複製到 `Plots` 資料夾，以進行 3DoF 位移量之擷取。所繪圖形均存放於 `Plots` 資料夾。
+使用時，將 [prePostProcessing.ipynb](./tools/prePostProcessing.ipynb) 複製到計算例之 `background` 資料夾，使用 Jupyter Notebook 開啟並逐步執行。此程式集可自動將 `log.overInterDyMFoam` 複製到 `Plots` 資料夾，並執行 `extractMulti.sh` 進行 3DoF 位移量之擷取。所繪圖形均存放於 `Plots` 資料夾。
+
+程式碼放置位置：
+
+1.  [prePostProcessing.ipynb](./tools/prePostProcessing.ipynb) 放置於 `background/` 中。
+2.  [extractMulti.sh](./tools/extractMulti.sh) 放置於 `background/Plots/` 中。
+
+相關位置如下：
+
+    case01/
+    └── background/
+        ├── prePostProcessing.ipynb (在此目錄下執行即可)
+        ├── log.overInterDyMFoam
+        ├── ...
+        └── Plots/
+            ├── extractMulti.sh
+            ├── log.overInterDyMFoam (由background/ 中複製過來)
+            ├── ***.pdf (圖檔)
+            └── logs/
+                ├── t_vs_CoM (質心座標)
+                ├── t_vs_orientation (方向角)
+                ├── t_vs_linearV (速度)
+                └── t_vs_angularV (角速度)
+
+
+<a id="org03e7444"></a>
+
+## 附註： Jupyter Notebook 安裝方法
+
+如電腦中有安裝 Anaconda, 即可在 **Anaconda Navigator** 中開啟 Jupyter Notebook。
+
+Anaconda 的安裝教學，可參見此連結：<https://simplelearn.tw/anaconda-3-intro-and-installation-guide/>
+
+Jupyter Notebook 的完整介紹，可參見此[連結](https://medium.com/ai-for-k12/jupyter-notebook-%E5%AE%8C%E6%95%B4%E4%BB%8B%E7%B4%B9-%E5%AE%89%E8%A3%9D%E5%8F%8A%E4%BD%BF%E7%94%A8%E8%AA%AA%E6%98%8E-846b5432f044)。
 
