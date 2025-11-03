@@ -228,7 +228,7 @@ RAO 定義為：
 *** 計算 RAO
 
 - Surge/Heave: $|\mathrm{RAO}| = \hat{\xi}/A_I$
-- Pitch: $\left|\mathrm{RAO}_\theta\right| = \hat{\theta}b/A_{I}$
+- Pitch: $\left|\mathrm{RAO}_\theta\right| = \hat{\theta} b / A_I$
 
 ** 結果解讀
 - $\left|\mathrm{RAO}\right| > 1$: 浮體運動振幅大於入射波，可能有共振效應。
