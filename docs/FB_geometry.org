@@ -1,0 +1,511 @@
+#+TITLE: 改變浮體尺寸相關設定
+# OPTIONS: toc:2 num:t
+#+CATEGORY: Courses
+#+STARTUP: indent
+# STARTUP: latexpreview
+# Theme setup
+#+SETUPFILE: https://fniessen.github.io/org-html-themes/org/theme-readtheorg.setup
+#+HTML_LINK_UP: index.html
+#+HTML_LINK_HOME: index.html
+# Latex 设置
+#+LATEX_COMPILER: xelatex
+#+LaTeX_CLASS_OPTIONS: [hidelinks,a4paper,12pt]
+#+LaTeX_HEADER: \usepackage{amssymb}
+#+LaTeX_HEADER: \usepackage{amsmath}
+#+LaTeX_HEADER: \usepackage{booktabs}
+#+LATEX_HEADER: \usepackage[AUTO]{inputenc}
+#+LaTeX_HEADER: \usepackage{geometry}
+#+LaTeX_HEADER: \usepackage[nobottomtitles]{titlesec}
+#+LaTeX_HEADER: \geometry{verbose,a4paper,tmargin=3.5cm,bmargin=3.5cm,lmargin=3cm,rmargin=3cm}
+#+LaTeX_HEADER: \newcommand{\mybaselinestretch}{1.4}
+#+LaTeX_HEADER: \renewcommand{\baselinestretch}{\mybaselinestretch}
+#+LaTeX_HEADER: \usepackage{xeCJK}
+#+LaTeX_HEADER: \usepackage{fontspec,xltxtra,xunicode}
+#+LaTeX_HEADER: \setCJKmainfont{cwTeX Q MingZH}
+#+LaTeX_HEADER: \setmonofont[Scale=0.8]{Courier New}
+#+LaTeX_HEADER: \XeTeXlinebreaklocale "zh"
+#+LaTeX_HEADER: \XeTeXlinebreakskip = 0pt plus 1pt
+#+LaTeX_HEADER: \parskip=2ex
+#+LaTeX_HEADER: \renewcommand{\tablename}{表}
+#+LaTeX_HEADER: \renewcommand{\figurename}{圖}
+#+LaTeX_HEADER: \renewcommand{\contentsname}{目錄}
+#+LaTeX_HEADER: \renewcommand{\refname}{\large 參考文獻}
+
+# Disable table of contents
+# OPTIONS: toc:nil
+
+# Disable section numbering
+# #+OPTIONS: num:nil
+
+# New page after TOC
+#+begin_export latex
+  \clearpage
+#+end_export
+
+* 背景與浮體子網格合併之處理
+** 路線 A：用 cellZone 標記兩個區域（最通用、也方便後處理/計算）
+*** 在合併後的 **background** case 建立兩個 ~cellZone~
+在 ~background/system/topoSetDict~ 放這份（數值用你浮體子網格外盒即可；以下是你 floatingBody 的外盒）：
+#+BEGIN_SRC cpp
+FoamFile{version 2.0; format ascii; class dictionary; object topoSetDict;}
+actions
+(
+  // 取出「浮體子網格所在區域」：請用子網盒（你 floatingBody/blockMeshDict 的 bounding box）
+  {
+    name    floatCells;
+    type    cellSet;
+    action  new;
+    source  boxToCell;
+    box     (-0.5 -0.1 -0.18) (0.5 0.1 0.15);   // ← 你的 floatingBody 外盒
+  }
+  // 轉成 cellZone：zoneFloating
+  {
+    name    zoneFloating;
+    type    cellZoneSet;
+    action  new;
+    source  setToCellZone;
+    set     floatCells;
+  }
+
+  // 其餘都當背景：先複製 floatCells，再反轉
+  {
+    name    backCells;
+    type    cellSet;
+    action  new;
+    source  cellToCell;
+    set     floatCells;
+  }
+  {
+    name    backCells;
+    type    cellSet;
+    action  invert;
+  }
+  // 轉成 cellZone：zoneBackground
+  {
+    name    zoneBackground;
+    type    cellZoneSet;
+    action  new;
+    source  setToCellZone;
+    set     backCells;
+  }
+)
+#+END_SRC
+執行：
+#+BEGIN_SRC bash
+topoSet
+#+END_SRC
+檢查：
+#+BEGIN_SRC bash
+checkMesh -set zoneFloating
+checkMesh -set zoneBackground
+#+END_SRC
+
+> 小提醒：若你的浮體子網盒今晚後續會改尺寸，記得同步更新 ~boxToCell~ 的座標。
+
+*** 在 ParaView 用 ~Threshold~ / ~Extract Selection~ 分離顯示
+- 用 ~paraFoam -cellZones~ 開案；
+- 在 Pipeline Browser 選 case → ~Add Filter~ → ~Threshold~;
+- Scalars 選 ~CellZones~ 或 ~cellZoneID~ (不同版本名稱略有差)，再選 ~zoneFloating~ 或 ~zoneBackground~;
+- 就能只看其中一個區域的場（U、prgh、alpha.water 等）。
+
+*** 匯出分區 VTK 或單獨寫檔
+- 直接輸出：
+#+BEGIN_SRC bash
+foamToVTK -cellZone zoneFloating -latestTime
+foamToVTK -cellZone zoneBackground -latestTime
+#+END_SRC
+- 或在 `controlDict` 用 `subset` functionObject（v2312 支援），自動每步寫子網格檔：
+#+BEGIN_SRC cpp
+functions
+{
+    subsetFloating
+    {
+      type                 subset;
+      functionObjectLibs  ("libutilityFunctionObjects.so");
+      regionType           cellZone;
+      name                 zoneFloating;
+      fields               (U p_rgh alpha.water);
+      writeControl         timeStep;
+      writeInterval        1;
+    }
+    subsetBackground
+    {
+      type                 subset;
+      functionObjectLibs  ("libutilityFunctionObjects.so");
+      regionType           cellZone;
+      name                 zoneBackground;
+      fields               (U p_rgh alpha.water);
+      writeControl         timeStep;
+      writeInterval        1;
+    }
+}
+#+END_SRC
+
+** 路線 B：只在後處理做「區域平均/總量」而不分離幾何
+用 ~volFieldValue~ 對 ~cellZone~ 做體積平均、總量、最小值等 (寫進 ~postProcessing~)：
+#+BEGIN_SRC cpp
+functions
+{
+  avgFloating
+  {
+    type                 volFieldValue;
+    functionObjectLibs  ("libfieldFunctionObjects.so");
+    regionType           cellZone;
+    name                 zoneFloating;
+    operation            average;               // 可用 sum, min, max, weightedAverage 等
+    fields               (p_rgh U alpha.water);
+    writeControl         timeStep;
+    writeInterval        1;
+  }
+  avgBackground
+  {
+    type                 volFieldValue;
+    functionObjectLibs  ("libfieldFunctionObjects.so");
+    regionType           cellZone;
+    name                 zoneBackground;
+    operation            average;
+    fields               (p_rgh U alpha.water);
+    writeControl         timeStep;
+    writeInterval        1;
+  }
+}
+#+END_SRC
+
+** 路線 C：不用 zones，只在 ParaView 快速分離（臨時）
+- ~Clip~ 或 ~Threshold~ by *空間位置* (例如用和子網盒同樣的 bounding box)；
+- 優點是不用改案；缺點是每次手動設定、無法做區域統計/自動化。
+
+** 哪個比較穩？
+- 想長期可重現、又要能做數值統計/匯出 → 路線 A + 路線 B 搭配最好。
+- 只想臨時看圖 → 路線 C 也可，但不建議作為正式流程。
+
+** 小叮嚀（跟 overset 有關）
+- ~cellZone~ 只是一個標籤，不影響 overset 插值與計算；你可以放心加。
+- 用 ~Threshold~ 分離看圖時，務必確認顯示的時間步包含你要的場（alpha.water、U、prgh 等）。
+- 若你要對 zones 計算力、力矩，牆面請用 ~forces~ 對 ~floatingObject~ patch；體積內的量用 ~volFieldValue~ 。
+
+* 浮體穩定化與加速流程（含 heave 線性阻尼）
+** 目標
+以「Phase 1 穩定化 → Phase 2 加速」的方式，快速抑制起步殘振與水線數值噪音，同時在穩定後自動放寬時間步與求解器設定以提升效率；並給出 *heave 線性阻尼*（=linearDamperZ）設置之可重複計算方法，適用任意長方體或一般幾何的浮體案例。
+
+** 前置觀念
+- 起步時常見「浮力 ≠ mg」的 *瞬時偏差* 來自水靜壓重整、VOF 介面厚度/水線離散與積分插值；屬可控數值效應。
+- 抑制震盪的優先序：*水線附近網格*（局部薄層/交疊厚度） → *VOF 子循環與壓縮* → *PIMPLE 外層耦合* → *六自由度數值阻尼* → *時間步*。
+- 線性阻尼（linearDamper）是 *暫時* 的數值穩定手段；Phase 2 應逐步降至 0，以還原真實動力學與 RAO。
+
+** Phase 1：穩定化（短時間）
+*** 目的
+快速壓低 heave 殘振與水線抖動，讓壓力–速度–VOF 耦合更緊。
+
+*** 推薦設定（僅列最關鍵差異；其餘維持原案例）
+**** system/controlDict（時間步控制與監測）
+#+begin_src conf
+application     interFoam
+adjustTimeStep  yes
+maxCo           0.30          // Phase 1
+maxAlphaCo      0.25          // Phase 1
+maxDeltaT       2e-3
+runTimeModifiable yes
+
+functions
+{
+  sixDoFState
+  {
+    type                 sixDoFRigidBodyState;
+    functionObjectLibs  ("libsixDoFRigidBodyMotion.so");
+    writeControl         timeStep;
+    writeInterval        1;
+    log                  yes;
+  }
+
+  forcesFloating
+  {
+    type                 forces;
+    functionObjectLibs  ("libforces.so");
+    patches              (floatingObject);
+    rhoName              rho;
+    CofR                 (0 0 0);
+    writeControl         timeStep;
+    writeInterval        1;
+    log                  yes;
+  }
+}
+#+end_src
+
+**** system/fvSolution（PIMPLE 外層 + VOF）
+#+begin_src conf
+solvers
+{
+  "alpha.water.*"
+  {
+    nAlphaCorr      2
+    nAlphaSubCycles 2
+    cAlpha          1.5      // 1.5 ~ 2; Phase 1 稍強壓縮
+    icAlpha         0
+    MULESCorr       yes
+    nLimiterIter    5
+    alphaApplyPrevCorr no
+    solver          smoothSolver
+    smoother        symGaussSeidel
+    tolerance       1e-8
+    relTol          0
+  }
+
+  p_rgh
+  {
+    solver          PBiCGStab
+    preconditioner  DILU
+    tolerance       1e-9
+    relTol          0.01
+  }
+  p_rghFinal
+  {
+    $p_rgh
+    relTol          0
+  }
+
+  "(U|k|omega|epsilon).*"
+  {
+    solver          smoothSolver
+    smoother        symGaussSeidel
+    tolerance       1e-8
+    relTol          0
+  }
+}
+
+PIMPLE
+{
+  momentumPredictor   no
+  nOuterCorrectors    2      // Phase 1: 外層耦合更緊
+  nCorrectors         2
+  nNonOrthogonalCorrectors 0
+  ddtCorr             yes
+}
+#+end_src
+
+**** constant/dynamicMeshDict（六自由度）
+#+begin_src conf
+sixDoFRigidBodyMotionCoeffs
+{
+  accelerationRelaxation 0.5
+  accelerationDamping    0.9
+
+  restraints
+  {
+    linearDamperZ
+    {
+      sixDoFRigidBodyMotionRestraint linearDamper;
+      coeff     12;            // 例：Phase 1 小阻尼 (依下節公式估算)
+      direction (0 0 1);
+    }
+  }
+}
+#+end_src
+
+** Phase 2：加速（長時間）
+*** 切換時機
+- heave 峰—峰值或標準差於 2–3 個自然週期內明顯下降，且力平衡殘餘 ~R_F = |F_p,z − mg|/mg~ 的平均 < 1%、峰值 < 3–5%。
+
+*** 放寬設定（其餘維持 Phase 1）
+**** system/controlDict
+#+begin_src conf
+maxCo        0.55     // 0.5 ~ 0.6
+maxAlphaCo   0.30
+maxDeltaT    5e-3
+#+end_src
+
+**** system/fvSolution
+#+begin_src conf
+PIMPLE
+{
+  nOuterCorrectors 1    // 降回 1 以加速
+  nCorrectors      2
+}
+
+solvers
+{
+  "alpha.water.*"
+  {
+    nAlphaCorr      1
+    nAlphaSubCycles 1
+    cAlpha          1.0   // 1.0 ~ 1.2; 若水線仍抖，可暫留 1.5
+    ...
+  }
+
+  p_rgh
+  {
+    solver          PBiCGStab
+    preconditioner  DILU
+    tolerance       1e-8   // 放寬一階（視精度）
+    relTol          0.05
+  }
+  p_rghFinal
+  {
+    $p_rgh
+    relTol          0
+  }
+
+  "(U|k|omega|epsilon).*"
+  {
+    solver          smoothSolver
+    smoother        symGaussSeidel
+    tolerance       1e-7   // 放寬一階（視精度）
+    relTol          0.1
+  }
+}
+#+end_src
+
+**** constant/dynamicMeshDict（關閉暫時阻尼）
+#+begin_src conf
+sixDoFRigidBodyMotionCoeffs
+{
+  restraints
+  {
+    linearDamperZ
+    {
+      sixDoFRigidBodyMotionRestraint linearDamper;
+      coeff     0;      // Phase 2 逐步降至 0 或直接關閉此節
+      direction (0 0 1);
+    }
+  }
+}
+#+end_src
+
+** 自動切換：changeDictionary（可選）
+#+begin_src conf
+functions
+{
+  switchToFast
+  {
+    type                 changeDictionary;
+    functionObjectLibs  ("libutilityFunctionObjects.so");
+    trigger              timeActivated;
+    timeStart            3.0
+
+    dictionaries
+    (
+      "system/fvSolution"
+      {
+        "PIMPLE.nOuterCorrectors" 1;
+        "solvers.\"alpha.water.*\".nAlphaCorr"      1;
+        "solvers.\"alpha.water.*\".nAlphaSubCycles" 1;
+        "solvers.\"alpha.water.*\".cAlpha"          1.0;
+      }
+
+      "system/controlDict"
+      {
+        maxCo      0.55;
+        maxAlphaCo 0.30;
+        maxDeltaT  5e-3;
+      }
+
+      "constant/dynamicMeshDict"
+      {
+        "sixDoFRigidBodyMotionCoeffs.restraints.linearDamperZ.coeff" 0;
+      }
+    );
+  }
+}
+#+end_src
+
+** Heave 線性阻尼（linearDamperZ）係數計算
+1. 量測 heave 自然週期 ~T_n~
+2. 求水靜力剛度 ~K = ρ g A_w~
+3. 反推等效質量：
+   \[
+   M_{\text{eff}} = K \left(\frac{T_n}{2\pi}\right)^2
+   \]
+4. 臨界阻尼：
+   \[
+   c_c = 2\sqrt{K\,M_{\text{eff}}}
+   \]
+5. 阻尼比：
+   \[
+   c = ζ\,c_c
+   \]
+
+*** 範例
+若 ~T_n = 0.7 s~，
+- \(K = 926\ N/m\)
+- \(M_{\text{eff}} ≈ 11.49\ kg\)
+- \(c_c ≈ 206\ N·s/m\)
+- \(\zeta=5\%\Rightarrow c ≈ 10.3\ N·s/m\)
+→ Phase 1: 12–14；Phase 2: 5→0。
+
+** 監測與量化指標
+- **自由衰減阻尼比**
+  \[
+  ζ=\frac{\ln(x_1/x_2)}{\sqrt{4\pi^2+\ln^2(x_1/x_2)}}
+  \]
+- **力平衡殘餘**：~R_F(t)=|F_{p,z}(t)-mg|/mg~
+- **heave 變異度**：標準差/峰–峰值
+- **VOF/overset 健康**：~alpha.water~ 不越界。
+
+** 常見微調
+1. 水線局部細化 & 交疊厚度 3–5 層。
+2. VOF：Phase 1 ~nAlphaSubCycles=2, cAlpha=1.5~；Phase 2 ~nAlphaSubCycles=1, cAlpha=1.0–1.2~。
+3. PIMPLE 外層：Phase 1 = 2；Phase 2 = 1。
+4. 線性阻尼：Phase 1 3–7% 臨界阻尼；Phase 2 → 0。
+5. 時間步：Phase 1 ~maxCo=0.3~；Phase 2 ~maxCo=0.55~。
+
+** 快速檢查清單
+- [ ] setFields 後 Freeze→Release。
+- [ ] Phase 1: nOuterCorrectors=2, nAlphaSubCycles=2, cAlpha≈1.5, 小線性阻尼。
+- [ ] 水線細化 & 交疊檢查。
+- [ ] 監測 heave、forces、alpha、Courant。
+- [ ] 達門檻後 changeDictionary 切入 Phase 2。
+- [ ] Phase 2: linearDamperZ.coeff → 0。
+* 建立「穩態靜水基準檔」步驟
+** Overset 案例
+
+1. 在父目錄下執行兩次 clone（各子案例各自 clone）：
+
+   #+begin_src bash
+   #mkdir -p case_IC/background case_IC/floatingBody # 不需要先建立資料夾
+
+   foamCloneCase -latestTime background    ../case_IC/background
+   foamCloneCase -latestTime floatingBody  ../case_IC/floatingBody
+   #+end_src
+
+2. 進入新案例，把「最新時間層」改名為 0（兩邊都要做）：
+
+   #+begin_src bash
+   cd case_IC/background
+   LT=$(foamListTimes -latestTime)   # 取得最新時間（例如 5）
+   mv "$LT" 0
+   foamListTimes -rm -noZero         # 刪除其它時間層（若有）
+
+   cd ../floatingBody
+   LT=$(foamListTimes -latestTime)
+   mv "$LT" 0
+   foamListTimes -rm -noZero
+   #+end_src
+
+3. 檢查六自由度狀態檔是否隨時間層一起到位（通常在 0/uniform/sixDoFRigidBodyMotionState 或同名路徑）。若不在，從舊案例對應時間層複製過來。
+
+4. 調整 system/controlDict（兩邊）：
+
+   #+begin_src
+   startFrom  startTime;
+   startTime  0;
+   #+end_src
+
+** 註：非 overset 案例
+
+#+begin_src bash
+foamCloneCase -latestTime case_original case_baseIC
+cd case_baseIC
+foamListTimes -rm -noZero   # 刪除其餘時間，只留 latest
+mv <latestTime> 0
+#+end_src
+
+** 清理/凍結數值阻尼
+
+- 如果 Phase 1 用過 linearDamperZ.coeff，在模板中設為 0。
+- accelerationRelaxation/accelerationDamping 可留常用的穩定值（如 0.5/0.9）。
+
+** 做成學生模板
+
+- 鎖定學生只需改的檔：constant/waveProperties（或對應波浪字典）與 system/controlDict 的寫檔/時間。
+- 在 README.org 明確標示可改欄位：H, T, Ux/Uin (如有), angle, rampTime。
+

@@ -475,8 +475,7 @@ ffmpeg -version
 #+begin_src bash
 cd /home/user/foam_case/animation
 #+end_src
-
-執行以下指令產生影片：
+若連續編號的影格檔案為 ~frame_0000.png~, ~frame_0001.png~, ..., 執行以下指令產生影片：
 #+begin_src bash
 ffmpeg -framerate 20 -i frame_%04d.png -c:v libx264 -pix_fmt yuv420p animation.mp4
 #+end_src
@@ -486,6 +485,12 @@ ffmpeg -framerate 20 -i frame_%04d.png -c:v libx264 -pix_fmt yuv420p animation.m
 - ~-i frame_%04d.png~: 輸入影格檔案格式。
 - ~-c:v libx264~: 使用 H.264 影片編碼。
 - ~-pix_fmt yuv420p~: 確保通用播放器皆可播放。
+
+若連續編號的影格檔案為 ~frame.0000.png~, ~frame.0001.png~, ..., 則執行以下指令產生影片：
+#+begin_src bash
+ffmpeg -framerate 20 -i frame.%04d.png -c:v libx264 -pix_fmt yuv420p animation.mp4
+#+end_src
+
 
 *** 可選：影片壓縮與縮放
 若輸出影片過大，可加入壓縮參數：
