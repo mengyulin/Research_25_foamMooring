@@ -1,0 +1,1688 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 2025-11-11 Tue 18:25 -->
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>浮體與繫纜分析&#x2013;專題研究計算案例規劃</title>
+<meta name="author" content="Mengyu Lin" />
+<meta name="generator" content="Org Mode" />
+<link rel="stylesheet" type="text/css" href="https://fniessen.github.io/org-html-themes/src/readtheorg_theme/css/htmlize.css"/>
+<link rel="stylesheet" type="text/css" href="https://fniessen.github.io/org-html-themes/src/readtheorg_theme/css/readtheorg.css"/>
+<link rel="stylesheet" type="text/css" href="https://fniessen.github.io/org-html-themes/src/readtheorg_theme/css/code-copy.css"/>
+<link rel="stylesheet" type="text/css" href="src/readtheorg_theme/css/search.css"/>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="https://fniessen.github.io/org-html-themes/src/lib/js/jquery.stickytableheaders.min.js"></script>
+<script type="text/javascript" src="https://fniessen.github.io/org-html-themes/src/readtheorg_theme/js/search.js"></script>
+<script type="text/javascript" src="https://fniessen.github.io/org-html-themes/src/readtheorg_theme/js/readtheorg.js"></script>
+<script type="text/javascript" src="https://fniessen.github.io/org-html-themes/src/readtheorg_theme/js/code-copy.js"></script>
+<script>
+  window.MathJax = {
+    tex: {
+      ams: {
+        multlineWidth: '85%'
+      },
+      tags: 'ams',
+      tagSide: 'right',
+      tagIndent: '.8em'
+    },
+    chtml: {
+      scale: 1.0,
+      displayAlign: 'center',
+      displayIndent: '0em'
+    },
+    svg: {
+      scale: 1.0,
+      displayAlign: 'center',
+      displayIndent: '0em'
+    },
+    output: {
+      font: 'mathjax-modern',
+      displayOverflow: 'overflow'
+    }
+  };
+</script>
+
+<script
+  id="MathJax-script"
+  async
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+</script>
+</head>
+<body>
+<div id="org-div-home-and-up">
+ <a accesskey="h" href="index.html"> UP </a>
+ |
+ <a accesskey="H" href="index.html"> HOME </a>
+</div><div id="content" class="content">
+<h1 class="title">浮體與繫纜分析&#x2013;專題研究計算案例規劃</h1>
+<div id="table-of-contents" role="doc-toc">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents" role="doc-toc">
+<ul>
+<li><a href="#org154e1a4">1. 研究目的</a></li>
+<li><a href="#orgecfd9cc">2. 基準模擬條件概述</a>
+<ul>
+<li><a href="#orgf606ff3">2.1. 模擬區域設定</a></li>
+<li><a href="#org53e22b6">2.2. 基礎浮體條件</a></li>
+<li><a href="#orge5fd675">2.3. 基礎繫泊條件</a></li>
+<li><a href="#orgfbcafa1">2.4. Chen and Hall (2022) 之波浪條件</a></li>
+</ul>
+</li>
+<li><a href="#orgf3b7356">3. 計算條件設定</a>
+<ul>
+<li><a href="#orgdd75731">3.1. 浮體幾何與波浪參數計算程式</a></li>
+<li><a href="#orgf851e26">3.2. 第一組 (基準案例)</a></li>
+<li><a href="#org61473c0">3.3. 第二組 (較大波高)</a></li>
+<li><a href="#org1984d38">3.4. 第三組 (寬浮體)</a></li>
+</ul>
+</li>
+<li><a href="#orgd963d8c">4. 波浪參數意義與物理說明</a>
+<ul>
+<li><a href="#orga559954">4.1. 波浪週期 T</a></li>
+<li><a href="#orgcdd4712">4.2. 波高 H</a></li>
+<li><a href="#org8755f90">4.3. 波長 L</a></li>
+<li><a href="#orgf11a7be">4.4. 波陡度 H/L</a></li>
+<li><a href="#org6d79d87">4.5. 水深 h</a></li>
+</ul>
+</li>
+<li><a href="#org093494e">5. RAO 的意義與計算</a>
+<ul>
+<li><a href="#orgd838979">5.1. RAO 的基本定義</a></li>
+<li><a href="#orgf29970e">5.2. 三個自由度的 RAO 定義</a></li>
+<li><a href="#orgf7e2722">5.3. 實際計算步驟</a>
+<ul>
+<li><a href="#orgc9aac7c">5.3.1. 輸入波參數</a></li>
+<li><a href="#orgced4ae5">5.3.2. FFT 分析</a></li>
+<li><a href="#orgca3c6f2">5.3.3. 最小平方法擬合</a></li>
+<li><a href="#org58e4974">5.3.4. 計算 RAO</a></li>
+</ul>
+</li>
+<li><a href="#org7789feb">5.4. 結果解讀</a></li>
+</ul>
+</li>
+<li><a href="#org99773aa">6. 實驗步驟建議</a></li>
+<li><a href="#orgaa2bbbf">7. 分析與討論方向</a></li>
+<li><a href="#orgaa36a15">8. 學習重點</a></li>
+<li><a href="#org27616e9">9. 延伸方向</a></li>
+<li><a href="#org8d4bda8">10. Overset 計算執行</a>
+<ul>
+<li><a href="#org9f9007b">10.1. 計算指令</a></li>
+<li><a href="#orgfdaaa86">10.2. 平行計算設定</a></li>
+<li><a href="#orgcc7c710">10.3. 計算分割數</a></li>
+</ul>
+</li>
+<li><a href="#org27ffd72">11. ParaView 繪圖與前後處理</a>
+<ul>
+<li><a href="#org54c2f6f">11.1. ParaView 繪圖</a>
+<ul>
+<li><a href="#org816391d">11.1.1. 直接開啟 <code>state</code> 檔</a></li>
+<li><a href="#orgfbe50b1">11.1.2. 波浪流場與物體繪製流程</a></li>
+<li><a href="#orge9b1900">11.1.3. 繪製繫纜線</a></li>
+</ul>
+</li>
+<li><a href="#orga3d7608">11.2. ParaView 動畫輸出</a>
+<ul>
+<li><a href="#orgc91c88a">11.2.1. 安裝 ffmpeg</a></li>
+<li><a href="#org0151763">11.2.2. OpenFOAM 輸出動畫影格</a></li>
+<li><a href="#orgbe0dd2e">11.2.3. 使用 ffmpeg 合成影片</a></li>
+<li><a href="#orgbeb97d6">11.2.4. 可選：影片壓縮與縮放</a></li>
+<li><a href="#orgccfb34a">11.2.5. 提示</a></li>
+</ul>
+</li>
+<li><a href="#org4f0cb60">11.3. 前、後處理之 Python 程式碼</a></li>
+<li><a href="#org89f882e">11.4. 附註： Jupyter Notebook 安裝方法</a></li>
+</ul>
+</li>
+<li><a href="#org4b50bc3">12. 成果報告</a>
+<ul>
+<li><a href="#org692e517">12.1. 內容架構</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org154e1a4" class="outline-2">
+<h2 id="org154e1a4"><span class="section-number-2">1.</span> 研究目的</h2>
+<div class="outline-text-2" id="text-1">
+<p>
+本專題以 <b>foamMooring</b> 工具箱為基礎，模擬單一矩形浮體（floating body）在不同波浪條件下的運動響應。藉由系統性地改變波浪週期與波高，分析浮體在三自由度運動（3-DoF） 下的 <b>RAO（Response Amplitude Operator）</b>
+特性，了解浮體對波浪頻率的動態反應，並探討共振現象與繫泊系統的影響。
+</p>
+
+<p>
+研究結果可作為：
+</p>
+<ol class="org-ol">
+<li>浮體動力行為的初步驗證；</li>
+<li>對照不同繫泊剛度或幾何設定的參考；</li>
+<li>後續延伸研究（例如多浮體干涉、風浪耦合等）的基礎資料。</li>
+</ol>
+</div>
+</div>
+
+<div id="outline-container-orgecfd9cc" class="outline-2">
+<h2 id="orgecfd9cc"><span class="section-number-2">2.</span> 基準模擬條件概述</h2>
+<div class="outline-text-2" id="text-2">
+<p>
+根據 Chen and Hall (2022) 的單一浮體案例，本研究採用相同的幾何、繫泊與水槽條件，改變波浪週期與波高兩個主要參數。
+</p>
+</div>
+
+<div id="outline-container-orgf606ff3" class="outline-3">
+<h3 id="orgf606ff3"><span class="section-number-3">2.1.</span> 模擬區域設定</h3>
+<div class="outline-text-3" id="text-2-1">
+
+<div id="org99a2833" class="figure">
+<p><img src="./docs/img/Chen_Hall_2022.png" alt="Chen_Hall_2022.png" width="600" />
+</p>
+<p><span class="figure-number">Figure 1: </span>Chen and Hall (2022) 之模擬區域示意圖 (3D)。</p>
+</div>
+
+<p>
+模擬區域為上圖 (Chen and Hall, 2022) 之二維版本，亦即 y 方向設為均勻。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org53e22b6" class="outline-3">
+<h3 id="org53e22b6"><span class="section-number-3">2.2.</span> 基礎浮體條件</h3>
+<div class="outline-text-3" id="text-2-2">
+<ul class="org-ul">
+<li>浮體之 x 方向寬度 \(2b = 0.2~\mathrm{m}\)</li>
+<li>浮體之 y 方向跨度 \(0.2~\mathrm{m}\)</li>
+<li>浮體之 z 方向高度 \(0.132~\mathrm{m}\)</li>
+<li>初始吃水深度 \(d = 0.0786~\mathrm{m}\)</li>
+<li>初始出水深度 \(d' = 0.0534~\mathrm{m}\)</li>
+<li>浮體質量 \(3.16~\mathrm{kg}\)</li>
+<li>質量中心 \((x, y, z) = (0, 0, -0.0126)~\mathrm{m}\)</li>
+<li>浮體慣性矩 (I<sub>xx</sub>, I<sub>yy</sub>, I<sub>zz</sub>) = \((0.015, 0.015, 0.021)~\mathrm{kg\, m^2}\)</li>
+<li>靜止水深 \(h = 0.5~\mathrm{m}\)</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-orge5fd675" class="outline-3">
+<h3 id="orge5fd675"><span class="section-number-3">2.3.</span> 基礎繫泊條件</h3>
+<div class="outline-text-3" id="text-2-3">
+<ul class="org-ul">
+<li>繫纜單位長度質量 \(0.607~\mathrm{g/cm} = 0.0607~\mathrm{kg/m}\)</li>
+<li>繫纜直徑 \(0.003656~\mathrm{m}\)</li>
+<li>繫纜長度 \(1.455~\mathrm{m}\)</li>
+<li>繫纜軸向剛度 (axial stiffness) \(29~\mathrm{N}\)</li>
+<li>繫纜導纜器 (fairlead, 與浮體連接處) \((x, y, z) = (\pm 0.1, \pm 0.1, -0.0736)~\mathrm{m}\)</li>
+<li>繫纜錨定處 (ahcnor, 與底床連接處) \((x, y, z) = (\pm 1.385, \pm 0.423, -0.5)~\mathrm{m}\)</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-orgfbcafa1" class="outline-3">
+<h3 id="orgfbcafa1"><span class="section-number-3">2.4.</span> Chen and Hall (2022) 之波浪條件</h3>
+<div class="outline-text-3" id="text-2-4">
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-right" />
+
+<col  class="org-right" />
+
+<col  class="org-right" />
+
+<col  class="org-right" />
+
+<col  class="org-right" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">編號</th>
+<th scope="col" class="org-right">週期 T (s)</th>
+<th scope="col" class="org-right">波高 H (m)</th>
+<th scope="col" class="org-right">波長 L (m)</th>
+<th scope="col" class="org-right">波尖銳度 H/L</th>
+<th scope="col" class="org-right">相對水深 h/L</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left">H12T18</td>
+<td class="org-right">1.8</td>
+<td class="org-right">0.12</td>
+<td class="org-right">3.57</td>
+<td class="org-right">0.0336</td>
+<td class="org-right">0.140</td>
+</tr>
+
+<tr>
+<td class="org-left">H12T20</td>
+<td class="org-right">2.0</td>
+<td class="org-right">0.12</td>
+<td class="org-right">4.06</td>
+<td class="org-right">0.0296</td>
+<td class="org-right">0.123</td>
+</tr>
+
+<tr>
+<td class="org-left">H15T18</td>
+<td class="org-right">1.8</td>
+<td class="org-right">0.15</td>
+<td class="org-right">3.57</td>
+<td class="org-right">0.0420</td>
+<td class="org-right">0.140</td>
+</tr>
+</tbody>
+</table>
+
+<p>
+以相對水深 \((h/L)\) 來分類，以上波浪均屬中間水深波 (intermediate water waves)。波浪尖銳度 (wave steepness) \(H/L\) 與波浪的非線性程度有關，但並非一個獨立的分類指標。相對水深之分類為：
+</p>
+
+<ul class="org-ul">
+<li>深水波: \(h/L > 1/2\)</li>
+<li>中間水深波: \(1/20 < h/L < 1/2\)</li>
+<li>淺水波: \(h/L < 1/20\)</li>
+</ul>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgf3b7356" class="outline-2">
+<h2 id="orgf3b7356"><span class="section-number-2">3.</span> 計算條件設定</h2>
+<div class="outline-text-2" id="text-3">
+</div>
+<div id="outline-container-orgdd75731" class="outline-3">
+<h3 id="orgdd75731"><span class="section-number-3">3.1.</span> 浮體幾何與波浪參數計算程式</h3>
+<div class="outline-text-3" id="text-3-1">
+<ul class="org-ul">
+<li>浮體幾何條件：見資料夾 <code>tools/</code> 中的 <a href="./tools/floating_body.ipynb">floating body.ipynb</a>。</li>
+<li>波浪條件：見資料夾 <code>tools/</code> 中的 <a href="./tools/DispersionEq.ipynb">DispersionEq.ipynb</a>。</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-orgf851e26" class="outline-3">
+<h3 id="orgf851e26"><span class="section-number-3">3.2.</span> 第一組 (基準案例)</h3>
+<div class="outline-text-3" id="text-3-2">
+<p>
+依據 Chen and Hall (2022) 基礎模擬條件，設置靜水深 \(h = 0.5~\mathrm{m}\), 浮體半寬 \(b = 0.1~\mathrm{m}\)。
+</p>
+
+<ul class="org-ul">
+<li>浮體寬深比 \(b/d = 1.2723\)</li>
+<li>浮體出水/吃水深比 \(d'/d = 0.6794\)</li>
+<li>浮體寬度水深比 \(b/h = 0.2\)</li>
+<li>浮體吃水深與靜水深比 \(d/h = 0.1572\)</li>
+</ul>
+
+<p>
+其他參數為：
+</p>
+<pre class="example">
+Water density rho_w = 1000.0 kg/m³
+Computed solid density rho_s = 595.455 kg/m³
+Geometric center z_c = -0.01260 m (measured from still water surface)
+Mass m = 3.14400 kg
+Ixx = 0.01505 kg·m²
+Iyy = 0.01505 kg·m²
+Izz = 0.02096 kg·m²
+</pre>
+
+<p>
+以波數 (wave number) \(k = 2\pi/L\) 之倒數為長度之無因次尺度，其中 \(L\) 為波長。改變波浪週期 \(T\) 可得到不同之 \(k\) 值。規劃相對之浮體寬為 \(kb = 0.3 \sim 1.2\), 波浪尖銳度 \(ka = 0.05, 0.1\), 其中 \(a = H/2\) 為入射波振幅。計算例設定如下表：
+</p>
+
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-right" />
+
+<col  class="org-right" />
+
+<col  class="org-right" />
+
+<col  class="org-right" />
+
+<col  class="org-right" />
+
+<col  class="org-right" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-right">No.</th>
+<th scope="col" class="org-right">kb</th>
+<th scope="col" class="org-right">ka</th>
+<th scope="col" class="org-right">H (m)</th>
+<th scope="col" class="org-right">L (m)</th>
+<th scope="col" class="org-right">T (s)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-right">1</td>
+<td class="org-right">0.30</td>
+<td class="org-right">0.05</td>
+<td class="org-right">0.0333</td>
+<td class="org-right">2.0944</td>
+<td class="org-right">1.217</td>
+</tr>
+
+<tr>
+<td class="org-right">2</td>
+<td class="org-right">0.40</td>
+<td class="org-right">0.05</td>
+<td class="org-right">0.0250</td>
+<td class="org-right">1.5708</td>
+<td class="org-right">1.022</td>
+</tr>
+
+<tr>
+<td class="org-right">3</td>
+<td class="org-right">0.50</td>
+<td class="org-right">0.05</td>
+<td class="org-right">0.0200</td>
+<td class="org-right">1.2566</td>
+<td class="org-right">0.903</td>
+</tr>
+
+<tr>
+<td class="org-right">4</td>
+<td class="org-right">0.60</td>
+<td class="org-right">0.05</td>
+<td class="org-right">0.0167</td>
+<td class="org-right">1.0472</td>
+<td class="org-right">0.821</td>
+</tr>
+
+<tr>
+<td class="org-right">5</td>
+<td class="org-right">0.70</td>
+<td class="org-right">0.05</td>
+<td class="org-right">0.0143</td>
+<td class="org-right">0.8976</td>
+<td class="org-right">0.759</td>
+</tr>
+
+<tr>
+<td class="org-right">6</td>
+<td class="org-right">0.80</td>
+<td class="org-right">0.05</td>
+<td class="org-right">0.0125</td>
+<td class="org-right">0.7854</td>
+<td class="org-right">0.709</td>
+</tr>
+
+<tr>
+<td class="org-right">7</td>
+<td class="org-right">0.90</td>
+<td class="org-right">0.05</td>
+<td class="org-right">0.0111</td>
+<td class="org-right">0.6981</td>
+<td class="org-right">0.669</td>
+</tr>
+
+<tr>
+<td class="org-right">8</td>
+<td class="org-right">1.00</td>
+<td class="org-right">0.05</td>
+<td class="org-right">0.0100</td>
+<td class="org-right">0.6283</td>
+<td class="org-right">0.634</td>
+</tr>
+
+<tr>
+<td class="org-right">9</td>
+<td class="org-right">1.10</td>
+<td class="org-right">0.05</td>
+<td class="org-right">0.0091</td>
+<td class="org-right">0.5712</td>
+<td class="org-right">0.605</td>
+</tr>
+
+<tr>
+<td class="org-right">10</td>
+<td class="org-right">1.20</td>
+<td class="org-right">0.05</td>
+<td class="org-right">0.0083</td>
+<td class="org-right">0.5236</td>
+<td class="org-right">0.579</td>
+</tr>
+
+<tr>
+<td class="org-right">11</td>
+<td class="org-right">0.30</td>
+<td class="org-right">0.10</td>
+<td class="org-right">0.0667</td>
+<td class="org-right">2.0944</td>
+<td class="org-right">1.217</td>
+</tr>
+
+<tr>
+<td class="org-right">12</td>
+<td class="org-right">0.40</td>
+<td class="org-right">0.10</td>
+<td class="org-right">0.0500</td>
+<td class="org-right">1.5708</td>
+<td class="org-right">1.022</td>
+</tr>
+
+<tr>
+<td class="org-right">13</td>
+<td class="org-right">0.50</td>
+<td class="org-right">0.10</td>
+<td class="org-right">0.0400</td>
+<td class="org-right">1.2566</td>
+<td class="org-right">0.903</td>
+</tr>
+
+<tr>
+<td class="org-right">14</td>
+<td class="org-right">0.60</td>
+<td class="org-right">0.10</td>
+<td class="org-right">0.0333</td>
+<td class="org-right">1.0472</td>
+<td class="org-right">0.821</td>
+</tr>
+
+<tr>
+<td class="org-right">15</td>
+<td class="org-right">0.70</td>
+<td class="org-right">0.10</td>
+<td class="org-right">0.0286</td>
+<td class="org-right">0.8976</td>
+<td class="org-right">0.759</td>
+</tr>
+
+<tr>
+<td class="org-right">16</td>
+<td class="org-right">0.80</td>
+<td class="org-right">0.10</td>
+<td class="org-right">0.0250</td>
+<td class="org-right">0.7854</td>
+<td class="org-right">0.709</td>
+</tr>
+
+<tr>
+<td class="org-right">17</td>
+<td class="org-right">0.90</td>
+<td class="org-right">0.10</td>
+<td class="org-right">0.0222</td>
+<td class="org-right">0.6981</td>
+<td class="org-right">0.669</td>
+</tr>
+
+<tr>
+<td class="org-right">18</td>
+<td class="org-right">1.00</td>
+<td class="org-right">0.10</td>
+<td class="org-right">0.0200</td>
+<td class="org-right">0.6283</td>
+<td class="org-right">0.634</td>
+</tr>
+
+<tr>
+<td class="org-right">19</td>
+<td class="org-right">1.10</td>
+<td class="org-right">0.10</td>
+<td class="org-right">0.0182</td>
+<td class="org-right">0.5712</td>
+<td class="org-right">0.605</td>
+</tr>
+
+<tr>
+<td class="org-right">20</td>
+<td class="org-right">1.20</td>
+<td class="org-right">0.10</td>
+<td class="org-right">0.0167</td>
+<td class="org-right">0.5236</td>
+<td class="org-right">0.579</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+
+<div id="outline-container-org61473c0" class="outline-3">
+<h3 id="org61473c0"><span class="section-number-3">3.3.</span> 第二組 (較大波高)</h3>
+<div class="outline-text-3" id="text-3-3">
+<p>
+設定波浪尖銳度 \(ka = 0.1, 0.2\), 其餘條件如第一組。計算例設定如下表：
+</p>
+
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-right" />
+
+<col  class="org-right" />
+
+<col  class="org-right" />
+
+<col  class="org-right" />
+
+<col  class="org-right" />
+
+<col  class="org-right" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-right">No.</th>
+<th scope="col" class="org-right">kb</th>
+<th scope="col" class="org-right">ka</th>
+<th scope="col" class="org-right">H (m)</th>
+<th scope="col" class="org-right">L (m)</th>
+<th scope="col" class="org-right">T (s)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-right">21</td>
+<td class="org-right">0.30</td>
+<td class="org-right">0.20</td>
+<td class="org-right">0.1333</td>
+<td class="org-right">2.0944</td>
+<td class="org-right">1.217</td>
+</tr>
+
+<tr>
+<td class="org-right">22</td>
+<td class="org-right">0.40</td>
+<td class="org-right">0.20</td>
+<td class="org-right">0.1000</td>
+<td class="org-right">1.5708</td>
+<td class="org-right">1.022</td>
+</tr>
+
+<tr>
+<td class="org-right">23</td>
+<td class="org-right">0.50</td>
+<td class="org-right">0.20</td>
+<td class="org-right">0.0800</td>
+<td class="org-right">1.2566</td>
+<td class="org-right">0.903</td>
+</tr>
+
+<tr>
+<td class="org-right">24</td>
+<td class="org-right">0.60</td>
+<td class="org-right">0.20</td>
+<td class="org-right">0.0667</td>
+<td class="org-right">1.0472</td>
+<td class="org-right">0.821</td>
+</tr>
+
+<tr>
+<td class="org-right">25</td>
+<td class="org-right">0.70</td>
+<td class="org-right">0.20</td>
+<td class="org-right">0.0571</td>
+<td class="org-right">0.8976</td>
+<td class="org-right">0.759</td>
+</tr>
+
+<tr>
+<td class="org-right">26</td>
+<td class="org-right">0.80</td>
+<td class="org-right">0.20</td>
+<td class="org-right">0.0500</td>
+<td class="org-right">0.7854</td>
+<td class="org-right">0.709</td>
+</tr>
+
+<tr>
+<td class="org-right">27</td>
+<td class="org-right">0.90</td>
+<td class="org-right">0.20</td>
+<td class="org-right">0.0444</td>
+<td class="org-right">0.6981</td>
+<td class="org-right">0.669</td>
+</tr>
+
+<tr>
+<td class="org-right">28</td>
+<td class="org-right">1.00</td>
+<td class="org-right">0.20</td>
+<td class="org-right">0.0400</td>
+<td class="org-right">0.6283</td>
+<td class="org-right">0.634</td>
+</tr>
+
+<tr>
+<td class="org-right">29</td>
+<td class="org-right">1.10</td>
+<td class="org-right">0.20</td>
+<td class="org-right">0.0364</td>
+<td class="org-right">0.5712</td>
+<td class="org-right">0.605</td>
+</tr>
+
+<tr>
+<td class="org-right">30</td>
+<td class="org-right">1.20</td>
+<td class="org-right">0.20</td>
+<td class="org-right">0.0333</td>
+<td class="org-right">0.5236</td>
+<td class="org-right">0.579</td>
+</tr>
+
+<tr>
+<td class="org-right">31</td>
+<td class="org-right">0.30</td>
+<td class="org-right">0.50</td>
+<td class="org-right">0.3333</td>
+<td class="org-right">2.0944</td>
+<td class="org-right">1.217</td>
+</tr>
+
+<tr>
+<td class="org-right">32</td>
+<td class="org-right">0.40</td>
+<td class="org-right">0.50</td>
+<td class="org-right">0.2500</td>
+<td class="org-right">1.5708</td>
+<td class="org-right">1.022</td>
+</tr>
+
+<tr>
+<td class="org-right">33</td>
+<td class="org-right">0.50</td>
+<td class="org-right">0.50</td>
+<td class="org-right">0.2000</td>
+<td class="org-right">1.2566</td>
+<td class="org-right">0.903</td>
+</tr>
+
+<tr>
+<td class="org-right">34</td>
+<td class="org-right">0.60</td>
+<td class="org-right">0.50</td>
+<td class="org-right">0.1667</td>
+<td class="org-right">1.0472</td>
+<td class="org-right">0.821</td>
+</tr>
+
+<tr>
+<td class="org-right">35</td>
+<td class="org-right">0.70</td>
+<td class="org-right">0.50</td>
+<td class="org-right">0.1429</td>
+<td class="org-right">0.8976</td>
+<td class="org-right">0.759</td>
+</tr>
+
+<tr>
+<td class="org-right">36</td>
+<td class="org-right">0.80</td>
+<td class="org-right">0.50</td>
+<td class="org-right">0.1250</td>
+<td class="org-right">0.7854</td>
+<td class="org-right">0.709</td>
+</tr>
+
+<tr>
+<td class="org-right">37</td>
+<td class="org-right">0.90</td>
+<td class="org-right">0.50</td>
+<td class="org-right">0.1111</td>
+<td class="org-right">0.6981</td>
+<td class="org-right">0.669</td>
+</tr>
+
+<tr>
+<td class="org-right">38</td>
+<td class="org-right">1.00</td>
+<td class="org-right">0.50</td>
+<td class="org-right">0.1000</td>
+<td class="org-right">0.6283</td>
+<td class="org-right">0.634</td>
+</tr>
+
+<tr>
+<td class="org-right">39</td>
+<td class="org-right">1.10</td>
+<td class="org-right">0.50</td>
+<td class="org-right">0.0909</td>
+<td class="org-right">0.5712</td>
+<td class="org-right">0.605</td>
+</tr>
+
+<tr>
+<td class="org-right">40</td>
+<td class="org-right">1.20</td>
+<td class="org-right">0.50</td>
+<td class="org-right">0.0833</td>
+<td class="org-right">0.5236</td>
+<td class="org-right">0.579</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+
+<div id="outline-container-org1984d38" class="outline-3">
+<h3 id="org1984d38"><span class="section-number-3">3.4.</span> 第三組 (寬浮體)</h3>
+<div class="outline-text-3" id="text-3-4">
+<p>
+增加浮體寬度，設定半寬 \(b = 3d = 0.236~\mathrm{m}\), 其餘尺寸參數不變，靜水深仍為 \(h = 0.5~\mathrm{m}\):
+</p>
+
+<ul class="org-ul">
+<li>浮體寬深比 \(b/d = 3\)</li>
+<li>浮體出水/吃水深比 \(d'/d = 0.6794\)</li>
+<li>浮體寬度水深比 \(b/h = 0.472\)</li>
+<li>浮體吃水深與靜水深比 \(d/h = 0.1572\)</li>
+<li>繫纜導纜器 (fairlead, 與浮體連接處) \((x, y, z) = (\pm 0.236, \pm 0.1, -0.0736)~\mathrm{m}\)</li>
+</ul>
+
+<p>
+其他參數為：
+</p>
+<pre class="example">
+Water density rho_w = 1000.0 kg/m³
+Computed solid density rho_s = 595.455 kg/m³
+Geometric center z_c = -0.01260 m (measured from still water surface)
+Mass m = 7.41984 kg
+Ixx = 0.03551 kg·m²
+Iyy = 0.14853 kg·m²
+Izz = 0.16248 kg·m²
+</pre>
+
+
+<p>
+規劃相對之浮體寬為 \(kb = 0.3 \sim 1.2\), 波浪尖銳度 \(ka = 0.05, 0.1\), 其中 \(a = H/2\) 為入射波振幅。計算例設定如下表：
+</p>
+
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-right" />
+
+<col  class="org-right" />
+
+<col  class="org-right" />
+
+<col  class="org-right" />
+
+<col  class="org-right" />
+
+<col  class="org-right" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-right">No.</th>
+<th scope="col" class="org-right">kb</th>
+<th scope="col" class="org-right">ka</th>
+<th scope="col" class="org-right">H (m)</th>
+<th scope="col" class="org-right">L (m)</th>
+<th scope="col" class="org-right">T (s)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-right">41</td>
+<td class="org-right">0.30</td>
+<td class="org-right">0.05</td>
+<td class="org-right">0.0787</td>
+<td class="org-right">4.9428</td>
+<td class="org-right">2.374</td>
+</tr>
+
+<tr>
+<td class="org-right">42</td>
+<td class="org-right">0.40</td>
+<td class="org-right">0.05</td>
+<td class="org-right">0.0590</td>
+<td class="org-right">3.7071</td>
+<td class="org-right">1.855</td>
+</tr>
+
+<tr>
+<td class="org-right">43</td>
+<td class="org-right">0.50</td>
+<td class="org-right">0.05</td>
+<td class="org-right">0.0472</td>
+<td class="org-right">2.9657</td>
+<td class="org-right">1.555</td>
+</tr>
+
+<tr>
+<td class="org-right">44</td>
+<td class="org-right">0.60</td>
+<td class="org-right">0.05</td>
+<td class="org-right">0.0393</td>
+<td class="org-right">2.4714</td>
+<td class="org-right">1.361</td>
+</tr>
+
+<tr>
+<td class="org-right">45</td>
+<td class="org-right">0.70</td>
+<td class="org-right">0.05</td>
+<td class="org-right">0.0337</td>
+<td class="org-right">2.1183</td>
+<td class="org-right">1.226</td>
+</tr>
+
+<tr>
+<td class="org-right">46</td>
+<td class="org-right">0.80</td>
+<td class="org-right">0.05</td>
+<td class="org-right">0.0295</td>
+<td class="org-right">1.8535</td>
+<td class="org-right">1.127</td>
+</tr>
+
+<tr>
+<td class="org-right">47</td>
+<td class="org-right">0.90</td>
+<td class="org-right">0.05</td>
+<td class="org-right">0.0262</td>
+<td class="org-right">1.6476</td>
+<td class="org-right">1.050</td>
+</tr>
+
+<tr>
+<td class="org-right">48</td>
+<td class="org-right">1.00</td>
+<td class="org-right">0.05</td>
+<td class="org-right">0.0236</td>
+<td class="org-right">1.4828</td>
+<td class="org-right">0.989</td>
+</tr>
+
+<tr>
+<td class="org-right">49</td>
+<td class="org-right">1.10</td>
+<td class="org-right">0.05</td>
+<td class="org-right">0.0215</td>
+<td class="org-right">1.3480</td>
+<td class="org-right">0.938</td>
+</tr>
+
+<tr>
+<td class="org-right">50</td>
+<td class="org-right">1.20</td>
+<td class="org-right">0.05</td>
+<td class="org-right">0.0197</td>
+<td class="org-right">1.2357</td>
+<td class="org-right">0.895</td>
+</tr>
+
+<tr>
+<td class="org-right">51</td>
+<td class="org-right">0.30</td>
+<td class="org-right">0.10</td>
+<td class="org-right">0.1573</td>
+<td class="org-right">4.9428</td>
+<td class="org-right">2.374</td>
+</tr>
+
+<tr>
+<td class="org-right">52</td>
+<td class="org-right">0.40</td>
+<td class="org-right">0.10</td>
+<td class="org-right">0.1180</td>
+<td class="org-right">3.7071</td>
+<td class="org-right">1.855</td>
+</tr>
+
+<tr>
+<td class="org-right">53</td>
+<td class="org-right">0.50</td>
+<td class="org-right">0.10</td>
+<td class="org-right">0.0944</td>
+<td class="org-right">2.9657</td>
+<td class="org-right">1.555</td>
+</tr>
+
+<tr>
+<td class="org-right">54</td>
+<td class="org-right">0.60</td>
+<td class="org-right">0.10</td>
+<td class="org-right">0.0787</td>
+<td class="org-right">2.4714</td>
+<td class="org-right">1.361</td>
+</tr>
+
+<tr>
+<td class="org-right">55</td>
+<td class="org-right">0.70</td>
+<td class="org-right">0.10</td>
+<td class="org-right">0.0674</td>
+<td class="org-right">2.1183</td>
+<td class="org-right">1.226</td>
+</tr>
+
+<tr>
+<td class="org-right">56</td>
+<td class="org-right">0.80</td>
+<td class="org-right">0.10</td>
+<td class="org-right">0.0590</td>
+<td class="org-right">1.8535</td>
+<td class="org-right">1.127</td>
+</tr>
+
+<tr>
+<td class="org-right">57</td>
+<td class="org-right">0.90</td>
+<td class="org-right">0.10</td>
+<td class="org-right">0.0524</td>
+<td class="org-right">1.6476</td>
+<td class="org-right">1.050</td>
+</tr>
+
+<tr>
+<td class="org-right">58</td>
+<td class="org-right">1.00</td>
+<td class="org-right">0.10</td>
+<td class="org-right">0.0472</td>
+<td class="org-right">1.4828</td>
+<td class="org-right">0.989</td>
+</tr>
+
+<tr>
+<td class="org-right">59</td>
+<td class="org-right">1.10</td>
+<td class="org-right">0.10</td>
+<td class="org-right">0.0429</td>
+<td class="org-right">1.3480</td>
+<td class="org-right">0.938</td>
+</tr>
+
+<tr>
+<td class="org-right">60</td>
+<td class="org-right">1.20</td>
+<td class="org-right">0.10</td>
+<td class="org-right">0.0393</td>
+<td class="org-right">1.2357</td>
+<td class="org-right">0.895</td>
+</tr>
+</tbody>
+</table>
+
+<p>
+計算案例 (No. 41) 設定檔見 <code>tutorials/case_41</code> 。初步計算成果如下：
+</p>
+
+
+<div id="org3cbd7e4" class="figure">
+<p><img src="./docs/img/case_41FFT_time_series.png" alt="case_41FFT_time_series.png" width="600" />
+</p>
+<p><span class="figure-number">Figure 2: </span>Case No. 41 計算結果。</p>
+</div>
+
+<video controls width="640">
+  <source src="./docs/video/case41.mp4" type="video/mp4">
+  Your browser does not support the video tag.
+</video>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgd963d8c" class="outline-2">
+<h2 id="orgd963d8c"><span class="section-number-2">4.</span> 波浪參數意義與物理說明</h2>
+<div class="outline-text-2" id="text-4">
+</div>
+<div id="outline-container-orga559954" class="outline-3">
+<h3 id="orga559954"><span class="section-number-3">4.1.</span> 波浪週期 T</h3>
+<div class="outline-text-3" id="text-4-1">
+<p>
+波浪週期為相鄰波峰通過同一點所需的時間，決定波浪頻率與能量分佈。
+</p>
+<ul class="org-ul">
+<li>短週期波 (\(T < 1.4~\mathrm{s}\)): 波浪變化快，主要影響 <b>surge</b> 運動；</li>
+<li>長週期波 (\(T > 1.6~\mathrm{s}\)): 波浪能量集中，容易引發浮體共振。</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-orgcdd4712" class="outline-3">
+<h3 id="orgcdd4712"><span class="section-number-3">4.2.</span> 波高 H</h3>
+<div class="outline-text-3" id="text-4-2">
+<p>
+波高為波峰與波谷之間的垂直距離，反映波能強度。波高越大，浮體受力與運動幅度越明顯。
+</p>
+<ul class="org-ul">
+<li>小波高：系統近似線性，可用於驗證理論模型。</li>
+<li>大波高：可能產生非線性效應，例如阻尼增加或漂移運動。</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org8755f90" class="outline-3">
+<h3 id="org8755f90"><span class="section-number-3">4.3.</span> 波長 L</h3>
+<div class="outline-text-3" id="text-4-3">
+<p>
+波長代表波峰與波峰之間的水平距離，與週期相關，由頻散關係：
+</p>
+
+<p>
+\[
+\omega^2 = g k \tanh (kh)
+\]
+</p>
+
+<p>
+可求得 \(L = 2\pi / k\)。波長越長，波浪越「平緩」，對浮體的影響主要為低頻大振幅運動。
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgf11a7be" class="outline-3">
+<h3 id="orgf11a7be"><span class="section-number-3">4.4.</span> 波陡度 H/L</h3>
+<div class="outline-text-3" id="text-4-4">
+<p>
+波陡度描述波浪的相對「尖銳程度」，在水力學上常用來判斷波浪是否可能破碎。一般而言：
+</p>
+<ul class="org-ul">
+<li>\(H/L < 0.02\) 為「緩波」；</li>
+<li>\(0.02 < H/L < 0.05\) 為「中等波」；</li>
+<li>\(H/L > 0.05\) 則為「陡波」區域，數值模擬需特別注意穩定性。</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org6d79d87" class="outline-3">
+<h3 id="org6d79d87"><span class="section-number-3">4.5.</span> 水深 h</h3>
+<div class="outline-text-3" id="text-4-5">
+<p>
+水深影響波的傳播速度與波壓分佈。若 \(kh > \pi\) 為深水波；若 \(kh < \pi/10\) 為淺水波。本研究之 \(h = 0.6~\mathrm{m}\)，屬於中等深度（intermediate depth），適合觀察深水與淺水效應交替之情況。
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org093494e" class="outline-2">
+<h2 id="org093494e"><span class="section-number-2">5.</span> RAO 的意義與計算</h2>
+<div class="outline-text-2" id="text-5">
+</div>
+<div id="outline-container-orgd838979" class="outline-3">
+<h3 id="orgd838979"><span class="section-number-3">5.1.</span> RAO 的基本定義</h3>
+<div class="outline-text-3" id="text-5-1">
+<p>
+RAO（Response Amplitude Operator）為浮體在規律波作用下之線性響應特性，表示浮體運動振幅與入射波振幅之比值。
+</p>
+
+<p>
+若入射波為
+</p>
+
+<p>
+\[
+\eta(t) = A_I \cos(\omega t)
+\]
+</p>
+
+<p>
+其中 \(A_I = H/2\) 為波振幅, \(\omega = 2\pi/T\) 為角頻率，則浮體運動可表示為：
+</p>
+
+<p>
+\[
+\xi(t) = \hat{\xi} \cos(\omega t - \phi)
+\]
+</p>
+
+<p>
+RAO 定義為：
+</p>
+
+<p>
+\[
+\mathrm{RAO}(\omega) = \frac{\hat{\xi}}{A_I} e^{-i\phi}
+\]
+</p>
+
+<p>
+常以其幅值與相位分別表示：
+</p>
+
+<p>
+\[
+\left|\mathrm{RAO}\right| = \frac{\hat{\xi}}{A_I}, \quad \angle\mathrm{RAO} = \phi
+\]
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgf29970e" class="outline-3">
+<h3 id="orgf29970e"><span class="section-number-3">5.2.</span> 三個自由度的 RAO 定義</h3>
+<div class="outline-text-3" id="text-5-2">
+<p>
+定義為：
+</p>
+<ul class="org-ul">
+<li>Surge (沿 \(x\) 方向之水平運動): \(\left|\mathrm{RAO}_x \right| = \hat{x}/A_I\)</li>
+<li>Heave (沿 \(z\) 方向之垂直運動): \(\left|\mathrm{RAO}_z \right| = \hat{z}/A_I\)</li>
+<li>Pitch (沿 \(y\) 方向之角度轉動，順時針為正): \(\left|\mathrm{RAO}_\theta\right| = (\hat{\theta} \times b)/A_I\)</li>
+</ul>
+
+<p>
+其中：
+</p>
+<ul class="org-ul">
+<li>\(A_I\): 入射波振幅 (即波高的一半, \(H/2\))</li>
+<li>\(b\): 浮體半寬</li>
+<li>\(\hat{x}, \hat{z}\): Surge 與 heave 振幅 (m)</li>
+<li>\(\hat{\theta}\): Pitch 角度振幅 (rad)</li>
+</ul>
+
+<p>
+註：Pitch RAO 的物理意義：將角度振幅乘以半寬，可換算為浮體兩端的升降位移振幅，再與入射波振幅相比。
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgf7e2722" class="outline-3">
+<h3 id="orgf7e2722"><span class="section-number-3">5.3.</span> 實際計算步驟</h3>
+<div class="outline-text-3" id="text-5-3">
+</div>
+<div id="outline-container-orgc9aac7c" class="outline-4">
+<h4 id="orgc9aac7c"><span class="section-number-4">5.3.1.</span> 輸入波參數</h4>
+<div class="outline-text-4" id="text-5-3-1">
+<p>
+已知波高 \(H\), 週期 \(T\), 求波振幅 \(A_I = H/2\), 頻率 \(f = 1/T\)。
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgced4ae5" class="outline-4">
+<h4 id="orgced4ae5"><span class="section-number-4">5.3.2.</span> FFT 分析</h4>
+<div class="outline-text-4" id="text-5-3-2">
+<p>
+對浮體各自由度時間序列（surge, heave, pitch）進行 FFT, 確認主頻是否與理論頻率一致。
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgca3c6f2" class="outline-4">
+<h4 id="orgca3c6f2"><span class="section-number-4">5.3.3.</span> 最小平方法擬合</h4>
+<div class="outline-text-4" id="text-5-3-3">
+<p>
+在穩態時間段，使用理論頻率 \(f=1/T\) 擬合：
+</p>
+
+<p>
+\[
+\xi(t) = c + A\cos(2\pi f t) + B\sin(2\pi f t)
+\]
+</p>
+
+<p>
+得：
+</p>
+
+<p>
+\[
+\hat{\xi} = \sqrt{A^2 + B^2}, \quad \phi = \tan^{-1}\left(\frac{B}{A}\right)
+\]
+</p>
+</div>
+</div>
+
+<div id="outline-container-org58e4974" class="outline-4">
+<h4 id="org58e4974"><span class="section-number-4">5.3.4.</span> 計算 RAO</h4>
+<div class="outline-text-4" id="text-5-3-4">
+<ul class="org-ul">
+<li>Surge/Heave: \(\left|\mathrm{RAO}\right| = \hat{\xi}/A_I\)</li>
+<li>Pitch: \(\left|\mathrm{RAO}_\theta\right| = \hat{\theta} b / A_I\)</li>
+</ul>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org7789feb" class="outline-3">
+<h3 id="org7789feb"><span class="section-number-3">5.4.</span> 結果解讀</h3>
+<div class="outline-text-3" id="text-5-4">
+<ul class="org-ul">
+<li>\(\left|\mathrm{RAO}\right| > 1\): 浮體運動振幅大於入射波，可能有共振效應。</li>
+<li>\(\left|\mathrm{RAO}\right| < 1\): 浮體運動受阻尼抑制。</li>
+<li>相位角 \(\phi\) 表示運動相對於波面的相位差：
+<ul class="org-ul">
+<li>\(\phi = 0°\): 運動與波面同相。</li>
+<li>\(\phi = 90°\): 運動落後波面四分之一週期。</li>
+</ul></li>
+</ul>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org99773aa" class="outline-2">
+<h2 id="org99773aa"><span class="section-number-2">6.</span> 實驗步驟建議</h2>
+<div class="outline-text-2" id="text-6">
+<ol class="org-ol">
+<li>先選定基準案例（T = 1.8 s, H = 0.12 m），確認模擬可正常收斂；</li>
+<li>再依序執行各週期的掃描；</li>
+<li>模擬完成後，取浮體 3DoF 運動時間序列；</li>
+<li>計算各自由度的 RAO（振幅比與相位差）;</li>
+<li>繪製 RAO vs. 週期圖，觀察共振行為；</li>
+<li>彙整結果，分析波浪頻率與振幅對浮體動態特性的影響。</li>
+</ol>
+</div>
+</div>
+
+<div id="outline-container-orgaa2bbbf" class="outline-2">
+<h2 id="orgaa2bbbf"><span class="section-number-2">7.</span> 分析與討論方向</h2>
+<div class="outline-text-2" id="text-7">
+<ul class="org-ul">
+<li>不同波陡度對浮體運動的非線性效應；</li>
+<li>短波與長波下的共振頻率差異；</li>
+<li>吃水深度與繫泊剛度對 RAO 峰值的影響；</li>
+<li>CFD 模擬與理論模型的比較（例如 Morison 方程或線性勢流理論）。</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-orgaa36a15" class="outline-2">
+<h2 id="orgaa36a15"><span class="section-number-2">8.</span> 學習重點</h2>
+<div class="outline-text-2" id="text-8">
+<ul class="org-ul">
+<li>理解浮體受波激勵運動的機制；</li>
+<li>熟悉 OpenFOAM 與 foamMooring 的模擬流程；</li>
+<li>學習如何設計與執行參數掃描；</li>
+<li>具備後處理分析（RAO 計算、頻譜分析）的能力；</li>
+<li>建立對海洋結構物動力行為的直觀理解。</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org27616e9" class="outline-2">
+<h2 id="org27616e9"><span class="section-number-2">9.</span> 延伸方向</h2>
+<div class="outline-text-2" id="text-9">
+<p>
+完成本階段後，可考慮進一步主題：
+</p>
+<ol class="org-ol">
+<li>探討繫泊剛度對 RAO 曲線的變化；</li>
+<li>研究多浮體間的水動力干涉；</li>
+<li>考慮風浪同時作用（加入定常風載）；</li>
+<li>嘗試使用不同繫泊模型（MoorDyn vs MAP++）比較。</li>
+</ol>
+</div>
+</div>
+
+<div id="outline-container-org8d4bda8" class="outline-2">
+<h2 id="org8d4bda8"><span class="section-number-2">10.</span> Overset 計算執行</h2>
+<div class="outline-text-2" id="text-10">
+</div>
+<div id="outline-container-org9f9007b" class="outline-3">
+<h3 id="org9f9007b"><span class="section-number-3">10.1.</span> 計算指令</h3>
+<div class="outline-text-3" id="text-10-1">
+<p>
+在案例主目錄中執行 <code>./Allrun.pre</code>, 可執行平行計算。如需進行單核心計算，則將其修改為
+</p>
+
+<div class="org-src-container">
+<pre class="src src-bash"><span style="color: #5B6268;">#</span><span style="color: #5B6268;">!/bin/</span><span style="color: #51afef;">sh</span>
+<span style="color: #ECBE7B;">cd</span> <span style="color: #98be65;">"</span><span style="color: #a9a1e1;">$</span><span style="color: #dcaeea;">{0%/*}</span><span style="color: #98be65;">"</span> || <span style="color: #51afef;">exit</span>                                <span style="color: #5B6268;"># </span><span style="color: #5B6268;">Run from this directory</span>
+. $<span style="color: #51afef;">{</span><span style="color: #dcaeea;">WM_PROJECT_DIR</span>:?<span style="color: #51afef;">}</span>/bin/tools/RunFunctions        <span style="color: #5B6268;"># </span><span style="color: #5B6268;">Tutorial run functions</span>
+<span style="color: #5B6268;">#</span><span style="color: #5B6268;">------------------------------------------------------------------------------</span>
+
+<span style="color: #5B6268;"># </span><span style="color: #5B6268;">Mesh floating body</span>
+<span style="color: #51afef;">(</span><span style="color: #ECBE7B;">cd</span> floatingBody &amp;&amp; ./Allrun.pre<span style="color: #51afef;">)</span>
+
+<span style="color: #5B6268;">## </span><span style="color: #5B6268;">Add background mesh (Parallel computing)</span>
+<span style="color: #5B6268;">#</span><span style="color: #5B6268;">(</span><span style="color: #5B6268;">cd</span><span style="color: #5B6268;"> background  &amp;&amp; ./Allrun.pre 1)</span>
+
+<span style="color: #5B6268;"># </span><span style="color: #5B6268;">Add background mesh (Single-Core computing)</span>
+<span style="color: #51afef;">(</span><span style="color: #ECBE7B;">cd</span> background  &amp;&amp; ./Allrun.pre<span style="color: #51afef;">)</span>
+
+<span style="color: #5B6268;">#</span><span style="color: #5B6268;">------------------------------------------------------------------------------</span>
+
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgfdaaa86" class="outline-3">
+<h3 id="orgfdaaa86"><span class="section-number-3">10.2.</span> 平行計算設定</h3>
+<div class="outline-text-3" id="text-10-2">
+<p>
+以 <code>tutorials/overset_parallel/</code> 為例：
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgcc7c710" class="outline-3">
+<h3 id="orgcc7c710"><span class="section-number-3">10.3.</span> 計算分割數</h3>
+<div class="outline-text-3" id="text-10-3">
+<p>
+設定為 4 區，可於 <code>background/system/decomposeParDict</code> 中設定。
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org27ffd72" class="outline-2">
+<h2 id="org27ffd72"><span class="section-number-2">11.</span> ParaView 繪圖與前後處理</h2>
+<div class="outline-text-2" id="text-11">
+</div>
+<div id="outline-container-org54c2f6f" class="outline-3">
+<h3 id="org54c2f6f"><span class="section-number-3">11.1.</span> ParaView 繪圖</h3>
+<div class="outline-text-3" id="text-11-1">
+</div>
+<div id="outline-container-org816391d" class="outline-4">
+<h4 id="org816391d"><span class="section-number-4">11.1.1.</span> 直接開啟 <code>state</code> 檔</h4>
+<div class="outline-text-4" id="text-11-1-1">
+<p>
+在 <code>background</code> 資料夾中的 <code>FV.pvsm</code> 檔，為 ParaView 之 State 檔案，可以在 OpenFOAM 中使用 <code>load state</code> 選項開啟，即可得到已經設定好的繪圖頁面。
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgfbe50b1" class="outline-4">
+<h4 id="orgfbe50b1"><span class="section-number-4">11.1.2.</span> 波浪流場與物體繪製流程</h4>
+<div class="outline-text-4" id="text-11-1-2">
+<p>
+如想重新繪製，可依下列步驟。
+</p>
+
+<ol class="org-ol">
+<li><p>
+開啟 <code>aa.foam</code> 檔案：
+</p>
+<div class="org-src-container">
+<pre class="src src-bash">   paraview aa.foam
+</pre>
+</div></li>
+
+<li>如要繪製動壓場，可選擇 <code>p_rgh</code> 並使用 <code>Surface</code> 繪製。</li>
+
+<li>欲分離出物體，需透過 <code>Threshold</code> 工具：
+
+<ol class="org-ol">
+<li>從 <code>Pipeline Browser</code> 處，在 <code>aa.foam</code> 點選 <code>Threshold</code>. 出現 <code>Threshold 1</code> 。在 <code>Threshold 1</code> 中的 <code>Properties</code> 之 <code>Scalars</code> 選擇 <code>ZoneID</code>, 並設定其值之 <code>Minimum = 0</code>, <code>Maximum = 0</code> 。顯示此 <code>Threshold 1</code> 並關閉 <code>aa.foam</code>, 可顯示出背景流體。</li>
+
+<li>在 <code>Threshold 1</code> 中再做一次 <code>Threshold</code> 工具，出現 <code>Threshold 2</code> 。在 <code>Threshold 2</code> 處之 <code>Properties</code> 之 <code>Scalars</code> 選擇 <code>cellTypes</code>, 設定值 <code>Minimum = 0</code>, <code>Maximum = 1</code> 。開啟 <code>Threshold 2</code> 並關閉 <code>Threshold 1</code>, 可出現扣除浮體網格之背景流場。</li>
+
+<li>在 <code>aa.foam</code> 點選 <code>Threshold</code>, 出現 <code>Threshold 3</code> 。在 <code>Threshold 3</code> 中的 <code>Properties</code> 之 <code>Scalars</code> 選擇 <code>ZoneID</code>, 並設定其值之 <code>Minimum = 1</code>, <code>Maximum = 1</code> 。點開 <code>Advanced Properties</code>, 在 <code>Transforming</code> 中設定 <code>Translation = (0, -0.2, 0)</code> 。顯示此 <code>Threshold 3</code> 可出現浮體附近的流場。</li>
+
+<li>僅開啟 <code>Threshold2</code> 與 <code>Threshold3</code>, 並在 <code>Orientation Axes</code> 中點選 <code>Camera Paralle Projection</code>, 可出現浮體被挖空之波浪流場。</li>
+</ol></li>
+</ol>
+</div>
+</div>
+
+<div id="outline-container-orge9b1900" class="outline-4">
+<h4 id="orge9b1900"><span class="section-number-4">11.1.3.</span> 繪製繫纜線</h4>
+<div class="outline-text-4" id="text-11-1-3">
+<ol class="org-ol">
+<li><p>
+在 ParaView 中開啟纜線的 VTK 檔。以 Overset 案例為例，VTK 檔位於
+</p>
+<div class="org-src-container">
+<pre class="src src-bash">   background/Mooring/VTK/mdv2_pt.pvd
+</pre>
+</div></li>
+
+<li>在 <code>Pipeline Browser</code> 中點選 <code>mdv2_pt.vtk.pvd</code>, 使用 <code>Transforming</code> 將纜線平移到與浮體一樣的位置。</li>
+</ol>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orga3d7608" class="outline-3">
+<h3 id="orga3d7608"><span class="section-number-3">11.2.</span> ParaView 動畫輸出</h3>
+<div class="outline-text-3" id="text-11-2">
+</div>
+<div id="outline-container-orgc91c88a" class="outline-4">
+<h4 id="orgc91c88a"><span class="section-number-4">11.2.1.</span> 安裝 ffmpeg</h4>
+<div class="outline-text-4" id="text-11-2-1">
+<p>
+若系統尚未安裝 ffmpeg，可於終端機執行以下指令安裝：
+</p>
+<div class="org-src-container">
+<pre class="src src-bash"><span style="color: #ECBE7B;">sudo</span> apt update
+<span style="color: #ECBE7B;">sudo</span> apt install ffmpeg -y
+</pre>
+</div>
+
+<p>
+安裝完成後可輸入以下命令檢查版本：
+</p>
+<div class="org-src-container">
+<pre class="src src-bash">ffmpeg -version
+</pre>
+</div>
+
+<p>
+若顯示版本號 (例如 <code>ffmpeg version 6.x</code>)，即表示安裝成功。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org0151763" class="outline-4">
+<h4 id="org0151763"><span class="section-number-4">11.2.2.</span> OpenFOAM 輸出動畫影格</h4>
+<div class="outline-text-4" id="text-11-2-2">
+<p>
+在 OpenFOAM 中開啟計算成果圖，執行以下步驟：
+</p>
+<ol class="org-ol">
+<li>點選 File → Save Animation。</li>
+<li>在 <b>File type</b> 中選擇 <b><b>PNG files</b></b> (或 JPEG)。</li>
+<li><p>
+設定輸出路徑，例如輸出至新增目錄 <code>animation</code> 中:
+</p>
+<pre class="example" id="org21ded7c">
+   /home/user/foam_case/animation/frame_####.png
+</pre>
+<p>
+ParaView 會自動輸出連續編號的影格，如 <code>frame_0000.png</code>, <code>frame_0001.png</code>, &#x2026;
+</p></li>
+<li>可調整：
+<ul class="org-ul">
+<li>Frame rate (FPS)：建議 10–30 fps</li>
+<li>Resolution：如 1920×1080</li>
+<li>Frame window：選擇輸出時間範圍</li>
+</ul></li>
+<li>按下 <b><b>OK</b></b> 開始輸出。</li>
+</ol>
+</div>
+</div>
+
+<div id="outline-container-orgbe0dd2e" class="outline-4">
+<h4 id="orgbe0dd2e"><span class="section-number-4">11.2.3.</span> 使用 ffmpeg 合成影片</h4>
+<div class="outline-text-4" id="text-11-2-3">
+<p>
+在終端機中進入影格資料夾：
+</p>
+<div class="org-src-container">
+<pre class="src src-bash"><span style="color: #ECBE7B;">cd</span> /home/user/foam_case/animation
+</pre>
+</div>
+<p>
+若連續編號的影格檔案為 <code>frame_0000.png</code>, <code>frame_0001.png</code>, &#x2026;, 執行以下指令產生影片：
+</p>
+<div class="org-src-container">
+<pre class="src src-bash">ffmpeg -framerate <span style="color: #da8548; font-weight: bold;">20</span> -i frame_%04d.png -c:v libx264 -pix_fmt yuv420p animation.mp4
+</pre>
+</div>
+
+<p>
+參數說明：
+</p>
+<ul class="org-ul">
+<li><code>-framerate 20</code>: 播放速率 20 幀/秒。</li>
+<li><code>-i frame_%04d.png</code>: 輸入影格檔案格式。</li>
+<li><code>-c:v libx264</code>: 使用 H.264 影片編碼。</li>
+<li><code>-pix_fmt yuv420p</code>: 確保通用播放器皆可播放。</li>
+</ul>
+
+<p>
+若連續編號的影格檔案為 <code>frame.0000.png</code>, <code>frame.0001.png</code>, &#x2026;, 則執行以下指令產生影片：
+</p>
+<div class="org-src-container">
+<pre class="src src-bash">ffmpeg -framerate <span style="color: #da8548; font-weight: bold;">20</span> -i frame.%04d.png -c:v libx264 -pix_fmt yuv420p animation.mp4
+</pre>
+</div>
+</div>
+</div>
+
+
+<div id="outline-container-orgbeb97d6" class="outline-4">
+<h4 id="orgbeb97d6"><span class="section-number-4">11.2.4.</span> 可選：影片壓縮與縮放</h4>
+<div class="outline-text-4" id="text-11-2-4">
+<p>
+若輸出影片過大，可加入壓縮參數：
+</p>
+<div class="org-src-container">
+<pre class="src src-bash">ffmpeg -framerate <span style="color: #da8548; font-weight: bold;">15</span> -i frame_%04d.png -vf <span style="color: #98be65;">"scale=1280:-1"</span> -c:v libx264 -crf <span style="color: #da8548; font-weight: bold;">23</span> animation_compressed.mp4
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgccfb34a" class="outline-4">
+<h4 id="orgccfb34a"><span class="section-number-4">11.2.5.</span> 提示</h4>
+<div class="outline-text-4" id="text-11-2-5">
+<ul class="org-ul">
+<li>若影格輸出過慢，可降低解析度或只輸出關鍵時間步。</li>
+<li>可於 ParaView 的 View → Memory Inspector 檢查資源使用狀況。</li>
+<li><p>
+若需循環播放影片，可在 ffmpeg 加上：
+</p>
+<div class="org-src-container">
+<pre class="src src-bash">  ffmpeg -stream_loop -1 -i animation.mp4 output_loop.mp4
+</pre>
+</div></li>
+</ul>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org4f0cb60" class="outline-3">
+<h3 id="org4f0cb60"><span class="section-number-3">11.3.</span> 前、後處理之 Python 程式碼</h3>
+<div class="outline-text-3" id="text-11-3">
+<p>
+前、後處理之 Python 程式碼 (Jupyter Notebook) <a href="./tools/prePostProcessing.ipynb">prePostProcessing.ipynb</a> 可進行以下計算與繪圖：
+</p>
+
+<ol class="org-ol">
+<li>輸入波浪與水槽參數，計算建議之 <code>endTime</code> 值。</li>
+<li>繪出水面高程隨時間變化圖，其中無因次參數為入射波振幅及波浪週期。</li>
+<li>繪出浮體之 3DoF 無因次振幅時間變化圖。</li>
+<li>利用快速傅立葉轉換 (FFT) 與最小平方法擬合計算 RAO。</li>
+<li>繪出繫纜錨定張力隨時間變化圖。</li>
+</ol>
+
+<p>
+使用時，將 <a href="./tools/prePostProcessing.ipynb">prePostProcessing.ipynb</a> 複製到計算例之 <code>background</code> 資料夾，使用 Jupyter Notebook 開啟並逐步執行。此程式集可自動將 <code>log.overInterDyMFoam</code> 複製到 <code>Plots</code> 資料夾，並執行 <code>extractMulti.sh</code> 進行 3DoF 位移量之擷取。所繪圖形均存放於 <code>Plots</code> 資料夾。
+</p>
+
+<p>
+程式碼放置位置：
+</p>
+
+<ol class="org-ol">
+<li><a href="./tools/prePostProcessing.ipynb">prePostProcessing.ipynb</a> 放置於 <code>background/</code> 中。</li>
+<li><a href="./tools/extractMulti.sh">extractMulti.sh</a> 放置於 <code>background/Plots/</code> 中。</li>
+</ol>
+
+<p>
+相關位置如下：
+</p>
+<pre class="example">
+case01/
+└── background/
+    ├── prePostProcessing.ipynb (在此目錄下執行即可)
+    ├── log.overInterDyMFoam
+    ├── ...
+    └── Plots/
+        ├── extractMulti.sh
+        ├── log.overInterDyMFoam (由background/ 中複製過來)
+        ├── ***.pdf (圖檔)
+        └── logs/
+            ├── t_vs_CoM (質心座標)
+            ├── t_vs_orientation (方向角)
+            ├── t_vs_linearV (速度)
+            └── t_vs_angularV (角速度)
+</pre>
+</div>
+</div>
+
+<div id="outline-container-org89f882e" class="outline-3">
+<h3 id="org89f882e"><span class="section-number-3">11.4.</span> 附註： Jupyter Notebook 安裝方法</h3>
+<div class="outline-text-3" id="text-11-4">
+<p>
+如電腦中有安裝 Anaconda, 即可在 <b>Anaconda Navigator</b> 中開啟 Jupyter Notebook。
+</p>
+
+<p>
+Anaconda 的安裝教學，可參見此連結：<a href="https://simplelearn.tw/anaconda-3-intro-and-installation-guide/">https://simplelearn.tw/anaconda-3-intro-and-installation-guide/</a>
+</p>
+
+<p>
+Jupyter Notebook 的完整介紹，可參見此<a href="https://medium.com/ai-for-k12/jupyter-notebook-%E5%AE%8C%E6%95%B4%E4%BB%8B%E7%B4%B9-%E5%AE%89%E8%A3%9D%E5%8F%8A%E4%BD%BF%E7%94%A8%E8%AA%AA%E6%98%8E-846b5432f044">連結</a>。
+</p>
+</div>
+</div>
+</div>
+<div id="outline-container-org4b50bc3" class="outline-2">
+<h2 id="org4b50bc3"><span class="section-number-2">12.</span> 成果報告</h2>
+<div class="outline-text-2" id="text-12">
+</div>
+<div id="outline-container-org692e517" class="outline-3">
+<h3 id="org692e517"><span class="section-number-3">12.1.</span> 內容架構</h3>
+<div class="outline-text-3" id="text-12-1">
+<ul class="org-ul">
+<li>摘要</li>
+<li>1 研究背景及目的
+<ul class="org-ul">
+<li>1.1 研究背景與動機</li>
+<li>1.2 文獻回顧</li>
+<li>1.3 研究目的與方法</li>
+</ul></li>
+<li>基本方程式與數值方法
+<ul class="org-ul">
+<li>基本方程式 (Chen and Hall 2022, Sec. 2)</li>
+<li>數值模式簡介
+<ul class="org-ul">
+<li>OpenFOAM 簡介</li>
+<li>繫纜系統工具庫 foamMooring 簡介 (Chen and Hall 2022, Che et al. 2024)</li>
+</ul></li>
+</ul></li>
+<li>模式設置與驗證
+<ul class="org-ul">
+<li>模式設置</li>
+<li>模式驗證</li>
+</ul></li>
+<li>成果分析
+<ul class="org-ul">
+<li>計算案例說明</li>
+<li>分析方法簡介
+<ul class="org-ul">
+<li>RAO 定義</li>
+<li>FFT 之主頻振幅分析</li>
+</ul></li>
+<li>波浪條件之效應
+<ul class="org-ul">
+<li>RAO 分析</li>
+<li>纜繩張力分析</li>
+</ul></li>
+<li>浮體寬度之效應
+<ul class="org-ul">
+<li>RAO 分析</li>
+<li>纜繩張力分析</li>
+</ul></li>
+</ul></li>
+<li>結論與討論</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="date">Date: 2025 年 10 月</p>
+<p class="author">Author: Mengyu Lin</p>
+<p class="date">Created: 2025-11-11 Tue 18:25</p>
+</div>
+</body>
+</html>

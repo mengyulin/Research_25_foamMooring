@@ -237,6 +237,8 @@ Izz = 0.16248 kg·m²
 #+NAME: fig:case41
 [[./docs/img/case_41FFT_time_series.png]]
 
+[[file:docs/video/case41.mp4][▶ 在 GitHub 上播放影片]
+
 #+BEGIN_EXPORT html
 <video controls width="640">
   <source src="./docs/video/case41.mp4" type="video/mp4">
