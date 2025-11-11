@@ -557,10 +557,10 @@ Jupyter Notebook 的完整介紹，可參見此[[https://medium.com/ai-for-k12/j
   - 1.2 文獻回顧
   - 1.3 研究目的與方法
 - 基本方程式與數值方法
-  - 基本方程式
+  - 基本方程式 (Chen and Hall 2022, Sec. 2)
   - 數值模式簡介
     - OpenFOAM 簡介
-    - 繫纜系統工具庫 foamMooring 簡介
+    - 繫纜系統工具庫 foamMooring 簡介 (Chen and Hall 2022, Che et al. 2024)
 - 模式設置與驗證
   - 模式設置
   - 模式驗證
@@ -575,4 +575,4 @@ Jupyter Notebook 的完整介紹，可參見此[[https://medium.com/ai-for-k12/j
   - 浮體寬度之效應
     - RAO 分析
     - 纜繩張力分析
-  - 結論與討論
+- 結論與討論
