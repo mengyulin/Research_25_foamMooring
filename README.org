@@ -231,7 +231,11 @@ Izz = 0.16248 kg·m²
 
 計算案例 (No. 41) 設定檔見 ~tutorials/case_41~ 。初步計算成果如下：
 
-[[./docs/img/case_41FFT_time_series.png][case_41FFT_time_series.png]]
+#+ATTR_HTML: alt: Alternative text title: Image Title :width 600
+#+ATTR_LATEX: :placement [!tb] :width 0.8\textwidth
+#+CAPTION: Case No. 41 計算結果。
+#+NAME: fig:case41
+[[./docs/img/case_41FFT_time_series.png]]
 
 * 波浪參數意義與物理說明
 ** 波浪週期 T
