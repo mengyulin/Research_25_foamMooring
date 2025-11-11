@@ -1,0 +1,16 @@
+#!/bin/sh
+cd "${0%/*}" || exit                                # Run from this directory
+. ${WM_PROJECT_DIR:?}/bin/tools/CleanFunctions      # Tutorial clean functions
+#------------------------------------------------------------------------------
+
+cleanCase0
+rm -rf moorDynR2.*
+rm -rf Mooring/*.out
+rm RAO_single_case.csv
+rm -rf Mooring/VTK
+rm -rf Mooring/restartFile_*
+rm -rf Plots/logs/*
+rm -rf Plots/*.pdf
+rm Plots/log.overInterDyMFoam
+
+#------------------------------------------------------------------------------

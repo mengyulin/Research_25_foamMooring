@@ -1,0 +1,175 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  v2012                                 |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    object      controlDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+libs            (overset fvMotionSolvers sixDoFMooring);
+
+application     overInterDyMFoam;
+
+startFrom       startTime;
+
+startTime       0;
+
+stopAt          endTime;
+
+endTime         9.6;
+
+deltaT          5e-4;
+
+adjustTimeStep  yes;
+
+writeControl    adjustableRunTime; // adjustable; timeStep;
+
+writeInterval   0.2;
+
+purgeWrite      0;
+
+writeFormat     ascii;
+
+writePrecision  6;
+
+writeCompression off;
+
+timeFormat      general;
+
+timePrecision   6;
+
+runTimeModifiable yes; //no;
+
+adjustTimeStep  yes;
+
+maxCo           0.30; //0.5; // 5.0
+maxAlphaCo      0.25; //0.5; // 2.0
+maxDeltaT       0.002; //0.01;
+
+functions
+{
+/*    limitWrite
+    {
+        type            writeObjects;
+        libs            ("libutilityFunctionObjects.so");
+        enabled         true;
+        log             true;
+        writeObjects    yes;
+        objects
+        (
+            ".*"
+        );
+        writeControl    adjustableRunTime;
+        timeStart       7.25;
+        writeInterval   0.149;
+    }
+*/
+/*    sixDoF_History
+    {
+        type           sixDoFRigidBodyState;
+        libs           ("libsixDoFRigidBodyState.so");
+        angleFormat    radians;//radians, degrees
+                
+        writeControl   timeStep;
+        writeInterval  5;
+    }
+*/
+    interfaceHeight1
+    {
+        type            interfaceHeight;
+        
+        libs            ("libfieldFunctionObjects.so");
+        
+        locations       ((-2.74 0 0) (-0.05 0 0) (0.07 0 0) (0.55 0 0) (1.9 0 0) (2.9 0 0));
+        alpha           alpha.water;
+        
+        writeControl   timeStep;
+        writeInterval  5;
+    }
+
+// 1) Overset 診斷：每步輸出 donors / acceptors / orphans
+    /* oversetInfo
+    {
+        type                 overset;
+        functionObjectLibs  ("libutilityFunctionObjects.so");
+        writeControl         timeStep;
+        writeInterval        1;
+        log                  yes;
+    }
+    */
+/*    sixDoFState
+    {
+        type                  sixDoFRigidBodyState;
+        functionObjectLibs    ("libsixDoFRigidBodyMotion.so");
+        writeControl          timeStep;
+        writeInterval         1;
+        log                   yes;
+    }
+*/
+    forcesFloating
+    {
+        type                  forces;
+        functionObjectLibs    ("libforces.so");
+        patches               (floatingObject);
+        rhoName               rho;
+        CofR                  (0 0 0);
+        writeControl          timeStep;
+        writeInterval         1;
+        log                   yes;
+    }
+
+// === 自動切換：在 t=3s（例）後，降低成本 ===
+    switchToFast
+    {
+        type                 changeDictionary;
+        functionObjectLibs  ("libutilityFunctionObjects.so");
+        trigger             timeActivated;
+        timeStart           3.0;              // 你可以改成「2 個自然週期」之後
+    // 修改 controlDict 內的關鍵鍵值
+        dictionaries
+        (
+         "system/controlDict"
+         {
+          maxCo         0.55;               // Phase 2 放寬
+          maxAlphaCo    0.30;               // Phase 2 放寬
+          maxDeltaT     5e-3;               // Phase 2 允許更大步
+         }
+
+    // 修改 fvSoultion 內的關鍵鍵值
+         "system/fvSolution"
+         {
+        // 把 nOuterCorrectors 改成 1
+          "PIMPLE.nOuterCorrectors" 1;
+          "PIMPLE.nCorrectors"      2;
+
+        // alpha 子步與壓縮
+          "solvers.\"alpha.water.*\".nAlphaCorr"      1;
+          "solvers.\"alpha.water.*\".nAlphaSubCycles" 1;
+          "solvers.\"alpha.water.*\".cAlpha"          1.0;
+
+        // 放寬 p_rgh / U 的收斂
+          "solvers.p_rgh.tolerance"                   1e-8;
+          "solvers.p_rgh.relTol"                      0.05;
+          "solvers.\"(U|k|omega|epsilon).*\".tolerance" 1e-7;
+          "solvers.\"(U|k|omega|epsilon).*\".relTol"    0.1;
+         }
+    // 修改 dynamicMeshDict 內的關鍵鍵值
+         "constant/dynamicMeshDict"
+         {
+        // 拔掉 heave 線性阻尼（若有）
+        // 用最簡單方式：把係數設 0（或直接移除子節）
+         "sixDoFRigidBodyMotionCoeffs.restraints.linearDamperZ.coeff" 0;
+         }
+        );
+    }
+
+}
+// ************************************************************************* //
