@@ -229,9 +229,9 @@ Izz = 0.16248 kg·m²
 |  59 | 1.10 |  0.10 |  0.0429 |  1.3480 |  0.938 |
 |  60 | 1.20 |  0.10 |  0.0393 |  1.2357 |  0.895 |
 
-計算案例設定檔見 [[./tutorials/case_41.zip][case_41.zip]] (No. 41)。初步計算成果如下：
+計算案例 (No. 41) 設定檔見 ~tutorials/case_41~ 。初步計算成果如下：
 
-[[./docs/video/case41.mp4][case41.mp4]]
+[[./docs/img/case_41FFT_time_series.png][case_41FFT_time_series.png]]
 
 * 波浪參數意義與物理說明
 ** 波浪週期 T
