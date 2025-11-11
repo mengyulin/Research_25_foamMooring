@@ -237,6 +237,13 @@ Izz = 0.16248 kg·m²
 #+NAME: fig:case41
 [[./docs/img/case_41FFT_time_series.png]]
 
+#+BEGIN_EXPORT html
+<video controls width="640">
+  <source src="./docs/video/case41.mp4" type="video/mp4">
+  Your browser does not support the video tag.
+</video>
+#+END_EXPORT
+
 * 波浪參數意義與物理說明
 ** 波浪週期 T
 波浪週期為相鄰波峰通過同一點所需的時間，決定波浪頻率與能量分佈。
