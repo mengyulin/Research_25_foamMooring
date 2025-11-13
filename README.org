@@ -601,7 +601,7 @@ Jupyter Notebook 的完整介紹，可參見此[[https://medium.com/ai-for-k12/j
 - 數值模式簡介: 包含了
   - OpenFOAM 簡介
   - 繫纜系統工具庫 foamMooring 簡介
-  均可參考 [cite/t:@chenCFDSimulationFloating2022] 及 [cite:@chenCFDSimulationMultiple2024]。
+  均可參考 [cite/t:@chenCFDSimulationFloating2022] 及 [cite/t:@chenCFDSimulationMultiple2024]。
 
 * 參考文獻
 
