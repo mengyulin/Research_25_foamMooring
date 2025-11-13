@@ -1,59 +1,62 @@
 
 # Table of Contents
 
-1.  [研究目的](#org3e772ca)
-2.  [基準模擬條件概述](#org4b9c3dc)
-    1.  [模擬區域設定](#org3216453)
-    2.  [基礎浮體條件](#orge120200)
-    3.  [基礎繫泊條件](#orgfbe7ecb)
-    4.  [Chen and Hall (2022) 之波浪條件](#orgb4dcb48)
-3.  [計算條件設定](#orgbafccc6)
-    1.  [浮體幾何與波浪參數計算程式](#org5c0cd58)
-    2.  [第一組 (基準案例)](#orgdd8e578)
-    3.  [第二組 (較大波高)](#orgc786d0a)
-    4.  [第三組 (寬浮體)](#orgc645894)
-4.  [波浪參數意義與物理說明](#org3da0f2d)
-    1.  [波浪週期 T](#org62f69c1)
-    2.  [波高 H](#orge0f18bf)
-    3.  [波長 L](#org8a75b3c)
-    4.  [波陡度 H/L](#orgb1ddfba)
-    5.  [水深 h](#orgaed1696)
-5.  [RAO 的意義與計算](#orgc47ee66)
-    1.  [RAO 的基本定義](#orgf78e916)
-    2.  [三個自由度的 RAO 定義](#org2b9a8df)
-    3.  [實際計算步驟](#org1234233)
-        1.  [輸入波參數](#org620aab0)
-        2.  [FFT 分析](#orgda72af6)
-        3.  [最小平方法擬合](#orgbce6898)
-        4.  [計算 RAO](#orgda1c5a5)
-    4.  [結果解讀](#orgcb446b3)
-6.  [實驗步驟建議](#orgdb26e81)
-7.  [分析與討論方向](#org8795abb)
-8.  [學習重點](#orge4ea707)
-9.  [延伸方向](#org82fe1e2)
-10. [Overset 計算執行](#org7147777)
-    1.  [計算指令](#orgf8a3acc)
-    2.  [平行計算設定](#org1c9fa77)
-    3.  [計算分割數](#org6d5bf41)
-11. [ParaView 繪圖與前後處理](#orgf925e82)
-    1.  [ParaView 繪圖](#orgb7faeea)
-        1.  [直接開啟 `state` 檔](#org0b3a25c)
-        2.  [波浪流場與物體繪製流程](#org98352e0)
-        3.  [繪製繫纜線](#orgd150a21)
-    2.  [ParaView 動畫輸出](#org07eae5d)
-        1.  [安裝 ffmpeg](#org3ef0508)
-        2.  [OpenFOAM 輸出動畫影格](#org41deca1)
-        3.  [使用 ffmpeg 合成影片](#org7956bf5)
-        4.  [可選：影片壓縮與縮放](#orgdcc4563)
-        5.  [提示](#org69d4769)
-    3.  [前、後處理之 Python 程式碼](#orgc80eb18)
-    4.  [附註： Jupyter Notebook 安裝方法](#org11dd9db)
-12. [成果報告](#orgb50faab)
-    1.  [內容架構](#orgd3664ad)
+1.  [研究目的](#org08588df)
+2.  [基準模擬條件概述](#org10a59c2)
+    1.  [模擬區域設定](#org93ef8c2)
+    2.  [基礎浮體條件](#org07dc09c)
+    3.  [基礎繫泊條件](#orgc5bc527)
+    4.  [Chen and Hall (2022) 之波浪條件](#org8b55123)
+3.  [計算條件設定](#orgefaa01e)
+    1.  [浮體幾何與波浪參數計算程式](#orgc310e86)
+    2.  [第一組 (基準案例)](#org40e8446)
+    3.  [第二組 (較大波高)](#orgf42dca9)
+    4.  [第三組 (寬浮體)](#orgd76defa)
+4.  [波浪參數意義與物理說明](#orgf6b0ccf)
+    1.  [波浪週期 T](#orge8faf45)
+    2.  [波高 H](#orgefeff74)
+    3.  [波長 L](#org54c8fd8)
+    4.  [波陡度 H/L](#org84d2e81)
+    5.  [水深 h](#org91a3956)
+5.  [RAO 的意義與計算](#org6c4ccff)
+    1.  [RAO 的基本定義](#org243205f)
+    2.  [三個自由度的 RAO 定義](#org00856f1)
+    3.  [實際計算步驟](#org8bbbd74)
+        1.  [輸入波參數](#orgbe93a89)
+        2.  [FFT 分析](#org4b3e51a)
+        3.  [最小平方法擬合](#orgcff049f)
+        4.  [計算 RAO](#orgfe65abe)
+    4.  [結果解讀](#orgbc3425f)
+6.  [實驗步驟建議](#org656ee9a)
+7.  [分析與討論方向](#org4eeb7ff)
+8.  [學習重點](#org3c7ccf7)
+9.  [延伸方向](#orgb9f07ba)
+10. [Overset 計算執行](#org19eb621)
+    1.  [計算指令](#org9b15d1b)
+    2.  [平行計算設定](#org6479840)
+    3.  [計算分割數](#org3d7e829)
+11. [ParaView 繪圖與前後處理](#org1d5e487)
+    1.  [ParaView 繪圖](#org4f654ed)
+        1.  [直接開啟 `state` 檔](#org70cacaf)
+        2.  [波浪流場與物體繪製流程](#org6f1e7e8)
+        3.  [繪製繫纜線](#org241b651)
+    2.  [ParaView 動畫輸出](#org9b9eea4)
+        1.  [安裝 ffmpeg](#org0fe6e75)
+        2.  [OpenFOAM 輸出動畫影格](#org2cd5ede)
+        3.  [使用 ffmpeg 合成影片](#org216ccfd)
+        4.  [可選：影片壓縮與縮放](#org24fcad3)
+        5.  [提示](#org6d20042)
+    3.  [前、後處理之 Python 程式碼](#orgf251530)
+    4.  [附註： Jupyter Notebook 安裝方法](#org8958a9a)
+12. [成果報告](#org3d8d960)
+    1.  [內容架構](#orgb3fb237)
+    2.  [成果呈現參考資訊](#orgd67ee8e)
+        1.  [基本方程式與數值方法](#org4c4f96f)
+13. [參考文獻](#orgb83976a)
 
 
 
-<a id="org3e772ca"></a>
+<a id="org08588df"></a>
 
 # 研究目的
 
@@ -68,14 +71,14 @@
 3.  後續延伸研究（例如多浮體干涉、風浪耦合等）的基礎資料。
 
 
-<a id="org4b9c3dc"></a>
+<a id="org10a59c2"></a>
 
 # 基準模擬條件概述
 
 根據 Chen and Hall (2022) 的單一浮體案例，本研究採用相同的幾何、繫泊與水槽條件，改變波浪週期與波高兩個主要參數。
 
 
-<a id="org3216453"></a>
+<a id="org93ef8c2"></a>
 
 ## 模擬區域設定
 
@@ -84,7 +87,7 @@
 模擬區域為上圖 (Chen and Hall, 2022) 之二維版本，亦即 y 方向設為均勻。
 
 
-<a id="orge120200"></a>
+<a id="org07dc09c"></a>
 
 ## 基礎浮體條件
 
@@ -99,7 +102,7 @@
 -   靜止水深 $h = 0.5~\mathrm{m}$
 
 
-<a id="orgfbe7ecb"></a>
+<a id="orgc5bc527"></a>
 
 ## 基礎繫泊條件
 
@@ -111,7 +114,7 @@
 -   繫纜錨定處 (ahcnor, 與底床連接處) $(x, y, z) = (\pm 1.385, \pm 0.423, -0.5)~\mathrm{m}$
 
 
-<a id="orgb4dcb48"></a>
+<a id="org8b55123"></a>
 
 ## Chen and Hall (2022) 之波浪條件
 
@@ -181,12 +184,12 @@
 -   淺水波: $h/L < 1/20$
 
 
-<a id="orgbafccc6"></a>
+<a id="orgefaa01e"></a>
 
 # 計算條件設定
 
 
-<a id="org5c0cd58"></a>
+<a id="orgc310e86"></a>
 
 ## 浮體幾何與波浪參數計算程式
 
@@ -194,7 +197,7 @@
 -   波浪條件：見資料夾 `tools/` 中的 [DispersionEq.ipynb](./tools/DispersionEq.ipynb)。
 
 
-<a id="orgdd8e578"></a>
+<a id="org40e8446"></a>
 
 ## 第一組 (基準案例)
 
@@ -449,7 +452,7 @@
 </table>
 
 
-<a id="orgc786d0a"></a>
+<a id="orgf42dca9"></a>
 
 ## 第二組 (較大波高)
 
@@ -685,7 +688,7 @@
 </table>
 
 
-<a id="orgc645894"></a>
+<a id="orgd76defa"></a>
 
 ## 第三組 (寬浮體)
 
@@ -949,12 +952,12 @@
 </video>
 
 
-<a id="org3da0f2d"></a>
+<a id="orgf6b0ccf"></a>
 
 # 波浪參數意義與物理說明
 
 
-<a id="org62f69c1"></a>
+<a id="orge8faf45"></a>
 
 ## 波浪週期 T
 
@@ -964,7 +967,7 @@
 -   長週期波 ($T > 1.6~\mathrm{s}$): 波浪能量集中，容易引發浮體共振。
 
 
-<a id="orge0f18bf"></a>
+<a id="orgefeff74"></a>
 
 ## 波高 H
 
@@ -974,7 +977,7 @@
 -   大波高：可能產生非線性效應，例如阻尼增加或漂移運動。
 
 
-<a id="org8a75b3c"></a>
+<a id="org54c8fd8"></a>
 
 ## 波長 L
 
@@ -988,7 +991,7 @@ $$
 波長越長，波浪越「平緩」，對浮體的影響主要為低頻大振幅運動。
 
 
-<a id="orgb1ddfba"></a>
+<a id="org84d2e81"></a>
 
 ## 波陡度 H/L
 
@@ -1000,7 +1003,7 @@ $$
 -   $H/L > 0.05$ 則為「陡波」區域，數值模擬需特別注意穩定性。
 
 
-<a id="orgaed1696"></a>
+<a id="org91a3956"></a>
 
 ## 水深 h
 
@@ -1008,12 +1011,12 @@ $$
 本研究之 $h = 0.6~\mathrm{m}$，屬於中等深度（intermediate depth），適合觀察深水與淺水效應交替之情況。
 
 
-<a id="orgc47ee66"></a>
+<a id="org6c4ccff"></a>
 
 # RAO 的意義與計算
 
 
-<a id="orgf78e916"></a>
+<a id="org243205f"></a>
 
 ## RAO 的基本定義
 
@@ -1046,7 +1049,7 @@ $$
 $$
 
 
-<a id="org2b9a8df"></a>
+<a id="org00856f1"></a>
 
 ## 三個自由度的 RAO 定義
 
@@ -1066,26 +1069,26 @@ $$
 註：Pitch RAO 的物理意義：將角度振幅乘以半寬，可換算為浮體兩端的升降位移振幅，再與入射波振幅相比。
 
 
-<a id="org1234233"></a>
+<a id="org8bbbd74"></a>
 
 ## 實際計算步驟
 
 
-<a id="org620aab0"></a>
+<a id="orgbe93a89"></a>
 
 ### 輸入波參數
 
 已知波高 $H$, 週期 $T$, 求波振幅 $A_I = H/2$, 頻率 $f = 1/T$。
 
 
-<a id="orgda72af6"></a>
+<a id="org4b3e51a"></a>
 
 ### FFT 分析
 
 對浮體各自由度時間序列（surge, heave, pitch）進行 FFT, 確認主頻是否與理論頻率一致。
 
 
-<a id="orgbce6898"></a>
+<a id="orgcff049f"></a>
 
 ### 最小平方法擬合
 
@@ -1102,7 +1105,7 @@ $$
 $$
 
 
-<a id="orgda1c5a5"></a>
+<a id="orgfe65abe"></a>
 
 ### 計算 RAO
 
@@ -1110,7 +1113,7 @@ $$
 -   Pitch: $\left|\mathrm{RAO}_\theta\right| = \hat{\theta} b / A_I$
 
 
-<a id="orgcb446b3"></a>
+<a id="orgbc3425f"></a>
 
 ## 結果解讀
 
@@ -1121,7 +1124,7 @@ $$
     -   $\phi = 90°$: 運動落後波面四分之一週期。
 
 
-<a id="orgdb26e81"></a>
+<a id="org656ee9a"></a>
 
 # 實驗步驟建議
 
@@ -1133,7 +1136,7 @@ $$
 6.  彙整結果，分析波浪頻率與振幅對浮體動態特性的影響。
 
 
-<a id="org8795abb"></a>
+<a id="org4eeb7ff"></a>
 
 # 分析與討論方向
 
@@ -1143,7 +1146,7 @@ $$
 -   CFD 模擬與理論模型的比較（例如 Morison 方程或線性勢流理論）。
 
 
-<a id="orge4ea707"></a>
+<a id="org3c7ccf7"></a>
 
 # 學習重點
 
@@ -1154,7 +1157,7 @@ $$
 -   建立對海洋結構物動力行為的直觀理解。
 
 
-<a id="org82fe1e2"></a>
+<a id="orgb9f07ba"></a>
 
 # 延伸方向
 
@@ -1166,12 +1169,12 @@ $$
 4.  嘗試使用不同繫泊模型（MoorDyn vs MAP++）比較。
 
 
-<a id="org7147777"></a>
+<a id="org19eb621"></a>
 
 # Overset 計算執行
 
 
-<a id="orgf8a3acc"></a>
+<a id="org9b15d1b"></a>
 
 ## 計算指令
 
@@ -1194,38 +1197,38 @@ $$
     #------------------------------------------------------------------------------
 
 
-<a id="org1c9fa77"></a>
+<a id="org6479840"></a>
 
 ## 平行計算設定
 
 以 `tutorials/overset_parallel/` 為例：
 
 
-<a id="org6d5bf41"></a>
+<a id="org3d7e829"></a>
 
 ## 計算分割數
 
 設定為 4 區，可於 `background/system/decomposeParDict` 中設定。
 
 
-<a id="orgf925e82"></a>
+<a id="org1d5e487"></a>
 
 # ParaView 繪圖與前後處理
 
 
-<a id="orgb7faeea"></a>
+<a id="org4f654ed"></a>
 
 ## ParaView 繪圖
 
 
-<a id="org0b3a25c"></a>
+<a id="org70cacaf"></a>
 
 ### 直接開啟 `state` 檔
 
 在 `background` 資料夾中的 `FV.pvsm` 檔，為 ParaView 之 State 檔案，可以在 OpenFOAM 中使用 `load state` 選項開啟，即可得到已經設定好的繪圖頁面。
 
 
-<a id="org98352e0"></a>
+<a id="org6f1e7e8"></a>
 
 ### 波浪流場與物體繪製流程
 
@@ -1247,7 +1250,7 @@ $$
     4.  僅開啟 `Threshold2` 與 `Threshold3`, 並在 `Orientation Axes` 中點選 `Camera Paralle Projection`, 可出現浮體被挖空之波浪流場。
 
 
-<a id="orgd150a21"></a>
+<a id="org241b651"></a>
 
 ### 繪製繫纜線
 
@@ -1258,12 +1261,12 @@ $$
 2.  在 `Pipeline Browser` 中點選 `mdv2_pt.vtk.pvd`, 使用 `Transforming` 將纜線平移到與浮體一樣的位置。
 
 
-<a id="org07eae5d"></a>
+<a id="org9b9eea4"></a>
 
 ## ParaView 動畫輸出
 
 
-<a id="org3ef0508"></a>
+<a id="org0fe6e75"></a>
 
 ### 安裝 ffmpeg
 
@@ -1279,7 +1282,7 @@ $$
 若顯示版本號 (例如 `ffmpeg version 6.x`)，即表示安裝成功。
 
 
-<a id="org41deca1"></a>
+<a id="org2cd5ede"></a>
 
 ### OpenFOAM 輸出動畫影格
 
@@ -1299,7 +1302,7 @@ $$
 5.  按下 ****OK**** 開始輸出。
 
 
-<a id="org7956bf5"></a>
+<a id="org216ccfd"></a>
 
 ### 使用 ffmpeg 合成影片
 
@@ -1323,7 +1326,7 @@ $$
     ffmpeg -framerate 20 -i frame.%04d.png -c:v libx264 -pix_fmt yuv420p animation.mp4
 
 
-<a id="orgdcc4563"></a>
+<a id="org24fcad3"></a>
 
 ### 可選：影片壓縮與縮放
 
@@ -1332,7 +1335,7 @@ $$
     ffmpeg -framerate 15 -i frame_%04d.png -vf "scale=1280:-1" -c:v libx264 -crf 23 animation_compressed.mp4
 
 
-<a id="org69d4769"></a>
+<a id="org6d20042"></a>
 
 ### 提示
 
@@ -1343,7 +1346,7 @@ $$
         ffmpeg -stream_loop -1 -i animation.mp4 output_loop.mp4
 
 
-<a id="orgc80eb18"></a>
+<a id="orgf251530"></a>
 
 ## 前、後處理之 Python 程式碼
 
@@ -1380,7 +1383,7 @@ $$
                 └── t_vs_angularV (角速度)
 
 
-<a id="org11dd9db"></a>
+<a id="org8958a9a"></a>
 
 ## 附註： Jupyter Notebook 安裝方法
 
@@ -1391,20 +1394,20 @@ Anaconda 的安裝教學，可參見此連結：<https://simplelearn.tw/anaconda
 Jupyter Notebook 的完整介紹，可參見此[連結](https://medium.com/ai-for-k12/jupyter-notebook-%E5%AE%8C%E6%95%B4%E4%BB%8B%E7%B4%B9-%E5%AE%89%E8%A3%9D%E5%8F%8A%E4%BD%BF%E7%94%A8%E8%AA%AA%E6%98%8E-846b5432f044)。
 
 
-<a id="orgb50faab"></a>
+<a id="org3d8d960"></a>
 
 # 成果報告
 
 
-<a id="orgd3664ad"></a>
+<a id="orgb3fb237"></a>
 
 ## 內容架構
 
 -   摘要
--   1 研究背景及目的
-    -   1.1 研究背景與動機
-    -   1.2 文獻回顧
-    -   1.3 研究目的與方法
+-   研究背景及目的
+    -   研究背景與動機
+    -   文獻回顧
+    -   研究目的與方法
 -   基本方程式與數值方法
     -   基本方程式 (Chen and Hall 2022, Sec. 2)
     -   數值模式簡介
@@ -1425,4 +1428,28 @@ Jupyter Notebook 的完整介紹，可參見此[連結](https://medium.com/ai-fo
         -   RAO 分析
         -   纜繩張力分析
 -   結論與討論
+
+
+<a id="orgd67ee8e"></a>
+
+## 成果呈現參考資訊
+
+
+<a id="org4c4f96f"></a>
+
+### 基本方程式與數值方法
+
+-   基本方程式: 參考 (<a href="#citeproc_bib_item_1">Chen and Hall 2022</a>) 之 Sec. 2 Methodology。
+    -   數值模式簡介
+        -   OpenFOAM 簡介
+        -   繫纜系統工具庫 foamMooring 簡介 (Chen and Hall 2022, Che et al. 2024)
+
+
+<a id="orgb83976a"></a>
+
+# 參考文獻
+
+<style>.csl-entry{text-indent: -1.5em; margin-left: 1.5em;}</style><div class="csl-bib-body">
+  <div class="csl-entry"><a id="citeproc_bib_item_1"></a>Chen, Haifei, and Matthew Hall. 2022. “Cfd Simulation of Floating Body Motion with Mooring Dynamics: Coupling Moordyn with Openfoam.” <i>Applied Ocean Research</i> 124 (July): 103210. <a href="https://doi.org/10.1016/j.apor.2022.103210">https://doi.org/10.1016/j.apor.2022.103210</a>.</div>
+</div>
 
