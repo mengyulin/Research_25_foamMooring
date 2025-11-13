@@ -605,4 +605,4 @@ Jupyter Notebook 的完整介紹，可參見此[[https://medium.com/ai-for-k12/j
 
 * 參考文獻
 
-#+print_bibliography: style=plain
+#+print_bibliography:
