@@ -32,6 +32,7 @@
 #+LaTeX_HEADER: \renewcommand{\contentsname}{目錄}
 #+LaTeX_HEADER: \renewcommand{\refname}{\large 參考文獻}
 
+
 # Disable table of contents
 # OPTIONS: toc:nil
 
@@ -604,4 +605,4 @@ Jupyter Notebook 的完整介紹，可參見此[[https://medium.com/ai-for-k12/j
 
 * 參考文獻
 
-#+print_bibliography:
+#+print_bibliography: style=plain
