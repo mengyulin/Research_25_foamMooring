@@ -596,7 +596,7 @@ Jupyter Notebook 的完整介紹，可參見此[[https://medium.com/ai-for-k12/j
 
 *** 基本方程式與數值方法
 
-- 基本方程式: 參考 [cite:@chenCFDSimulationFloating2022] 之 Sec. 2 Methodology。
+- 基本方程式: 參考 [cite/t:@chenCFDSimulationFloating2022] 之 Sec. 2 Methodology。
   - 數值模式簡介
     - OpenFOAM 簡介
     - 繫纜系統工具庫 foamMooring 簡介 (Chen and Hall 2022, Che et al. 2024)
