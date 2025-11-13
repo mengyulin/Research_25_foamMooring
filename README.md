@@ -1449,7 +1449,7 @@ Jupyter Notebook 的完整介紹，可參見此[連結](https://medium.com/ai-fo
 
 # 參考文獻
 
-<style>.csl-entry{text-indent: -1.5em; margin-left: 1.5em;}</style><div class="csl-bib-body">
+<div class="csl-bib-body">
   <div class="csl-entry"><a id="citeproc_bib_item_1"></a>Chen, Haifei, and Matthew Hall. 2022. “Cfd Simulation of Floating Body Motion with Mooring Dynamics: Coupling Moordyn with Openfoam.” <i>Applied Ocean Research</i> 124 (July): 103210. <a href="https://doi.org/10.1016/j.apor.2022.103210">https://doi.org/10.1016/j.apor.2022.103210</a>.</div>
 </div>
 
