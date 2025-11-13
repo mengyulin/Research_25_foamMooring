@@ -586,9 +586,11 @@ Jupyter Notebook 的完整介紹，可參見此[[https://medium.com/ai-for-k12/j
     - RAO 定義
     - FFT 之主頻振幅分析
   - 波浪條件之效應
+    - 波浪與流場
     - RAO 分析
     - 纜繩張力分析
   - 浮體寬度之效應
+    - 波浪與流場
     - RAO 分析
     - 纜繩張力分析
 - 結論與討論
@@ -602,6 +604,15 @@ Jupyter Notebook 的完整介紹，可參見此[[https://medium.com/ai-for-k12/j
   - OpenFOAM 簡介
   - 繫纜系統工具庫 foamMooring 簡介
   均可參考 [cite/t:@chenCFDSimulationFloating2022] 及 [cite/t:@chenCFDSimulationMultiple2024]。
+
+*** 模式設置與驗證
+
+- 模式設置與驗證，均可參考 [cite/t:@chenCFDSimulationFloating2022] 之 Sec. 3.2 Numerical model setup，但要注意本研究是二維模擬，而論文中為三維。
+
+*** 成果分析
+
+- 浮體 3DoF 位移、RAO 成果與波浪流場展示: 參考 [cite/t:@islamOpenFOAMAnalysisWave2019]。
+- 纜繩張力分析: 參考 [cite/t:@chenCFDSimulationFloating2022] 及 [cite/t:@chenCFDSimulationMultiple2024]。
 
 * 參考文獻
 
