@@ -605,6 +605,6 @@ Jupyter Notebook 的完整介紹，可參見此[[https://medium.com/ai-for-k12/j
 
 * 參考文獻
 
-論文檔案見 [[./references][references/]]。
+論文檔案見資料夾 [[./references][references]]。
 
 #+print_bibliography:
