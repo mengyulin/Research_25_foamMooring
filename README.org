@@ -614,6 +614,12 @@ Jupyter Notebook 的完整介紹，可參見此[[https://medium.com/ai-for-k12/j
 - 浮體 3DoF 位移、RAO 成果與波浪流場展示: 參考 [cite/t:@islamOpenFOAMAnalysisWave2019]。
 - 纜繩張力分析: 參考 [cite/t:@chenCFDSimulationFloating2022] 及 [cite/t:@chenCFDSimulationMultiple2024]。
 
+** 成果報告與海報範例
+
+- 期末書面報告與海報 (poster) 的製作指引，見資料夾 [[./docs/report_tutorial][report_tutorial]]。
+- 書面報告可 Word 格式，可以根據碩士論文的樣式來修改 (可刪去誌謝、英文摘要等部分): [[./docs/report_tutorial/cycu_thesis_example.doc][碩士論文樣式檔]]。
+- 過去學生之成果報告 (Word 檔) 與海報 (PPT 檔) 範例，見資料夾 [[./docs/example][example]]。
+
 * 參考文獻
 
 論文檔案見資料夾 [[./references][references]]。
