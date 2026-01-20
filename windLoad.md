@@ -1,54 +1,51 @@
 
 # Table of Contents
 
-1.  [風力模型](#org07f6616)
-    1.  [週期性均勻風壓](#orge878f65)
-    2.  [Theodorsen 薄機翼理論](#orgfe22ca0)
-2.  [風力函式庫之應用](#orgf8d2e7a)
-    1.  [週期性均勻風壓](#org67a7641)
-        1.  [Step 1 放到 FOAM<sub>USER</sub><sub>LIBBIN</sub>](#org4f94e8a)
-        2.  [Step 2 在 `/background/system/controlDict` 載入 library](#orgd6e731b)
-        3.  [Step 3 在 `/background/constant/dynamicMeshDict` 使用 restraint](#orgeb92801)
+1.  [風力模型](#org194cfc6)
+    1.  [週期性均勻風壓](#orgeef3d03)
+    2.  [Theodorsen 薄機翼理論](#org59d96c9)
+2.  [風力函式庫之應用](#orgfef14d0)
+    1.  [週期性均勻風壓](#org625573c)
+        1.  [Step 1 放到 FOAM<sub>USER</sub><sub>LIBBIN</sub>](#org5c48b35)
+        2.  [Step 2 在 `/background/system/controlDict` 載入 library](#orga00845c)
+        3.  [Step 3 在 `/background/constant/dynamicMeshDict` 使用 restraint](#org7771c12)
 
 
 
-<a id="org07f6616"></a>
+<a id="org194cfc6"></a>
 
 # 風力模型
 
 
-<a id="orge878f65"></a>
+<a id="orgeef3d03"></a>
 
 ## 週期性均勻風壓
 
 設定風壓 $p(t)$ 為週期性變化且均勻分佈於浮體上表面：
-
-\begin{equation}
-\label{eq:uniPressure}
+$$
 p(t) = p_0 + A\sin(\omega t + \phi)
-\end{equation}
+$$
+其中 $p_0$ 為平均壓力值, $A$ 為振盪壓力之振幅, $\omega$ 為角頻率 (可設與波浪相同), $\phi$ 則為相位角。
 
-其中 $p_0$ 為平均壓力值、$A$ 為振盪壓力之振幅、$\omega$ 為角頻率 (可設與波浪相同)、$\phi$ 則為相位角。
 
-
-<a id="orgfe22ca0"></a>
+<a id="org59d96c9"></a>
 
 ## Theodorsen 薄機翼理論
 
 進行中。
 
 
-<a id="orgf8d2e7a"></a>
+<a id="orgfef14d0"></a>
 
 # 風力函式庫之應用
 
 
-<a id="org67a7641"></a>
+<a id="org625573c"></a>
 
 ## 週期性均勻風壓
 
 
-<a id="org4f94e8a"></a>
+<a id="org5c48b35"></a>
 
 ### Step 1 放到 FOAM<sub>USER</sub><sub>LIBBIN</sub>
 
@@ -57,7 +54,7 @@ p(t) = p_0 + A\sin(\omega t + \phi)
     cp libuniformWindPressureRestraint.so $FOAM_USER_LIBBIN
 
 
-<a id="orgd6e731b"></a>
+<a id="orga00845c"></a>
 
 ### Step 2 在 `/background/system/controlDict` 載入 library
 
@@ -70,7 +67,7 @@ p(t) = p_0 + A\sin(\omega t + \phi)
     libs ("liboverset.so" "libfvMotionSolvers.so" "libsixDoFMooring.so" "libuniformWindPressureRestraint.so.so");
 
 
-<a id="orgeb92801"></a>
+<a id="org7771c12"></a>
 
 ### Step 3 在 `/background/constant/dynamicMeshDict` 使用 restraint
 

@@ -48,11 +48,10 @@
 ** 週期性均勻風壓
 
 設定風壓 $p(t)$ 為週期性變化且均勻分佈於浮體上表面：
-\begin{equation}
-\label{eq:uniPressure}
+\[
 p(t) = p_0 + A\sin(\omega t + \phi)
-\end{equation}
-其中 \(p_0\) 為平均壓力值、\(A\) 為振盪壓力之振幅、\(\omega\) 為角頻率 (可設與波浪相同)、\(\phi\) 則為相位角。
+\]
+其中 \(p_0\) 為平均壓力值, \(A\) 為振盪壓力之振幅, \(\omega\) 為角頻率 (可設與波浪相同), \(\phi\) 則為相位角。
 
 ** Theodorsen 薄機翼理論
 
