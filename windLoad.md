@@ -1,23 +1,23 @@
 
 # Table of Contents
 
-1.  [風力模型](#org1f12161)
-    1.  [週期性均勻風壓](#org835079d)
-    2.  [Theodorsen 薄機翼理論](#orgee7048f)
-2.  [風力函式庫之應用](#org10d961a)
-    1.  [週期性均勻風壓](#org36e258a)
-        1.  [Step 1 放到 FOAM<sub>USER</sub><sub>LIBBIN</sub>](#org120affa)
-        2.  [Step 2 在 `/background/system/controlDict` 載入 library](#orgcfd8ab3)
-        3.  [Step 3 在 `/background/constant/dynamicMeshDict` 使用 restraint](#org91cd673)
+1.  [風力模型](#org999ec6b)
+    1.  [週期性均勻風壓](#org3f729a3)
+    2.  [Theodorsen 薄機翼理論](#orgdcc5480)
+2.  [風力函式庫之應用](#org0a33808)
+    1.  [週期性均勻風壓](#org72937b0)
+        1.  [Step 1 放到 `FOAM_USER_LIBBIN`](#orgcef2c67)
+        2.  [Step 2 在 `/background/system/controlDict` 載入 library](#orge293115)
+        3.  [Step 3 在 `/background/constant/dynamicMeshDict` 使用 restraint](#orge3f9a3c)
 
 
 
-<a id="org1f12161"></a>
+<a id="org999ec6b"></a>
 
 # 風力模型
 
 
-<a id="org835079d"></a>
+<a id="org3f729a3"></a>
 
 ## 週期性均勻風壓
 
@@ -30,33 +30,33 @@ $$
 其中 $p_0$ 為平均壓力值, $A$ 為振盪壓力之振幅, $\omega$ 為角頻率 (可設與波浪相同), $\phi$ 則為相位角。
 
 
-<a id="orgee7048f"></a>
+<a id="orgdcc5480"></a>
 
 ## Theodorsen 薄機翼理論
 
 進行中。
 
 
-<a id="org10d961a"></a>
+<a id="org0a33808"></a>
 
 # 風力函式庫之應用
 
 
-<a id="org36e258a"></a>
+<a id="org72937b0"></a>
 
 ## 週期性均勻風壓
 
 
-<a id="org120affa"></a>
+<a id="orgcef2c67"></a>
 
-### Step 1 放到 FOAM<sub>USER</sub><sub>LIBBIN</sub>
+### Step 1 放到 `FOAM_USER_LIBBIN`
 
 下載檔案 [libuniformWindPressureRestraint.so](./libs/libuniformWindPressureRestraint.so), 於同資料夾中執行：
 
     cp libuniformWindPressureRestraint.so $FOAM_USER_LIBBIN
 
 
-<a id="orgcfd8ab3"></a>
+<a id="orge293115"></a>
 
 ### Step 2 在 `/background/system/controlDict` 載入 library
 
@@ -69,7 +69,7 @@ $$
     libs ("liboverset.so" "libfvMotionSolvers.so" "libsixDoFMooring.so" "libuniformWindPressureRestraint.so.so");
 
 
-<a id="org91cd673"></a>
+<a id="orge3f9a3c"></a>
 
 ### Step 3 在 `/background/constant/dynamicMeshDict` 使用 restraint
 

@@ -61,7 +61,7 @@ p(t) = p_0 + A\sin(\omega t + \phi)
 
 * 風力函式庫之應用
 ** 週期性均勻風壓
-*** Step 1 放到 FOAM_USER_LIBBIN
+*** Step 1 放到 ~FOAM_USER_LIBBIN~
 
 下載檔案 [[./libs/libuniformWindPressureRestraint.so][libuniformWindPressureRestraint.so]], 於同資料夾中執行：
 
