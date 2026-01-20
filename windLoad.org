@@ -1,0 +1,131 @@
+#+title: Wind Load Computation
+#+DATE: 2026 年 1 月
+# OPTIONS: toc:2 num:t
+#+CATEGORY: Courses
+#+STARTUP: indent
+# STARTUP: latexpreview
+# Theme setup
+#+SETUPFILE: https://fniessen.github.io/org-html-themes/org/theme-readtheorg.setup
+#+HTML_LINK_UP: index.html
+#+HTML_LINK_HOME: index.html
+# Latex 设置
+#+LATEX_COMPILER: xelatex
+#+LaTeX_CLASS_OPTIONS: [hidelinks,a4paper,12pt]
+#+LaTeX_HEADER: \usepackage{amssymb}
+#+LaTeX_HEADER: \usepackage{amsmath}
+#+LaTeX_HEADER: \usepackage{booktabs}
+#+LATEX_HEADER: \usepackage[AUTO]{inputenc}
+#+LaTeX_HEADER: \usepackage{geometry}
+#+LaTeX_HEADER: \usepackage[nobottomtitles]{titlesec}
+#+LaTeX_HEADER: \geometry{verbose,a4paper,tmargin=3.5cm,bmargin=3.5cm,lmargin=3cm,rmargin=3cm}
+#+LaTeX_HEADER: \newcommand{\mybaselinestretch}{1.4}
+#+LaTeX_HEADER: \renewcommand{\baselinestretch}{\mybaselinestretch}
+#+LaTeX_HEADER: \usepackage{xeCJK}
+#+LaTeX_HEADER: \usepackage{fontspec,xltxtra,xunicode}
+#+LaTeX_HEADER: \setCJKmainfont{cwTeX Q MingZH}
+#+LaTeX_HEADER: \setmonofont[Scale=0.8]{Courier New}
+#+LaTeX_HEADER: \XeTeXlinebreaklocale "zh"
+#+LaTeX_HEADER: \XeTeXlinebreakskip = 0pt plus 1pt
+#+LaTeX_HEADER: \parskip=2ex
+#+LaTeX_HEADER: \renewcommand{\tablename}{表}
+#+LaTeX_HEADER: \renewcommand{\figurename}{圖}
+#+LaTeX_HEADER: \renewcommand{\contentsname}{目錄}
+#+LaTeX_HEADER: \renewcommand{\refname}{\large 參考文獻}
+
+
+# Disable table of contents
+# OPTIONS: toc:nil
+
+# Disable section numbering
+# #+OPTIONS: num:nil
+
+# New page after TOC
+#+begin_export latex
+  \clearpage
+#+end_export
+
+* 風力模型
+** 週期性均勻風壓
+
+設定風壓 $p(t)$ 為週期性變化且均勻分佈於浮體上表面：
+\begin{equation}
+\label{eq:uniPressure}
+p(t) = p_0 + A\sin(\omega t + \phi)
+\end{equation}
+其中 \(p_0\) 為平均壓力值、\(A\) 為振盪壓力之振幅、\(\omega\) 為角頻率 (可設與波浪相同)、\(\phi\) 則為相位角。
+
+** Theodorsen 薄機翼理論
+
+進行中。
+
+* 風力函式庫之應用
+** 週期性均勻風壓
+*** Step 1 放到 FOAM_USER_LIBBIN
+
+下載檔案 [[./libs/libuniformWindPressureRestraint.so][libuniformWindPressureRestraint.so]], 於同資料夾中執行：
+
+#+begin_src bash
+cp libuniformWindPressureRestraint.so $FOAM_USER_LIBBIN
+#+end_src
+
+*** Step 2 在 ~/background/system/controlDict~ 載入 library
+
+將：
+#+begin_src cpp
+libs            (overset fvMotionSolvers sixDoFMooring);
+#+end_src
+修改為：
+#+begin_src cpp
+libs ("liboverset.so" "libfvMotionSolvers.so" "libsixDoFMooring.so" "libuniformWindPressureRestraint.so.so");
+#+end_src
+
+*** Step 3 在 ~/background/constant/dynamicMeshDict~ 使用 restraint
+
+在 ~restraints~ 加入參數設定值，例如以下接續在 ~moorDynR2_pt~ 之後的設定：
+#+begin_src cpp
+  restraints
+  {
+    moorDynR2_pt
+    {
+      sixDoFRigidBodyMotionRestraint  moorDynR2;
+      couplingMode       "POINT";
+      inputFile          "Mooring/lines_v2_point.txt";
+      refAttachmentPt
+      (
+        (-0.1      0.1    -0.0736)
+        (-0.1     -0.1    -0.0736)
+        ( 0.1      0.1    -0.0736)
+        ( 0.1     -0.1    -0.0736)
+      );
+      writeMooringVTK    true;
+      vtkPrefix         "mdv2_pt";
+      vtkStartTime       0;
+      outerCorrector     1;
+    }
+
+    windForce
+      {
+        sixDoFRigidBodyMotionRestraint  uniformWindPressureRestraint;
+        // type    uniformWindPressureRestraint;
+
+        // Cuboid dimensions
+        Lx              0.2;
+        Ly              0.2;
+        Lz              0.132;
+
+        // 施力點（剛體座標系，單位 m）
+        // 例如：浮體幾何中心上方 5 cm
+        rLocal  (0 0 0.05);
+
+        // 施力方向（剛體座標系單位向量）
+        // 例如：沿 +Z 方向的「壓力 * 面積」等效力
+        nLocal  (0 0 1);
+
+        // 壓力模型參數（自行調整）
+        p0      0;          // 平均值（Pa）
+        A       50;         // 振幅（Pa）
+        omega   3.490659;   // 角頻率 rad/s, omega = 2 pi/T, T: wave period
+        phi     0;          // 初相位（rad）
+        beta    1;          // 指數；=1 為純正弦，可用 >1 做非線性整形
+      }
+#+end_src

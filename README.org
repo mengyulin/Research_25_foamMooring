@@ -621,6 +621,10 @@ Jupyter Notebook 的完整介紹，可參見此[[https://medium.com/ai-for-k12/j
 - 過去學生之成果報告 (Word 檔) 與海報 (PPT 檔) 範例，見資料夾 [[./docs/example][example]]。
 - 課程的 Notion 頁面也有許多參考資訊：[[https://pond-bass-4f5.notion.site/2025-1a474decdb7d806cbc7ac3cbafaa0b5f?source=copy_link][Notion page]]。
 
+* 風力模組與計算
+
+見頁面：[[./windLoad.org][windLoad]]。
+
 * 參考文獻
 
 論文檔案見資料夾 [[./references][references]]。
